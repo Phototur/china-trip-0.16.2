@@ -21,22 +21,26 @@
     html,body{height:100%}
     body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);}
     a{color:inherit;text-decoration:none}
+
     .wrap{max-width:980px;margin:0 auto;padding:14px 14px calc(var(--tabH) + env(safe-area-inset-bottom) + 18px) 14px;}
     header{position:sticky;top:0;z-index:50;background:rgba(246,247,249,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(17,24,39,.06);}
     .top{max-width:980px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
     .brand{min-width:0}
     .brand .t{font-weight:900;font-size:15px}
     .brand .s{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
     .pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(17,24,39,.10);background:rgba(255,255,255,.7);
       border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800;color:var(--muted);max-width:60vw;
       white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
     .dot{width:10px;height:10px;border-radius:50%}
+
     details.info{background:rgba(255,255,255,.72);border-top:1px solid rgba(17,24,39,.06);border-bottom:1px solid rgba(17,24,39,.06);}
     details.info>summary{list-style:none;cursor:pointer;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;font-weight:900;font-size:12px;}
     details.info>summary::-webkit-details-marker{display:none}
     .infoBody{padding:0 14px 12px 14px;font-size:12px;color:var(--muted);}
     .grid{display:grid;gap:12px;grid-template-columns:1fr;}
     @media(min-width:860px){.grid{grid-template-columns:1.2fr .8fr}}
+
     .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:12px;}
     .h2{margin:12px 0 10px 0;font-size:14px;font-weight:900;}
     .muted{color:var(--muted)}
@@ -158,7 +162,6 @@
         <button class="btn big primary" id="btnTodayCopyAll">📋 Скопировать всё (CN)</button>
       </div>
 
-      <!-- NEW: food nearby -->
       <div class="row" style="margin-top:10px">
         <button class="btn big" id="btnTodayFood">🍜 Где поесть рядом</button>
       </div>
@@ -189,7 +192,6 @@
     <div class="h2">Справочник</div>
     <div class="stack">
 
-      <!-- NEW: Chongqing food guide -->
       <div class="card" id="guide-cq-food">
         <div class="h2" style="margin-top:0">🍜 Чунцин — Еда</div>
         <div class="muted">
@@ -239,14 +241,17 @@
         <div class="h2" style="margin-top:0">🍜 Еда</div>
         <div class="muted">Добавим фразы/блюда позже. Механика копирования: CN/EN — копируются, RU — нет.</div>
       </div>
+
       <div class="card">
         <div class="h2" style="margin-top:0">✅ Советы</div>
         <div class="muted">Чек-листы, транспорт, оплата (Alipay), вокзалы/поезда и т.д.</div>
       </div>
+
       <div class="card">
         <div class="h2" style="margin-top:0">📴 Оффлайн</div>
         <div class="muted">Если версия на Pages обновилась, очисти кэш и обнови страницу.</div>
       </div>
+
       <div class="card">
         <div class="h2" style="margin-top:0">ℹ️ Про приложение</div>
         <div class="muted">План поездки 8–23 апреля 2026, структурирован по Плану B.</div>
@@ -304,7 +309,6 @@
             ]
           },
 
-          // UPDATED: + Nanshan One Tree Pavilion
           { date:"2026-04-10", title_ru:"Прогулки и виды 🌃", summary:"Liziba • Kuixinglou • Raffles City • Nanshan • (опц.) Cableway",
             blocks:[
               {type:"plan", items:[
@@ -317,7 +321,6 @@
             ]
           },
 
-          // UPDATED: + Shancheng Trail
           { date:"2026-04-11", title_ru:"Свободный день + подготовка к поезду 🚄", summary:"Shancheng Trail + вокзал + проверить поезд",
             blocks:[
               {type:"plan", items:[
@@ -505,21 +508,24 @@
 
   // ===== CQ Food dataset (видно и в “Точки”) =====
   const FOOD_CQ = [
-    // Hotpot
     {kind:"food", city:"cq", cat:"hotpot", cn:"珮姐老火锅", ru:"Peijie Hotpot", en:"Peijie Old Hotpot"},
     {kind:"food", city:"cq", cat:"hotpot", cn:"周师兄重庆火锅", ru:"Zhou Shixiong Hotpot", en:"Zhou Shixiong Chongqing Hotpot"},
     {kind:"food", city:"cq", cat:"hotpot", cn:"洞子老火锅", ru:"Dongzi Old Hotpot", en:"Dongzi Old Hotpot"},
-    // Noodles
     {kind:"food", city:"cq", cat:"noodles", cn:"花市豌杂面", ru:"Huashi Wanzamian", en:"Huashi Wanza Noodles"},
     {kind:"food", city:"cq", cat:"noodles", cn:"板凳面庄", ru:"Bandeng Noodles", en:"Bandeng Noodle House"},
-    // Chuanchuan
     {kind:"food", city:"cq", cat:"chuanchuan", cn:"马路边边串串香", ru:"Malubianbian Chuanchuan", en:"Malubianbian Chuanchuan"},
-    // Sichuan / Chongqing cuisine
     {kind:"food", city:"cq", cat:"sichuan", cn:"陶然居", ru:"Taoranju", en:"Taoranju"},
     {kind:"food", city:"cq", cat:"sichuan", cn:"老四川酒家", ru:"Old Sichuan Restaurant", en:"Old Sichuan Restaurant"},
-    // Desserts / drinks
     {kind:"food", city:"cq", cat:"dessert", cn:"一只酸奶牛", ru:"Yizhi Suannai Niu (йогурт)", en:"Yizhi Suannai Niu"},
     {kind:"food", city:"cq", cat:"dessert", cn:"书亦烧仙草", ru:"Shuyi (травяной десерт)", en:"Shuyi Shaoxiancao"},
+  ];
+
+  const FOOD_CATS = [
+    {id:"hotpot",    ru:"🔥 Хот-пот",            en:"Hotpot",            maps:"重庆 火锅"},
+    {id:"noodles",   ru:"🍜 Лапша",              en:"Noodles",           maps:"重庆 小面"},
+    {id:"chuanchuan",ru:"🍢 Chuanchuan",         en:"Chuanchuan",        maps:"重庆 串串香"},
+    {id:"sichuan",   ru:"🌶 Сычуаньская кухня",  en:"Sichuan cuisine",   maps:"重庆 川菜"},
+    {id:"dessert",   ru:"🍧 Десерты и напитки",  en:"Desserts & drinks", maps:"重庆 甜品"},
   ];
 
   function fmtDateRu(iso){
@@ -591,7 +597,6 @@
   // ===== Maps helper =====
   function openMaps(query){
     const q = encodeURIComponent(query || "");
-    // iOS: открывается Apple Maps; на других платформах откроется в браузере.
     const url = `https://maps.apple.com/?q=${q}`;
     window.open(url, "_blank", "noopener");
   }
@@ -700,7 +705,6 @@
       });
     });
 
-    // add CQ food as points too
     FOOD_CQ.forEach(it=>{
       const key = `${it.kind}|${it.cn||""}|${it.en||""}`;
       if(seen.has(key)) return;
@@ -754,14 +758,6 @@
   }
 
   // ===== Food drawer renderer =====
-  const FOOD_CATS = [
-    {id:"hotpot", ru:"🔥 Хот-пот", en:"Hotpot", maps:"重庆 火锅"},
-    {id:"noodles", ru:"🍜 Лапша", en:"Noodles", maps:"重庆 小面"},
-    {id:"chuanchuan", ru:"🍢 Chuanchuan", en:"Chuanchuan", maps:"重庆 串串香"},
-    {id:"sichuan", ru:"🌶 Сычуаньская кухня", en:"Sichuan cuisine", maps:"重庆 川菜"},
-    {id:"dessert", ru:"🍧 Десерты и напитки", en:"Desserts & drinks", maps:"重庆 甜品"},
-  ];
-
   function renderFoodDrawerCQ(title, subtitle){
     document.getElementById("dayTitle").textContent = title;
     document.getElementById("daySub").textContent = subtitle;
@@ -790,7 +786,6 @@
         wrap.innerHTML = renderLocCard(it);
         const el = wrap.firstElementChild;
 
-        // add "open maps" chip
         const meta = el.querySelector(".locMeta");
         const chip = document.createElement("span");
         chip.className = "metaChip";
@@ -910,7 +905,6 @@
       copyText(all.join("\n"));
     };
 
-    // NEW: food nearby — активно только в Чунцине
     document.getElementById("btnTodayFood").onclick=()=>{
       if(city.id !== "cq") return showToast("Эта кнопка активна в Чунцине");
       renderFoodDrawerCQ("🍜 Где поесть рядом (Чунцин)", "Хот-пот • лапша • chuanchuan • десерты");
