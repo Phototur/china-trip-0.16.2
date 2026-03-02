@@ -1,1158 +1,952 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
-<meta content="#0b1220" name="theme-color"/>
-<meta content="yes" name="apple-mobile-web-app-capable"/>
-<meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"/>
-<title>China Trip 2026 — офлайн план</title>
-<link href="./app.webmanifest" rel="manifest"/>
-<link href="./icons/icon-192.png" rel="icon" sizes="192x192"/>
-<link href="./icons/icon-192.png" rel="apple-touch-icon"/>
-<style>
-  :root{
-    --bg:#0b1220;
-    --card:#0f1a2f;
-    --card2:#111f39;
-    --text:#f8fafc;
-    --muted:#b6c2d2;
-    --line:rgba(255,255,255,.10);
-    --accent:#ffd34d;
-    --red:#ff3b30;
-    --green:#34c759;
-    --blue:#0a84ff;
-    --shadow:0 10px 25px rgba(0,0,0,.35);
-    --r:16px;
-    --tap:44px;
-    --tabH:64px;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0;
-    background: radial-gradient(1200px 700px at 30% -10%, rgba(255,59,48,.25), transparent 55%),
-                radial-gradient(900px 600px at 90% 0%, rgba(255,211,77,.18), transparent 55%),
-                linear-gradient(180deg, #081024, #070b14 60%, #05070c);
-    color:var(--text);
-    font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-    line-height:1.35;
-  }
-  a{color:inherit}
-  .app{
-    max-width:980px;
-    margin:0 auto;
-    padding:14px 14px calc(var(--tabH) + env(safe-area-inset-bottom) + 14px) 14px;
-  }
-  header{
-    position:sticky; top:0;
-    z-index:20;
-    backdrop-filter: blur(14px);
-    background: rgba(11,18,32,.72);
-    border-bottom:1px solid rgba(255,255,255,.06);
-    padding:10px 0 12px 0;
-  }
-  .title{
-    display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
-  }
-  h1{margin:0; font-size:18px; letter-spacing:.2px}
-  .sub{margin-top:6px; color:var(--muted); font-size:13px}
-  .chips{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
-  .chip{
-    font-size:12px; color:rgba(255,255,255,.92);
-    background: rgba(255,255,255,.07);
-    border:1px solid rgba(255,255,255,.08);
-    padding:7px 10px;
-    border-radius:999px;
-  }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#F6F7F9">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="manifest" href="./app.webmanifest">
+  <link rel="icon" sizes="192x192" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <title>China Trip — Today / Route / Points</title>
 
-  .topRow{
-    display:grid;
-    grid-template-columns: 1fr;
-    gap:10px;
-    margin-top:10px;
-  }
-  @media(min-width:860px){
-    .topRow{grid-template-columns: 1.2fr .8fr;}
-  }
-  .card{
-    background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-    border:1px solid rgba(255,255,255,.10);
-    border-radius:var(--r);
-    box-shadow:var(--shadow);
-    padding:12px;
-  }
-  .card h3{margin:0 0 8px 0; font-size:14px}
-  .mini{color:var(--muted); font-size:12px}
-  .progWrap{display:flex; flex-direction:column; gap:10px}
-  .bar{
-    height:12px; background:rgba(255,255,255,.10); border-radius:999px; overflow:hidden;
-    border:1px solid rgba(255,255,255,.10);
-  }
-  .bar > i{display:block; height:100%; width:0%; background: linear-gradient(90deg, var(--red), var(--accent));}
-  .row2{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap}
-  .pill{
-    display:inline-flex; align-items:center; gap:8px;
-    min-height:var(--tap);
-    padding:10px 12px;
-    background: rgba(255,255,255,.06);
-    border:1px solid rgba(255,255,255,.10);
-    border-radius:12px;
-    font-weight:700;
-    font-size:13px;
-  }
-  .pill b{font-weight:900}
+  <style>
+    :root{
+      --bg:#F6F7F9; --card:#fff; --text:#111827; --muted:#6B7280; --line:rgba(17,24,39,.10);
+      --shadow:0 10px 24px rgba(0,0,0,.08); --r:18px; --tabH:64px;
+      --cq:#2F80ED; --zjj:#27AE60; --fh:#F2994A; --ys:#9B51E0; --gz:#EB5757; --fl:#828282;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:980px;margin:0 auto;padding:14px 14px calc(var(--tabH) + env(safe-area-inset-bottom) + 18px) 14px;}
+    header{position:sticky;top:0;z-index:50;background:rgba(246,247,249,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(17,24,39,.06);}
+    .top{max-width:980px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+    .brand{min-width:0}
+    .brand .t{font-weight:900;font-size:15px}
+    .brand .s{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .pill{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(17,24,39,.10);background:rgba(255,255,255,.7);
+      border-radius:999px;padding:6px 10px;font-size:12px;font-weight:800;color:var(--muted);max-width:60vw;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .dot{width:10px;height:10px;border-radius:50%}
+    details.info{background:rgba(255,255,255,.72);border-top:1px solid rgba(17,24,39,.06);border-bottom:1px solid rgba(17,24,39,.06);}
+    details.info>summary{list-style:none;cursor:pointer;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;font-weight:900;font-size:12px;}
+    details.info>summary::-webkit-details-marker{display:none}
+    .infoBody{padding:0 14px 12px 14px;font-size:12px;color:var(--muted);}
+    .grid{display:grid;gap:12px;grid-template-columns:1fr;}
+    @media(min-width:860px){.grid{grid-template-columns:1.2fr .8fr}}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:12px;}
+    .h2{margin:12px 0 10px 0;font-size:14px;font-weight:900;}
+    .muted{color:var(--muted)}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .btn{border:1px solid rgba(17,24,39,.12);background:#fff;color:var(--text);border-radius:14px;padding:10px 12px;font-weight:900;cursor:pointer;}
+    .btn:active{transform:translateY(1px)}
+    .btn.big{flex:1;min-width:140px;padding:12px 12px}
+    .btn.primary{background:#111827;color:#fff;border-color:transparent}
 
-  /* Screens */
-  main{margin-top:12px}
-  .screen{display:none}
-  .screen.active{display:block}
+    .tabs{position:fixed;left:0;right:0;bottom:0;z-index:70}
+    .tabsInner{max-width:980px;margin:0 auto;padding:10px 14px calc(env(safe-area-inset-bottom) + 10px) 14px;}
+    .tabbar{display:flex;gap:8px;background:rgba(255,255,255,.86);border:1px solid rgba(17,24,39,.10);border-radius:18px;box-shadow:var(--shadow);padding:8px;}
+    .tab{flex:1;min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+      border-radius:14px;font-weight:900;font-size:11px;color:var(--muted);cursor:pointer;user-select:none;}
+    .tab.active{background:#111827;color:#fff}
+    .tab .ico{font-size:16px;line-height:1}
 
-  /* City tabs */
-  .cityTabs{
-    display:flex; gap:8px; flex-wrap:wrap;
-    margin:12px 0 10px 0;
-  }
-  .cityTab{
-    min-height:42px;
-    padding:10px 12px;
-    border-radius:999px;
-    border:1px solid rgba(255,255,255,.12);
-    background: rgba(255,255,255,.06);
-    color:rgba(255,255,255,.92);
-    font-weight:800;
-    font-size:13px;
-    cursor:pointer;
-  }
-  .cityTab.active{
-    background: linear-gradient(180deg, rgba(255,211,77,.22), rgba(255,59,48,.18));
-    border-color: rgba(255,211,77,.35);
-  }
-  .cityMeta{margin:0 0 10px 0; color:var(--muted); font-size:12px}
+    .view{display:none}
+    .view.active{display:block}
 
-  /* Day accordion */
-  details.day{
-    background: rgba(255,255,255,.05);
-    border:1px solid rgba(255,255,255,.10);
-    border-radius:var(--r);
-    margin:10px 0;
-    overflow:hidden;
-  }
-  details.day > summary{
-    list-style:none;
-    cursor:pointer;
-    padding:12px;
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:10px;
-  }
-  details.day > summary::-webkit-details-marker{display:none}
-  .sumL{display:flex; gap:10px; align-items:flex-start}
-  .dot{width:10px; height:10px; border-radius:50%; margin-top:4px; flex:0 0 auto}
-  .sumT .t{font-weight:900; font-size:14px}
-  .sumT .m{color:var(--muted); font-size:12px; margin-top:3px}
-  .sumR{color:var(--muted); font-size:12px}
-  .content{padding:0 12px 12px 12px}
-  .grid{display:grid; grid-template-columns: 1fr; gap:10px}
-  @media(min-width:860px){ .grid{grid-template-columns: 1.2fr .8fr} }
-  .box{
-    background: rgba(0,0,0,.18);
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:14px;
-    padding:12px;
-  }
-  .box h4{margin:0 0 8px 0; font-size:13px}
-  ul{margin:8px 0 0 18px; padding:0}
-  li{margin:6px 0}
-  .sep{height:1px; background:rgba(255,255,255,.08); margin:10px 0}
+    details.city{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+    details.city>summary{list-style:none;cursor:pointer;padding:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+    details.city>summary::-webkit-details-marker{display:none}
+    .cityLeft{display:flex;align-items:center;gap:10px;min-width:0}
+    .badge{width:12px;height:12px;border-radius:50%}
+    .cityName{font-weight:900}
+    .cityRange{font-size:12px;color:var(--muted)}
+    .days{padding:0 12px 12px 12px;display:flex;flex-direction:column;gap:8px}
+    .dayBtn{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid rgba(17,24,39,.10);
+      background:#fff;border-radius:14px;padding:10px 12px;cursor:pointer;}
+    .dayBtn .l{display:flex;flex-direction:column;gap:2px;min-width:0}
+    .dayBtn .t{font-weight:900;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .dayBtn .s{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .chev{color:var(--muted);font-weight:900}
 
-  /* Tap-to-copy link style */
-  .copyLink{
-    display:inline-block;
-    margin:6px 0;
-    font-weight:900;
-    color: rgba(255,211,77,.98);
-    text-decoration: none;
-    cursor:pointer;
-    padding:8px 10px;
-    border-radius:12px;
-    background: rgba(255,211,77,.08);
-    border:1px solid rgba(255,211,77,.18);
-    min-height:var(--tap);
-  }
-  .copyLink small{display:block; font-weight:700; color:rgba(255,255,255,.86); margin-top:3px}
-  .copyHint{color:var(--muted); font-size:12px; margin-top:6px}
+    .drawer{position:fixed;inset:0;z-index:80;background:rgba(17,24,39,.55);display:none}
+    .drawer.show{display:block}
+    .sheet{position:absolute;left:0;right:0;bottom:0;max-height:86vh;background:var(--bg);border-top-left-radius:22px;border-top-right-radius:22px;
+      box-shadow:0 -14px 30px rgba(0,0,0,.18);overflow:auto;padding:12px 12px calc(12px + env(safe-area-inset-bottom)) 12px;}
+    .sheetHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:8px 6px 10px 6px}
+    .sheetHeader .title{font-weight:900;font-size:15px}
+    .sheetHeader .sub{color:var(--muted);font-size:12px}
+    .x{border:1px solid rgba(17,24,39,.12);background:#fff;border-radius:12px;padding:8px 10px;font-weight:900;cursor:pointer;}
+    .stack{display:flex;flex-direction:column;gap:12px}
 
-  /* Food */
-  details.cityFood{
-    background: rgba(255,255,255,.05);
-    border:1px solid rgba(255,255,255,.10);
-    border-radius:var(--r);
-    margin:10px 0;
-    overflow:hidden;
-  }
-  details.cityFood summary{
-    list-style:none; cursor:pointer; padding:12px;
-    display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
-  }
-  details.cityFood summary::-webkit-details-marker{display:none}
-  .badge{padding:4px 8px; border-radius:999px; font-size:11px; font-weight:900;
-    background: rgba(10,132,255,.15); border:1px solid rgba(10,132,255,.25); color:#dbeafe;}
-  .phrase{
-    display:flex; flex-direction:column; gap:6px;
-    padding:10px;
-    border-radius:14px;
-    border:1px solid rgba(255,255,255,.10);
-    background: rgba(0,0,0,.18);
-    margin:8px 0;
-  }
-  .phrase .cn{font-weight:900; font-size:14px}
-  .phrase .ru{color:rgba(255,255,255,.86); font-size:13px}
+    .locCard{border:1px solid var(--line);background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:12px}
+    .locTop{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .locIcon{font-size:18px;line-height:1}
+    .locTitle{font-weight:900;font-size:13px}
+    .locTag{margin-left:auto;font-size:12px;font-weight:900;padding:6px 10px;border-radius:999px;background:#f3f4f6;color:#111827;border:1px solid rgba(17,24,39,.08)}
+    .locMain{display:flex;flex-direction:column;gap:6px}
+    .locCN{font-weight:900;font-size:16px}
+    .locRU{font-size:13px;color:var(--muted)}
+    .locEN{font-size:13px;color:#111827;opacity:.88}
+    .copyable{cursor:pointer;border-radius:12px;padding:8px 10px;margin-left:-10px;margin-right:-10px;-webkit-tap-highlight-color:transparent}
+    .copyable:active{background:rgba(17,24,39,.06)}
+    .metaChip{font-size:11px;color:var(--muted);background:#f9fafb;border:1px solid rgba(17,24,39,.08);padding:5px 8px;border-radius:999px}
+    .locMeta{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
 
-  /* Tips */
-  .btn{
-    min-height:var(--tap);
-    padding:10px 12px;
-    border-radius:14px;
-    border:1px solid rgba(255,255,255,.14);
-    background: rgba(255,255,255,.07);
-    color:rgba(255,255,255,.95);
-    font-weight:900;
-    cursor:pointer;
-  }
-  .btn.primary{
-    background: linear-gradient(180deg, rgba(255,211,77,.22), rgba(255,59,48,.16));
-    border-color: rgba(255,211,77,.35);
-  }
+    .filters{display:grid;gap:10px;grid-template-columns:1fr}
+    @media(min-width:860px){.filters{grid-template-columns:1.3fr .7fr .7fr}}
+    .in{border:1px solid rgba(17,24,39,.12);background:#fff;border-radius:14px;padding:10px 12px;font-weight:800}
+    .list{display:flex;flex-direction:column;gap:12px}
 
-  /* Tabbar */
-  .tabbar{
-    position:fixed;
-    left:0; right:0; bottom:0;
-    z-index:50;
-    padding: 8px 12px calc(env(safe-area-inset-bottom) + 10px) 12px;
-    background: rgba(9,14,26,.86);
-    backdrop-filter: blur(16px);
-    border-top:1px solid rgba(255,255,255,.08);
-    display:flex;
-    gap:10px;
-    justify-content:center;
-    pointer-events:auto;
-  }
-  .tab{
-    flex:1;
-    max-width: 240px;
-    min-height: var(--tabH);
-    border-radius: 18px;
-    border:1px solid rgba(255,255,255,.12);
-    background: rgba(255,255,255,.06);
-    color: rgba(255,255,255,.92);
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:4px;
-    font-weight:900;
-    font-size:12px;
-    cursor:pointer;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .tab.active{
-    background: linear-gradient(180deg, rgba(255,211,77,.22), rgba(255,59,48,.18));
-    border-color: rgba(255,211,77,.35);
-  }
-  .ico{font-size:18px; line-height:1}
+    .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--tabH) + env(safe-area-inset-bottom) + 14px);
+      background:#111827;color:#fff;padding:10px 12px;border-radius:999px;box-shadow:var(--shadow);font-size:12px;font-weight:900;
+      display:none;z-index:90;max-width:90vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .toast.show{display:block}
+  </style>
+</head>
 
-  /* Toast */
-  .toast{
-    position:fixed;
-    left:50%;
-    transform:translateX(-50%);
-    bottom: calc(var(--tabH) + env(safe-area-inset-bottom) + 14px);
-    z-index:80;
-    background: rgba(15,26,47,.95);
-    border:1px solid rgba(255,255,255,.14);
-    color:rgba(255,255,255,.95);
-    padding:10px 12px;
-    border-radius: 14px;
-    box-shadow: var(--shadow);
-    font-weight:900;
-    font-size:13px;
-    display:none;
-    max-width: min(520px, calc(100vw - 24px));
-  }
-
-  /* Small helpers */
-  .muted{color:var(--muted)}
-  .k{font-family: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; padding:2px 6px; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.10); border-radius:10px}
-
-/* --- v0.16.2: city selector as vertical rows (accordion-like) --- */
-.cityTabs, .city-tabs, .cityChips, .city-chips{
-  display:flex !important;
-  flex-direction:column !important;
-  gap:10px !important;
-}
-.cityTabs .chip, .city-tabs .chip, .cityChips .chip, .city-chips .chip,
-.cityTabs button, .city-tabs button{
-  width:100% !important;
-  justify-content:space-between !important;
-  padding:14px 14px !important;
-  border-radius:16px !important;
-  font-size:14px !important;
-}
-.cityTabs .chip::after, .city-tabs .chip::after,
-.cityTabs button::after, .city-tabs button::after{
-  content:"▾";
-  opacity:.55;
-}
-
-
-/* --- City navigator accordion rows --- */
-.cityNav{display:flex;flex-direction:column;gap:12px}
-details.cityNavItem{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);border:1px solid var(--stroke);overflow:hidden}
-details.cityNavItem>summary{cursor:pointer;list-style:none;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-details.cityNavItem>summary::-webkit-details-marker{display:none}
-.dayLink{display:block;padding:12px 14px;border-top:1px solid rgba(17,24,39,.08);text-decoration:none;color:#0b57d0;font-weight:900}
-.dayLink:active{background:#f3f4f6}
-
-
-/* v0.16.3: force light theme (ignore system dark) */
-html{ color-scheme: light; }
-@media (prefers-color-scheme: dark){
-  :root{
-    --bg:#f2f2f7 !important;
-    --card:rgba(255,255,255,.92) !important;
-    --text:#111827 !important;
-    --muted:#6b7280 !important;
-    --stroke:rgba(17,24,39,.10) !important;
-  }
-  body{ background:var(--bg) !important; color:var(--text) !important; }
-  header, .card, details.day, details.cityBlock, details.cityNavItem{ background: var(--card) !important; }
-}
-
-/* v0.16.3: compact header */
-header{ padding:12px !important; }
-header h1{ margin-bottom:4px !important; }
-</style>
-<meta content="light" name="color-scheme"/></head>
 <body>
 <header>
-<div class="app">
-<div class="title">
-<div>
-<h1>China Trip — офлайн‑план (8–23 апреля)</h1>
-<div class="sub">Тап по <b>китайскому тексту</b> — он копируется. Карты не открываем: только копировать и вставлять.</div>
-</div>
-</div>
-<div class="chips">
-<div class="chip">🧭 Маршрут: <b>8–23 апреля</b></div>
-<div class="chip">📱 iPhone: добавь на экран «Домой»</div>
-<div class="chip">📴 Оффлайн работает после 1-го открытия</div>
-</div>
-<div class="topRow">
-<div aria-label="Прогресс поездки" class="card progWrap">
-<h3>Прогресс поездки</h3>
-<div aria-hidden="true" class="bar"><i id="progBar"></i></div>
-<div class="row2">
-<div class="pill">Сегодня: <b id="todayLabel">—</b></div>
-<div class="pill">Офлайн‑режим: <b id="offlineLabel">—</b></div>
-</div>
-<div class="mini" id="progNote">—</div>
-</div>
-<div class="card">
-<h3>Быстрые подсказки</h3>
-<div class="mini">
-          • Поезда: проверь в Trip/12306 и впиши номер/время в блок «🚄 Поезд».<br/>
-          • На вокзалы приезжай за <b>45–60 минут</b> (паспорт вместо билета).<br/>
-          • В DiDi удобнее вставлять именно <b>CN</b> строки.
+  <div class="top">
+    <div class="brand">
+      <div class="t">🇨🇳 China Trip</div>
+      <div class="s">8–23 апреля 2026 · тап по CN/EN копирует, RU — справочно</div>
+    </div>
+    <div class="pill"><span class="dot" id="pillDot"></span><span id="pillText">…</span></div>
+  </div>
+
+  <details class="info">
+    <summary>ℹ️ Инфо и подсказки <span class="muted">▾</span></summary>
+    <div class="infoBody">
+      <div class="grid">
+        <div class="card">
+          <div class="h2" style="margin-top:0">Как пользоваться</div>
+          <div class="muted">
+            1) В поездке открывай <b>Сегодня</b>.<br>
+            2) Для планирования — <b>Маршрут</b>.<br>
+            3) Любая точка — вкладка <b>Точки</b> (поиск CN/RU/EN).<br>
+            4) Для DiDi обычно вставляй <b>CN</b>, для поиска можно копировать <b>EN</b>.
+          </div>
         </div>
-</div>
-</div>
-</div>
-</header>
-<div class="app">
-<main>
-<!-- ROUTE -->
-<section aria-label="Маршрут" class="screen active" id="screen-route">
-<div aria-label="Города" class="cityTabs" role="tablist">
-<button aria-selected="true" class="cityTab active" data-city="cq" role="tab">Чунцин · 9–12</button>
-<button aria-selected="false" class="cityTab" data-city="zjj" role="tab">Чжанцзяцзе · 12–15</button>
-<button aria-selected="false" class="cityTab" data-city="fh" role="tab">Фэнхуан · 15–16</button>
-<button aria-selected="false" class="cityTab" data-city="ys" role="tab">Яншо · 16–20</button>
-<button aria-selected="false" class="cityTab" data-city="gz" role="tab">Гуанчжоу · 20–23</button>
-<button aria-selected="false" class="cityTab" data-city="flights" role="tab">Перелёты · 8/23</button>
-</div>
-<p class="cityMeta" id="cityMeta">—</p>
-<!-- CITY: CQ -->
-<div class="cityPane" data-pane="cq">
-<details class="day" data-date="2026-04-09">
-<summary>
-<div class="sumL">
-<div class="dot" style="background:#0a84ff"></div>
-<div class="sumT">
-<div class="t">9 апреля — ✈ Пекин → Чунцин + заселение</div>
-<div class="m">MU6681 · 07:15 PKX → 10:00 CKG T3 · Отель 9–12</div>
-</div>
-</div>
-<div class="sumR">Открыть ▾</div>
-</summary>
-<div class="content">
-<div class="grid">
-<div class="box">
-<h4>🏨 Отель (CN → тап чтобы скопировать)</h4>
-<a class="copyLink" data-copy="重庆假日江畔酒店（解放碑洪崖洞店）">重庆假日江畔酒店（解放碑洪崖洞店）<small>EN: Holiday Riverside Hotel (Hongyadong/Jiefangbei)</small></a>
-<a class="copyLink" data-copy="重庆市渝中区沧白路73号 永中国际大厦15楼">重庆市渝中区沧白路73号 永中国际大厦15楼<small>EN: 15F, Yongzhong International Building, No.73 Cangbai Rd, Yuzhong</small></a>
-<div class="sep"></div>
-<h4>🚖 CKG T3 → отель</h4>
-<ul>
-<li>DiDi/такси: 35–60 мин · <b>¥80–150</b></li>
-</ul>
-<div class="sep"></div>
-<h4>🌙 Вечер рядом</h4>
-<a class="copyLink" data-copy="洪崖洞">洪崖洞<small>EN: Hongyadong</small></a>
-<div class="copyHint">Подсказка: лучше смотреть подсветку после заката.</div>
-</div>
-<div class="box">
-<h4>📋 Точки для копирования</h4>
-<a class="copyLink" data-copy="重庆江北国际机场T3">重庆江北国际机场T3<small>EN: Chongqing Jiangbei Int’l Airport T3</small></a>
-<a class="copyLink" data-copy="重庆假日江畔酒店（解放碑洪崖洞店）">重庆假日江畔酒店（解放碑洪崖洞店）<small>Отель (название)</small></a>
-<a class="copyLink" data-copy="重庆市渝中区沧白路73号 永中国际大厦15楼">重庆市渝中区沧白路73号 永中国际大厦15楼<small>Отель (адрес)</small></a>
-<a class="copyLink" data-copy="洪崖洞">洪崖洞<small>Вечерняя локация</small></a>
-</div>
-</div>
-</div>
-</details>
-<details class="day" data-date="2026-04-10">
-<summary>
-<div class="sumL">
-<div class="dot" style="background:#0a84ff"></div>
-<div class="sumT">
-<div class="t">10 апреля — Чунцин: прогулки и виды</div>
-<div class="m">Liziba · Kuixinglou · Raffles City · (опц.) канатка</div>
-</div>
-</div>
-<div class="sumR">Открыть ▾</div>
-</summary>
-<div class="content">
-<div class="grid">
-<div class="box">
-<h4>🧭 План</h4>
-<a class="copyLink" data-copy="李子坝">李子坝<small>EN: Liziba (metro in building)</small></a>
-<a class="copyLink" data-copy="魁星楼">魁星楼<small>EN: Kuixinglou</small></a>
-<a class="copyLink" data-copy="来福士广场 重庆">来福士广场 重庆<small>EN: Raffles City Chongqing</small></a>
-<a class="copyLink" data-copy="长江索道">长江索道<small>EN: Yangtze River Cableway (optional)</small></a>
-</div>
-<div class="box">
-<h4>💰 Бюджет (пример)</h4>
-<ul>
-<li>Метро/DiDi: ¥30–120</li>
-<li>Еда: ¥120–250</li>
-<li>Канатка (опц.): ¥30–60</li>
-</ul>
-</div>
-</div>
-</div>
-</details>
-<details class="day" data-date="2026-04-11">
-<summary>
-<div class="sumL">
-<div class="dot" style="background:#0a84ff"></div>
-<div class="sumT">
-<div class="t">11 апреля — Чунцин: свободный день + подготовка к поезду</div>
-<div class="m">Проверить билеты · сохранить вокзал</div>
-</div>
-</div>
-<div class="sumR">Открыть ▾</div>
-</summary>
-<div class="content">
-<div class="grid">
-<div class="box">
-<h4>✅ Сегодня</h4>
-<ul>
-<li>Проверить поезд на 12 апреля в Trip/12306</li>
-<li>Сохранить вокзал в DiDi</li>
-</ul>
-<a class="copyLink" data-copy="重庆北站">重庆北站<small>EN: Chongqing North Railway Station</small></a>
-<div class="copyHint">Поиск: 重庆北站 → 张家界西站 · 4月12日</div>
-</div>
-<div class="box">
-<h4>📋 Копировать запрос</h4>
-<a class="copyLink" data-copy="Trip/12306: 重庆北站 → 张家界西站 · 4月12日">Trip/12306: 重庆北站 → 张家界西站 · 4月12日<small>Подсказка для поиска</small></a>
-</div>
-</div>
-</div>
-</details>
-</div>
-<!-- CITY: ZJJ -->
-<div class="cityPane" data-pane="zjj" hidden="">
-<details class="day" data-date="2026-04-12">
-<summary>
-<div class="sumL">
-<div class="dot" style="background:#34c759"></div>
-<div class="sumT">
-<div class="t">12 апреля — 🚄 Чунцин → Чжанцзяцзе + заселение</div>
-<div class="m">Отель Manyuan · 12–15</div>
-</div>
-</div>
-<div class="sumR">Открыть ▾</div>
-</summary>
-<div class="content">
-<div class="grid">
-<div class="box">
-<h4>🚄 Поезд (впиши после покупки)</h4>
-<div class="mini">Откуда: <span class="k">重庆北站</span> → Куда: <span class="k">张家界西站</span> · Дата: <span class="k">4月12日</span></div>
-<div class="mini">Ваш поезд: <span class="k">____</span> · Время: <span class="k">____–____</span></div>
-<div class="sep"></div>
-<h4>🏨 Отель</h4>
-<a class="copyLink" data-copy="曼缘度假酒店（张家界国家森林公园标志门店）">曼缘度假酒店（张家界国家森林公园标志门店）<small>EN: Manyuan Resort Hotel (near Landmark Gate)</small></a>
-<div class="copyHint">Если найдёшь китайский адрес в Trip — пришли, я вставлю.</div>
-</div>
-<div class="box">
-<h4>📋 Копировать</h4>
-<a class="copyLink" data-copy="张家界西站">张家界西站<small>EN: Zhangjiajie West Railway Station</small></a>
-<a class="copyLink" data-copy="Trip/12306: 重庆北站 → 张家界西站 · 4月12日">Trip/12306: 重庆北站 → 张家界西站 · 4月12日<small>Поиск</small></a>
-<a class="copyLink" data-copy="曼缘度假酒店（张家界国家森林公园标志门店）">曼缘度假酒店（张家界国家森林公园标志门店）<small>Отель (CN)</small></a>
-</div>
-</div>
-</div>
-</details>
-<details class="day" data-date="2026-04-13">
-<summary>
-<div class="sumL">
-<div class="dot" style="background:#34c759"></div>
-<div class="sumT">
-<div class="t">13 апреля — 🏔 Парк Аватара: классика</div>
-<div class="m">Bailong → Yuanjiajie → Tianzi</div>
-</div>
-</div>
-<div class="sumR">Открыть ▾</div>
-</summary>
-<div class="content">
-<div class="grid">
-<div class="box">
-<h4>🧭 Маршрут</h4>
-<a class="copyLink" data-copy="武陵源标志门">武陵源标志门<small>EN: Wulingyuan Landmark Gate</small></a>
-<a class="copyLink" data-copy="百龙天梯">百龙天梯<small>EN: Bailong Elevator</small></a>
-<a class="copyLink" data-copy="袁家界">袁家界<small>EN: Yuanjiajie</small></a>
-<a class="copyLink" data-copy="天子山">天子山<small>EN: Tianzi Mountain</small></a>
-</div>
-<div class="box">
-<h4>💰 Бюджет</h4>
-<ul>
-<li>Еда/вода: ¥80–180</li>
-<li>Лифт/канатки: ¥70–150</li>
-</ul>
-</div>
-</div>
-</div>
-</details>
-<details class="day" data-date="2026-04-14">
-<summary>
-<div class="sumL">
-<div class="dot" style="background:#34c759"></div>
-<div class="sumT">
-<div class="t">14 апреля — 🏞 Второй день (спокойнее)</div>
-<div class="m">Golden Whip Stream · Ten-mile Gallery</div>
-</div>
-</div>
-<div class="sumR">Открыть ▾</div>
-</summary>
-<div class="content">
-<div class="grid">
-<div class="box">
-<h4>🧭 План</h4>
-<a class="copyLink" data-copy="金鞭溪">金鞭溪<small>EN: Golden Whip Stream</small></a>
-<a class="copyLink" data-copy="十里画廊">十里画廊<small>EN: Ten-mile Gallery</small></a>
-</div>
-<div class="box">
-<h4>💰 Бюджет</h4>
-<ul>
-<li>Еда/вода: ¥80–180</li>
-<li>Мелкие траты: ¥20–60</li>
-</ul>
-</div>
-</div>
-</div>
-</details>
-</div>
-<!-- CITY: FH -->
-<div class="cityPane" data-pane="fh" hidden="">
-<details class="day" data-date="2026-04-15">
-<summary>
-<div class="sumL">
-<div class="dot" style="background:#ffd34d"></div>
-<div class="sumT">
-<div class="t">15 апреля — 🚄 Чжанцзяцзе → Фэнхуан + 1 ночь</div>
-<div class="m">Shuyi Homestay · 15–16</div>
-</div>
-</div>
-<div class="sumR">Открыть ▾</div>
-</summary>
-<div class="content">
-<div class="grid">
-<div class="box">
-<h4>🚄 Поезд (впиши после покупки)</h4>
-<div class="mini">Откуда: <span class="k">张家界西站</span> → Куда: <span class="k">凤凰古城站</span> · Дата: <span class="k">4月15日</span></div>
-<div class="mini">Ваш поезд: <span class="k">____</span> · Время: <span class="k">____–____</span></div>
-<div class="sep"></div>
-<h4>🏨 Отель (CN)</h4>
-<a class="copyLink" data-copy="凤凰舒依民宿（凤凰古城店）">凤凰舒依民宿（凤凰古城店）<small>EN: Shuyi Homestay (Fenghuang Ancient Town)</small></a>
-<a class="copyLink" data-copy="湖南省湘西州凤凰县沱江镇习鹊坡74号">湖南省湘西州凤凰县沱江镇习鹊坡74号<small>EN: No.74, Xiquepo, Tuojiang Town</small></a>
-</div>
-<div class="box">
-<h4>📋 Копировать</h4>
-<a class="copyLink" data-copy="凤凰古城站">凤凰古城站<small>EN: Fenghuang Gucheng Railway Station</small></a>
-<a class="copyLink" data-copy="凤凰古城">凤凰古城<small>EN: Fenghuang Ancient Town</small></a>
-<a class="copyLink" data-copy="Trip/12306: 张家界西站 → 凤凰古城站 · 4月15日">Trip/12306: 张家界西站 → 凤凰古城站 · 4月15日<small>Поиск</small></a>
-</div>
-</div>
-</div>
-</details>
-</div>
-<!-- CITY: YS -->
-<div class="cityPane" data-pane="ys" hidden="">
-<details class="day" data-date="2026-04-16">
-<summary>
-<div class="sumL">
-<div class="dot" style="background:#af52de"></div>
-<div class="sumT">
-<div class="t">16 апреля — 🚄 Фэнхуан → Гуйлинь → Яншо</div>
-<div class="m">Yuyuan Resort · 16–20</div>
-</div>
-</div>
-<div class="sumR">Открыть ▾</div>
-</summary>
-<div class="content">
-<div class="grid">
-<div class="box">
-<h4>🚄 Поезд (впиши после покупки)</h4>
-<div class="mini">Откуда: <span class="k">凤凰古城站</span> → Куда: <span class="k">桂林北站</span> · Дата: <span class="k">4月16日</span></div>
-<div class="mini">Ваш поезд: <span class="k">____</span> · Время: <span class="k">____–____</span></div>
-<div class="sep"></div>
-<h4>🏨 Отель (CN)</h4>
-<a class="copyLink" data-copy="阳朔遇源景舍（十里画廊遇龙河店）">阳朔遇源景舍（十里画廊遇龙河店）<small>EN: Yangshuo Yuyuan Resort (Shili Gallery &amp; Yulong River)</small></a>
-<div class="copyHint">Полный китайский почтовый адрес не виден на скрине (в Trip обычно есть). Если пришлёшь — вставлю.</div>
-<div class="sep"></div>
-<h4>🚖 Гуйлинь → Яншо</h4>
-<ul><li>1ч20–1ч40 · <b>¥180–240</b></li></ul>
-</div>
-<div class="box">
-<h4>📋 Копировать</h4>
-<a class="copyLink" data-copy="桂林北站">桂林北站<small>EN: Guilin North Railway Station</small></a>
-<a class="copyLink" data-copy="Trip/12306: 凤凰古城站 → 桂林北站 · 4月16日">Trip/12306: 凤凰古城站 → 桂林北站 · 4月16日<small>Поиск</small></a>
-<a class="copyLink" data-copy="阳朔遇源景舍（十里画廊遇龙河店）">阳朔遇源景舍（十里画廊遇龙河店）<small>Отель (CN)</small></a>
-</div>
-</div>
-</div>
-</details>
-<details class="day" data-date="2026-04-17">
-<summary>
-<div class="sumL">
-<div class="dot" style="background:#af52de"></div>
-<div class="sumT">
-<div class="t">17 апреля — Яншо: 遇龙河 + 十里画廊</div>
-<div class="m">электробайк · прогулки · фото</div>
-</div>
-</div>
-<div class="sumR">Открыть ▾</div>
-</summary>
-<div class="content">
-<div class="grid">
-<div class="box">
-<h4>🧭 Точки</h4>
-<a class="copyLink" data-copy="遇龙河">遇龙河<small>EN: Yulong River</small></a>
-<a class="copyLink" data-copy="十里画廊">十里画廊<small>EN: Shili Gallery</small></a>
-</div>
-<div class="box">
-<h4>💰 Бюджет</h4>
-<ul>
-<li>Электробайк: ¥40–60</li>
-<li>Еда: ¥120–250</li>
-<li>Активности: ¥80–200</li>
-</ul>
-</div>
-</div>
-</div>
-</details>
-<details class="day" data-date="2026-04-18">
-<summary>
-<div class="sumL">
-<div class="dot" style="background:#af52de"></div>
-<div class="sumT">
-<div class="t">18 апреля — 兴坪古镇 + 漓江</div>
-<div class="m">«вид с 20 юаней» · прогулки</div>
-</div>
-</div>
-<div class="sumR">Открыть ▾</div>
-</summary>
-<div class="content">
-<div class="grid">
-<div class="box">
-<h4>🧭 Точки</h4>
-<a class="copyLink" data-copy="兴坪古镇">兴坪古镇<small>EN: Xingping Ancient Town</small></a>
-<a class="copyLink" data-copy="兴坪码头">兴坪码头<small>EN: Xingping Pier</small></a>
-<a class="copyLink" data-copy="漓江">漓江<small>EN: Li River</small></a>
-</div>
-<div class="box">
-<h4>💰 Бюджет</h4>
-<ul>
-<li>DiDi туда‑обратно: ¥120–220</li>
-<li>Еда: ¥120–250</li>
-<li>Лодка (опц.): ¥80–200</li>
-</ul>
-</div>
-</div>
-</div>
-</details>
-<details class="day" data-date="2026-04-19">
-<summary>
-<div class="sumL">
-<div class="dot" style="background:#af52de"></div>
-<div class="sumT">
-<div class="t">19 апреля — Яншо: свободный день + подготовка</div>
-<div class="m">купить поезд на 20 апреля</div>
-</div>
-</div>
-<div class="sumR">Открыть ▾</div>
-</summary>
-<div class="content">
-<div class="grid">
-<div class="box">
-<h4>✅ Сегодня</h4>
-<ul>
-<li>Проверить/купить поезд: <b>阳朔站 → 广州南站</b></li>
-<li>Сохранить вокзал в DiDi</li>
-</ul>
-<a class="copyLink" data-copy="阳朔站">阳朔站<small>EN: Yangshuo Railway Station</small></a>
-</div>
-<div class="box">
-<h4>📋 Поиск</h4>
-<a class="copyLink" data-copy="Trip/12306: 阳朔站 → 广州南站 · 4月20日">Trip/12306: 阳朔站 → 广州南站 · 4月20日<small>Поиск</small></a>
-</div>
-</div>
-</div>
-</details>
-</div>
-<!-- CITY: GZ -->
-<div class="cityPane" data-pane="gz" hidden="">
-<details class="day" data-date="2026-04-20">
-<summary>
-<div class="sumL">
-<div class="dot" style="background:#ff2d55"></div>
-<div class="sumT">
-<div class="t">20 апреля — 🚄 Яншо → Гуанчжоу + заселение</div>
-<div class="m">Echarm PLUS · 20–23 · 五羊邨</div>
-</div>
-</div>
-<div class="sumR">Открыть ▾</div>
-</summary>
-<div class="content">
-<div class="grid">
-<div class="box">
-<h4>🚄 Поезд (впиши после покупки)</h4>
-<div class="mini">Откуда: <span class="k">阳朔站</span> → Куда: <span class="k">广州南站</span> · Дата: <span class="k">4月20日</span></div>
-<div class="mini">Ваш поезд: <span class="k">____</span> · Время: <span class="k">____–____</span></div>
-<div class="sep"></div>
-<h4>🏨 Отель (CN)</h4>
-<a class="copyLink" data-copy="宜尚PLUS酒店（广州珠江新城五羊邨地铁站店）">宜尚PLUS酒店（广州珠江新城五羊邨地铁站店）<small>EN: Echarm PLUS Hotel (Zhujiang New Town, Wuyangcun)</small></a>
-<a class="copyLink" data-copy="广州市天河区珠江新城五羊邨">广州市天河区珠江新城五羊邨<small>EN: Tianhe District, Zhujiang New Town, Wuyangcun</small></a>
-</div>
-<div class="box">
-<h4>📋 Копировать</h4>
-<a class="copyLink" data-copy="广州南站">广州南站<small>EN: Guangzhou South Railway Station</small></a>
-<a class="copyLink" data-copy="五羊邨站">五羊邨站<small>EN: Wuyangcun Metro Station</small></a>
-<a class="copyLink" data-copy="Trip/12306: 阳朔站 → 广州南站 · 4月20日">Trip/12306: 阳朔站 → 广州南站 · 4月20日<small>Поиск</small></a>
-</div>
-</div>
-</div>
-</details>
-<details class="day" data-date="2026-04-21">
-<summary>
-<div class="sumL">
-<div class="dot" style="background:#ff2d55"></div>
-<div class="sumT">
-<div class="t">21 апреля — 广州塔 + 珠江新城</div>
-<div class="m">лучше к закату · (опц.) ночной круиз</div>
-</div>
-</div>
-<div class="sumR">Открыть ▾</div>
-</summary>
-<div class="content">
-<div class="grid">
-<div class="box">
-<h4>🧭 Точки</h4>
-<a class="copyLink" data-copy="广州塔">广州塔<small>EN: Canton Tower</small></a>
-<a class="copyLink" data-copy="珠江新城">珠江新城<small>EN: Zhujiang New Town</small></a>
-</div>
-<div class="box">
-<h4>💰 Бюджет</h4>
-<ul>
-<li>Метро: ¥10–25</li>
-<li>Еда: ¥120–250</li>
-<li>Башня/круиз: ¥150–350</li>
-</ul>
-</div>
-</div>
-</div>
-</details>
-<details class="day" data-date="2026-04-22">
-<summary>
-<div class="sumL">
-<div class="dot" style="background:#ff2d55"></div>
-<div class="sumT">
-<div class="t">22 апреля — 北京路步行街 + 沙面岛</div>
-<div class="m">прогулки · шопинг</div>
-</div>
-</div>
-<div class="sumR">Открыть ▾</div>
-</summary>
-<div class="content">
-<div class="grid">
-<div class="box">
-<h4>🧭 Точки</h4>
-<a class="copyLink" data-copy="北京路步行街">北京路步行街<small>EN: Beijing Road Pedestrian Street</small></a>
-<a class="copyLink" data-copy="沙面岛">沙面岛<small>EN: Shamian Island</small></a>
-</div>
-<div class="box">
-<h4>💰 Бюджет</h4>
-<ul>
-<li>Метро/DiDi: ¥10–60</li>
-<li>Еда: ¥120–250</li>
-<li>Покупки: по желанию</li>
-</ul>
-</div>
-</div>
-</div>
-</details>
-</div>
-<!-- CITY: FLIGHTS -->
-<div class="cityPane" data-pane="flights" hidden="">
-<details class="day" data-date="2026-04-08">
-<summary>
-<div class="sumL">
-<div class="dot" style="background:#8e8e93"></div>
-<div class="sumT">
-<div class="t">8 апреля — ✈ Москва → Пекин</div>
-<div class="m">MU2076 · 17:15 SVO → 05:30 (+1) PKX</div>
-</div>
-</div>
-<div class="sumR">Открыть ▾</div>
-</summary>
-<div class="content">
-<div class="grid">
-<div class="box">
-<h4>✈️ Перелёт</h4>
-<ul>
-<li>MU2076 · 17:15 SVO → 05:30 (+1) PKX</li>
-</ul>
-<a class="copyLink" data-copy="北京大兴国际机场">北京大兴国际机场<small>EN: Beijing Daxing International Airport (PKX)</small></a>
-</div>
-<div class="box">
-<h4>📋 Копировать</h4>
-<a class="copyLink" data-copy="北京大兴国际机场">北京大兴国际机场<small>PKX</small></a>
-</div>
-</div>
-</div>
-</details>
-<details class="day" data-date="2026-04-23">
-<summary>
-<div class="sumL">
-<div class="dot" style="background:#8e8e93"></div>
-<div class="sumT">
-<div class="t">23 апреля — ✈ Гуанчжоу → Пекин → Москва</div>
-<div class="m">MU6302 07:35 CAN→PKX · MU2075 11:55 PKX→SVO</div>
-</div>
-</div>
-<div class="sumR">Открыть ▾</div>
-</summary>
-<div class="content">
-<div class="grid">
-<div class="box">
-<h4>✈️ Рейсы</h4>
-<ul>
-<li>MU6302 · 07:35 CAN → 10:25 PKX</li>
-<li>MU2075 · 11:55 PKX → 15:25 SVO</li>
-</ul>
-<a class="copyLink" data-copy="广州白云国际机场">广州白云国际机场<small>EN: Guangzhou Baiyun International Airport (CAN)</small></a>
-<a class="copyLink" data-copy="北京大兴国际机场">北京大兴国际机场<small>EN: PKX</small></a>
-</div>
-<div class="box">
-<h4>📋 Копировать</h4>
-<a class="copyLink" data-copy="广州白云国际机场">广州白云国际机场<small>CAN</small></a>
-<a class="copyLink" data-copy="北京大兴国际机场">北京大兴国际机场<small>PKX</small></a>
-</div>
-</div>
-</div>
-</details>
-</div>
-</section>
-<!-- FOOD -->
-<section aria-label="Еда" class="screen" id="screen-food">
-<div class="card" style="margin-top:8px">
-<h3>🍜 Еда</h3>
-<div class="mini">Города раскрываются вниз. Внутри — шпаргалки (тап по CN — копировать).</div>
-</div>
-<details class="cityFood">
-<summary>
-<div class="sumL">
-<div class="dot" style="background:#0a84ff"></div>
-<div class="sumT">
-<div class="t">Чунцин</div>
-<div class="m">Hot pot (重庆火锅) · фразы · что заказывать</div>
-</div>
-</div>
-<div class="sumR">Открыть ▾</div>
-</summary>
-<div class="content">
-<div class="box">
-<h4>🔥 Хот‑пот: попросить не остро</h4>
-<div class="phrase">
-<div class="cn"><a class="copyLink" data-copy="我们想要不辣的锅底。">我们想要不辣的锅底。</a></div>
-<div class="ru">RU: Мы хотим неострый бульон.</div>
-</div>
-<div class="phrase">
-<div class="cn"><a class="copyLink" data-copy="我们要鸳鸯锅，一半辣，一半不辣。">我们要鸳鸯锅，一半辣，一半不辣。</a></div>
-<div class="ru">RU: «Инь‑ян»: половина остро, половина не остро.</div>
-</div>
-<div class="phrase">
-<div class="cn"><a class="copyLink" data-copy="我不太能吃辣。">我不太能吃辣。</a></div>
-<div class="ru">RU: Я плохо переношу острое.</div>
-</div>
-<div class="phrase">
-<div class="cn"><a class="copyLink" data-copy="不要太辣。">不要太辣。</a></div>
-<div class="ru">RU: Не слишком остро.</div>
-</div>
-<div class="sep"></div>
-<h4>🥩 Частые позиции (меню)</h4>
-<a class="copyLink" data-copy="雪花牛肉">雪花牛肉<small>RU: мраморная говядина</small></a>
-<a class="copyLink" data-copy="肥牛">肥牛<small>RU: тонкая говядина (для хот‑пота)</small></a>
-<a class="copyLink" data-copy="毛肚">毛肚<small>RU: рубец (классика)</small></a>
-<a class="copyLink" data-copy="虾滑">虾滑<small>RU: креветочная паста</small></a>
-<a class="copyLink" data-copy="蔬菜拼盘">蔬菜拼盘<small>RU: овощной набор</small></a>
-<a class="copyLink" data-copy="金针菇">金针菇<small>RU: грибы эноки</small></a>
-<a class="copyLink" data-copy="藕片">藕片<small>RU: лотос</small></a>
-<a class="copyLink" data-copy="腐竹">腐竹<small>RU: соевая «спаржа»</small></a>
-<div class="sep"></div>
-<h4>🗣️ Полезные фразы</h4>
-<div class="phrase">
-<div class="cn"><a class="copyLink" data-copy="我们两个人。">我们两个人。</a></div>
-<div class="ru">RU: Нас двое.</div>
-</div>
-<div class="phrase">
-<div class="cn"><a class="copyLink" data-copy="可以推荐吗？">可以推荐吗？</a></div>
-<div class="ru">RU: Можете порекомендовать?</div>
-</div>
-<div class="phrase">
-<div class="cn"><a class="copyLink" data-copy="不要香菜。">不要香菜。</a></div>
-<div class="ru">RU: Без кинзы.</div>
-</div>
-<div class="sep"></div>
-<div class="mini">Справка: <a href="https://radiotochki.net/blog/travel/kitayskiy-hot-pot-hogo-polnoe-rukovodstvo-dlya-novichkov-ot-vybora-bulona-do-sekretov-sousa.html" rel="noreferrer" target="_blank">руководство про хот‑пот</a></div>
-</div>
-</div>
-</details>
-</section>
-<!-- TIPS -->
-<section aria-label="Советы" class="screen" id="screen-tips">
-<div class="card" style="margin-top:8px">
-<h3>💡 Советы</h3>
-<div class="mini">Пока пусто — сюда можно добавить что угодно (оплата, транспорт, чек‑листы).</div>
-</div>
-<div class="card" style="margin-top:10px">
-<h3>⚙️ Настройки</h3>
-<div class="mini">Если на iPhone «залипла» старая версия — очистка кэша обычно решает.</div>
-<div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap">
-<button class="btn primary" id="btnRefreshCache">Обновить офлайн‑кэш</button>
-</div>
-<div class="mini" style="margin-top:10px">
-        Подсказка: после обновления — перезапусти приложение (закрой/открой) или обнови страницу.
+        <div class="card">
+          <div class="h2" style="margin-top:0">Оффлайн</div>
+          <div class="muted">Service Worker кэширует оболочку. На GitHub Pages работает оффлайн после первого открытия.</div>
+          <div class="row" style="margin-top:10px">
+            <button class="btn" onclick="location.reload()">Обновить</button>
+            <button class="btn" id="btnClear">Очистить кэш</button>
+          </div>
+        </div>
       </div>
+    </div>
+  </details>
+</header>
+
+<div class="wrap">
+  <!-- TODAY -->
+  <section class="view active" id="view-today">
+    <div class="card" id="todayCard">
+      <div class="h2" style="margin-top:0">Сегодня</div>
+      <div class="muted" id="todaySub">—</div>
+
+      <div class="row" style="margin-top:12px">
+        <button class="btn big" id="btnTodayHotel">📍 Отель</button>
+        <button class="btn big" id="btnTodayTransport">🚄/✈️ Вокзал/аэропорт</button>
+        <button class="btn big" id="btnTodayPlaces">🗺 Локации дня</button>
+        <button class="btn big primary" id="btnTodayCopyAll">📋 Скопировать всё (CN)</button>
+      </div>
+
+      <!-- NEW: food nearby -->
+      <div class="row" style="margin-top:10px">
+        <button class="btn big" id="btnTodayFood">🍜 Где поесть рядом</button>
+      </div>
+    </div>
+    <div class="stack" style="margin-top:12px" id="todayStack"></div>
+  </section>
+
+  <!-- ROUTE -->
+  <section class="view" id="view-route">
+    <div class="h2">Маршрут</div>
+    <div class="stack" id="routeStack"></div>
+  </section>
+
+  <!-- POINTS -->
+  <section class="view" id="view-points">
+    <div class="h2">Точки</div>
+    <div class="filters">
+      <input class="in" id="q" placeholder="Поиск по CN / RU / EN">
+      <select class="in" id="fCity"></select>
+      <select class="in" id="fKind"></select>
+    </div>
+    <div style="height:12px"></div>
+    <div class="list" id="pointsList"></div>
+  </section>
+
+  <!-- GUIDE -->
+  <section class="view" id="view-guide">
+    <div class="h2">Справочник</div>
+    <div class="stack">
+
+      <!-- NEW: Chongqing food guide -->
+      <div class="card" id="guide-cq-food">
+        <div class="h2" style="margin-top:0">🍜 Чунцин — Еда</div>
+        <div class="muted">
+          Подборка мест по категориям. Тап по <b>CN/EN</b> копирует, RU — справочно. В картах лучше искать по CN.
+        </div>
+
+        <div style="height:10px"></div>
+        <div class="row">
+          <button class="btn" id="btnCQFoodOpen">🍜 Открыть подборку</button>
+          <button class="btn" data-copy="不要太辣">📋 Скопировать 不要太辣</button>
+        </div>
+
+        <details style="margin-top:12px">
+          <summary style="cursor:pointer;font-weight:900">🔥 Краткое руководство по хот-поту (офлайн) <span class="muted">▾</span></summary>
+          <div class="muted" style="margin-top:10px; line-height:1.5">
+            <b>1) Бульон (锅底)</b><br>
+            • 牛油麻辣锅 — очень острый классический<br>
+            • 鸳鸯锅 — половина острая / половина нет (лучший выбор для старта)<br>
+            • 清汤锅 — неострый лёгкий<br><br>
+
+            <b>2) Что заказывать</b><br>
+            • 肥牛 (говядина), 羊肉 (баранина)<br>
+            • 生菜, 土豆片, 金针菇<br>
+            • 宽粉, 豆腐皮, 毛肚 (классика)<br><br>
+
+            <b>3) Соус (蘸料)</b><br>
+            • База: 香油 + 蒜泥 (+ 香菜 / 葱花 по желанию)<br><br>
+
+            <b>4) Как попросить не слишком остро</b><br>
+            • 不要太辣 / 微辣 / 少辣<br><br>
+
+            <b>5) Секреты</b><br>
+            • Мясо 10–20 секунд, 毛肚 7–10 секунд<br>
+            • Если слишком остро — 豆奶 (соевое молоко)
+          </div>
+        </details>
+
+        <div style="height:10px"></div>
+        <div class="row">
+          <a class="btn" href="https://radiotochki.net/blog/travel/kitayskiy-hot-pot-hogo-polnoe-rukovodstvo-dlya-novichkov-ot-vybora-bulona-do-sekretov-sousa.html" target="_blank" rel="noopener">
+            📖 Полный гид по хот-поту
+          </a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="h2" style="margin-top:0">🍜 Еда</div>
+        <div class="muted">Добавим фразы/блюда позже. Механика копирования: CN/EN — копируются, RU — нет.</div>
+      </div>
+      <div class="card">
+        <div class="h2" style="margin-top:0">✅ Советы</div>
+        <div class="muted">Чек-листы, транспорт, оплата (Alipay), вокзалы/поезда и т.д.</div>
+      </div>
+      <div class="card">
+        <div class="h2" style="margin-top:0">📴 Оффлайн</div>
+        <div class="muted">Если версия на Pages обновилась, очисти кэш и обнови страницу.</div>
+      </div>
+      <div class="card">
+        <div class="h2" style="margin-top:0">ℹ️ Про приложение</div>
+        <div class="muted">План поездки 8–23 апреля 2026, структурирован по Плану B.</div>
+      </div>
+    </div>
+  </section>
 </div>
-</section>
-</main>
+
+<!-- Tabs -->
+<div class="tabs">
+  <div class="tabsInner">
+    <div class="tabbar" id="tabbar">
+      <div class="tab active" data-view="today"><div class="ico">🏠</div>Сегодня</div>
+      <div class="tab" data-view="route"><div class="ico">🗺</div>Маршрут</div>
+      <div class="tab" data-view="points"><div class="ico">📍</div>Точки</div>
+      <div class="tab" data-view="guide"><div class="ico">📚</div>Справочник</div>
+    </div>
+  </div>
 </div>
-<nav aria-label="Навигация" class="tabbar">
-<button aria-controls="screen-route" aria-selected="true" class="tab active" data-tab="route" id="tab-route">
-<div class="ico">🧭</div><div>План</div>
-</button>
-<button aria-controls="screen-food" aria-selected="false" class="tab" data-tab="food" id="tab-food">
-<div class="ico">🍜</div><div>Еда</div>
-</button>
-<button aria-controls="screen-tips" aria-selected="false" class="tab" data-tab="tips" id="tab-tips">
-<div class="ico">💡</div><div>Советы</div>
-</button>
-</nav>
-<div class="toast" id="toast">Скопировано</div>
+
+<!-- Day Drawer -->
+<div class="drawer" id="drawer">
+  <div class="sheet" role="dialog" aria-modal="true">
+    <div class="sheetHeader">
+      <div>
+        <div class="title" id="dayTitle">—</div>
+        <div class="sub" id="daySub">—</div>
+      </div>
+      <button class="x" id="btnClose">✕</button>
+    </div>
+    <div class="stack" id="dayStack"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">✅ Скопировано</div>
+
 <script>
-(function(){
-  const $ = (s, el=document) => el.querySelector(s);
-  const $$ = (s, el=document) => Array.from(el.querySelectorAll(s));
-  const toast = $("#toast");
-  let toastTimer = null;
+  // ===== ДАННЫЕ МАРШРУТА (CN/RU/EN) =====
+  const TRIP = {
+    dateRange:{ start:"2026-04-08", end:"2026-04-23" },
+    cities:[
+      {
+        id:"cq", color:"var(--cq)",
+        name:{ru:"Чунцин", en:"Chongqing", cn:"重庆"},
+        days:[
+          { date:"2026-04-09", title_ru:"Прилёт + заселение", summary:"вечером Hongyadong",
+            blocks:[
+              {type:"hotel", items:[
+                {kind:"hotel", city:"cq", cn:"重庆假日江畔酒店（解放碑洪崖洞店）", ru:"Holiday Riverside (район Хунъядун / Цзефанбэй)", en:"Holiday Riverside Hotel (Hongyadong/Jiefangbei)"},
+                {kind:"address", city:"cq", cn:"重庆市渝中区沧白路73号 永中国际大厦15楼", ru:"Чунцин, р-н Юйчжун, ул. Цанбай 73, 15 этаж", en:"15F, Yongzhong International Building, No.73 Cangbai Rd, Yuzhong, Chongqing"}
+              ]},
+              {type:"plan", items:[
+                {kind:"sight", city:"cq", cn:"洪崖洞", ru:"Хунъядун", en:"Hongyadong Scenic Area"}
+              ]}
+            ]
+          },
 
-  function showToast(text){
-    toast.textContent = text || "Скопировано";
-    toast.style.display = "block";
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(()=>{ toast.style.display = "none"; }, 900);
-  }
+          // UPDATED: + Nanshan One Tree Pavilion
+          { date:"2026-04-10", title_ru:"Прогулки и виды 🌃", summary:"Liziba • Kuixinglou • Raffles City • Nanshan • (опц.) Cableway",
+            blocks:[
+              {type:"plan", items:[
+                {kind:"sight", city:"cq", cn:"李子坝", ru:"Лицзыба (метро в доме)", en:"Liziba (metro through building)"},
+                {kind:"sight", city:"cq", cn:"魁星楼", ru:"Куйсинлоу", en:"Kuixinglou"},
+                {kind:"sight", city:"cq", cn:"来福士广场 重庆", ru:"Раффлс Сити Чунцин", en:"Raffles City Chongqing"},
+                {kind:"sight", city:"cq", cn:"南山一棵树观景台", ru:"Панорама Наньшань «Одно дерево»", en:"Nanshan One Tree Pavilion"},
+                {kind:"sight", city:"cq", cn:"长江索道", ru:"Канатка через Янцзы", en:"Yangtze River Cableway"}
+              ]}
+            ]
+          },
 
-  async function copyText(t){
-    try{
-      await navigator.clipboard.writeText(t);
-      showToast("✅ Скопировано");
-    }catch(e){
-      // fallback
-      const ta = document.createElement("textarea");
-      ta.value = t;
-      ta.style.position="fixed"; ta.style.opacity="0";
-      document.body.appendChild(ta);
-      ta.select(); ta.setSelectionRange(0, 999999);
-      try{ document.execCommand("copy"); showToast("✅ Скопировано"); }catch(_){}
-      document.body.removeChild(ta);
-    }
-  }
+          // UPDATED: + Shancheng Trail
+          { date:"2026-04-11", title_ru:"Свободный день + подготовка к поезду 🚄", summary:"Shancheng Trail + вокзал + проверить поезд",
+            blocks:[
+              {type:"plan", items:[
+                {kind:"sight", city:"cq", cn:"山城步道", ru:"Shancheng Trail (атмосферная прогулка)", en:"Shancheng Trail"}
+              ]},
+              {type:"transport", items:[
+                {kind:"rail", city:"cq", cn:"重庆北站", ru:"Северный вокзал Чунцина", en:"Chongqing North Railway Station"}
+              ]},
+              {type:"query", items:[
+                {kind:"query", city:"cq", cn:"重庆北站 → 张家界西站 · 4月12日", ru:"Поиск билета на 12 апреля (Чунцин → Чжанцзяцзе)", en:"Chongqing North → Zhangjiajie West · Apr 12"}
+              ]}
+            ]
+          }
+        ]
+      },
 
-  // Global tap-to-copy
-  document.addEventListener("click", (e)=>{
-    const el = e.target.closest("[data-copy]");
-    if(!el) return;
-    e.preventDefault();
-    const text = el.getAttribute("data-copy") || "";
-    if(text.trim()) copyText(text.trim());
-  }, {passive:false});
+      {
+        id:"zjj", color:"var(--zjj)",
+        name:{ru:"Чжанцзяцзе", en:"Zhangjiajie", cn:"张家界"},
+        days:[
+          { date:"2026-04-12", title_ru:"🚄 Чунцин → Чжанцзяцзе + 🏨 заселение", summary:"重庆北站 → 张家界西站",
+            blocks:[
+              {type:"transport", items:[
+                {kind:"rail", city:"cq", cn:"重庆北站", ru:"Северный вокзал Чунцина", en:"Chongqing North Railway Station"},
+                {kind:"rail", city:"zjj", cn:"张家界西站", ru:"Западный вокзал Чжанцзяцзе", en:"Zhangjiajie West Railway Station"}
+              ]},
+              {type:"hotel", items:[
+                {kind:"hotel", city:"zjj", cn:"曼缘度假酒店（张家界国家森林公园标志门店）", ru:"Manyuan Resort Hotel (у входа в нац.парк)", en:"Manyuan Resort Hotel (near Landmark Gate)"}
+              ]}
+            ]
+          },
+          { date:"2026-04-13", title_ru:"🏔 Парк Аватара: классический маршрут", summary:"Wulingyuan Gate • Bailong • Yuanjiajie • Tianzi",
+            blocks:[
+              {type:"plan", items:[
+                {kind:"sight", city:"zjj", cn:"武陵源标志门", ru:"Главный вход Улинъюань", en:"Wulingyuan Landmark Gate"},
+                {kind:"sight", city:"zjj", cn:"百龙天梯", ru:"Лифт Байлун", en:"Bailong Elevator"},
+                {kind:"sight", city:"zjj", cn:"袁家界", ru:"Юаньцзяцзе", en:"Yuanjiajie"},
+                {kind:"sight", city:"zjj", cn:"天子山", ru:"Гора Тяньцзы", en:"Tianzi Mountain"}
+              ]}
+            ]
+          },
+          { date:"2026-04-14", title_ru:"🏞 Второй день (спокойнее)", summary:"Golden Whip Stream • Ten-mile Gallery",
+            blocks:[
+              {type:"plan", items:[
+                {kind:"sight", city:"zjj", cn:"金鞭溪", ru:"Ручей Золотой Кнут", en:"Golden Whip Stream"},
+                {kind:"sight", city:"zjj", cn:"十里画廊", ru:"Галерея десяти ли", en:"Ten-mile Gallery"}
+              ]}
+            ]
+          },
+          { date:"2026-04-15", title_ru:"🚄 Чжанцзяцзе → Фэнхуан", summary:"张家界西站 → 凤凰古城站",
+            blocks:[
+              {type:"transport", items:[
+                {kind:"rail", city:"zjj", cn:"张家界西站", ru:"Западный вокзал Чжанцзяцзе", en:"Zhangjiajie West Railway Station"},
+                {kind:"rail", city:"fh", cn:"凤凰古城站", ru:"Станция Фэнхуан (Старый город)", en:"Fenghuang Ancient Town Railway Station"}
+              ]}
+            ]
+          }
+        ]
+      },
 
-  // Tabbar navigation
-  function setTab(name){
-    $$(".tabbar .tab").forEach(b=>{
-      const on = b.dataset.tab === name;
-      b.classList.toggle("active", on);
-      b.setAttribute("aria-selected", on ? "true":"false");
-    });
-    $$(".screen").forEach(s=>{
-      s.classList.toggle("active", s.id === "screen-"+name);
-    });
-    // small UX: scroll top of content
-    window.scrollTo({top:0, behavior:"instant"});
-  }
-  $$(".tabbar .tab").forEach(btn=>{
-    btn.addEventListener("click", ()=> setTab(btn.dataset.tab), {passive:true});
-  });
+      {
+        id:"fh", color:"var(--fh)",
+        name:{ru:"Фэнхуан", en:"Fenghuang", cn:"凤凰"},
+        days:[
+          { date:"2026-04-15", title_ru:"Заселение + вечер в старом городе", summary:"Fenghuang Ancient Town",
+            blocks:[
+              {type:"hotel", items:[
+                {kind:"hotel", city:"fh", cn:"凤凰舒依民宿（凤凰古城店）", ru:"Гостевой дом Shuyi (Фэнхуан)", en:"Shuyi Homestay (Fenghuang Ancient Town)"},
+                {kind:"address", city:"fh", cn:"湖南省湘西州凤凰县沱江镇习鹊坡74号", ru:"Хунань, округ Сянси, Фэнхуан, пос. Туоцзян, 74", en:"No.74, Xiquepo, Tuojiang Town, Fenghuang County, Xiangxi, Hunan"}
+              ]},
+              {type:"plan", items:[
+                {kind:"sight", city:"fh", cn:"凤凰古城", ru:"Старый город Фэнхуан", en:"Fenghuang Ancient Town"}
+              ]}
+            ]
+          },
+          { date:"2026-04-16", title_ru:"🚄 Фэнхуан → Гуйлинь → Яншо", summary:"凤凰古城站 → 桂林北站",
+            blocks:[
+              {type:"transport", items:[
+                {kind:"rail", city:"fh", cn:"凤凰古城站", ru:"Станция Фэнхуан", en:"Fenghuang Ancient Town Railway Station"},
+                {kind:"rail", city:"ys", cn:"桂林北站", ru:"Северный вокзал Гуйлиня", en:"Guilin North Railway Station"}
+              ]},
+              {type:"query", items:[
+                {kind:"query", city:"ys", cn:"凤凰古城站 → 桂林北站 · 4月16日", ru:"Поиск билета на 16 апреля (Фэнхуан → Гуйлинь)", en:"Fenghuang Ancient Town → Guilin North · Apr 16"}
+              ]}
+            ]
+          }
+        ]
+      },
 
-  // City tabs
-  const meta = $("#cityMeta");
-  const cityMetaText = {
-    cq: "Чунцин (9–12): отель у 洪崖洞 · прогулки · подготовка к поезду",
-    zjj:"Чжанцзяцзе (12–15): парк Avatar · два дня маршрутов",
-    fh: "Фэнхуан (15–16): 1 ночь в старом городе",
-    ys: "Яншо (16–20): река, деревни, Xingping, подготовка к поезду",
-    gz: "Гуанчжоу (20–23): башня, центр, старый район",
-    flights:"Перелёты: 8 апреля и 23 апреля"
+      {
+        id:"ys", color:"var(--ys)",
+        name:{ru:"Яншо", en:"Yangshuo", cn:"阳朔"},
+        days:[
+          { date:"2026-04-16", title_ru:"Заселение в Яншо", summary:"Yangshuo Yuyuan Resort",
+            blocks:[
+              {type:"hotel", items:[
+                {kind:"hotel", city:"ys", cn:"阳朔遇源景舍（十里画廊遇龙河店）", ru:"Yuyuan Resort (район Шили Хуалан / река Юйлун)", en:"Yangshuo Yuyuan Resort (Shili Gallery & Yulong River)"}
+              ]}
+            ]
+          },
+          { date:"2026-04-17", title_ru:"Yulong River + Shili Gallery 🚲", summary:"遇龙河 • 十里画廊",
+            blocks:[
+              {type:"plan", items:[
+                {kind:"sight", city:"ys", cn:"遇龙河", ru:"Река Юйлун", en:"Yulong River"},
+                {kind:"sight", city:"ys", cn:"十里画廊", ru:"Галерея десяти ли", en:"Shili Gallery"}
+              ]}
+            ]
+          },
+          { date:"2026-04-18", title_ru:"Xingping + река Ли 🚤", summary:"兴坪古镇 • 兴坪码头 • 漓江",
+            blocks:[
+              {type:"plan", items:[
+                {kind:"sight", city:"ys", cn:"兴坪古镇", ru:"Старый город Синпин", en:"Xingping Ancient Town"},
+                {kind:"sight", city:"ys", cn:"兴坪码头", ru:"Пирс Синпин", en:"Xingping Pier"},
+                {kind:"sight", city:"ys", cn:"漓江", ru:"Река Ли", en:"Li River"}
+              ]}
+            ]
+          },
+          { date:"2026-04-19", title_ru:"Свободный день + подготовка к поезду 🚄", summary:"проверить поезд на 20 апреля",
+            blocks:[
+              {type:"transport", items:[
+                {kind:"rail", city:"ys", cn:"阳朔站", ru:"Вокзал Яншо", en:"Yangshuo Railway Station"}
+              ]},
+              {type:"query", items:[
+                {kind:"query", city:"ys", cn:"阳朔站 → 广州南站 · 4月20日", ru:"Поиск билета на 20 апреля (Яншо → Гуанчжоу)", en:"Yangshuo → Guangzhou South · Apr 20"}
+              ]}
+            ]
+          },
+          { date:"2026-04-20", title_ru:"🚄 Яншо → Гуанчжоу", summary:"阳朔站 → 广州南站",
+            blocks:[
+              {type:"transport", items:[
+                {kind:"rail", city:"ys", cn:"阳朔站", ru:"Вокзал Яншо", en:"Yangshuo Railway Station"},
+                {kind:"rail", city:"gz", cn:"广州南站", ru:"Южный вокзал Гуанчжоу", en:"Guangzhou South Railway Station"}
+              ]}
+            ]
+          }
+        ]
+      },
+
+      {
+        id:"gz", color:"var(--gz)",
+        name:{ru:"Гуанчжоу", en:"Guangzhou", cn:"广州"},
+        days:[
+          { date:"2026-04-20", title_ru:"Заселение в Гуанчжоу", summary:"Echarm PLUS • Wuyangcun",
+            blocks:[
+              {type:"hotel", items:[
+                {kind:"hotel", city:"gz", cn:"宜尚PLUS酒店（广州珠江新城五羊邨地铁站店）", ru:"Echarm PLUS (Чжуцзян Нью Таун, Уянцунь)", en:"Echarm PLUS Hotel (Zhujiang New Town, Wuyangcun)"},
+                {kind:"address", city:"gz", cn:"广州市天河区珠江新城五羊邨", ru:"Гуанчжоу, р-н Тяньхэ, Чжуцзян Нью Таун, Уянцунь", en:"Wuyangcun, Zhujiang New Town, Tianhe District, Guangzhou"},
+                {kind:"metro", city:"gz", cn:"五羊邨站", ru:"Станция метро Уянцунь", en:"Wuyangcun Metro Station"}
+              ]}
+            ]
+          },
+          { date:"2026-04-21", title_ru:"Canton Tower + вечерние виды 🌆", summary:"广州塔 • 珠江新城",
+            blocks:[
+              {type:"plan", items:[
+                {kind:"sight", city:"gz", cn:"广州塔", ru:"Кантонская телебашня", en:"Canton Tower"},
+                {kind:"sight", city:"gz", cn:"珠江新城", ru:"Чжуцзян Нью Таун", en:"Zhujiang New Town"}
+              ]}
+            ]
+          },
+          { date:"2026-04-22", title_ru:"Старый район / прогулки / шопинг", summary:"北京路 • 沙面岛",
+            blocks:[
+              {type:"plan", items:[
+                {kind:"sight", city:"gz", cn:"北京路步行街", ru:"Пешеходная улица Бэйцзин Лу", en:"Beijing Road Pedestrian Street"},
+                {kind:"sight", city:"gz", cn:"沙面岛", ru:"Остров Шамянь", en:"Shamian Island"}
+              ]}
+            ]
+          }
+        ]
+      }
+    ]
   };
 
-  function setCity(city){
-    $$(".cityTab").forEach(b=>{
-      const on=b.dataset.city===city;
-      b.classList.toggle("active", on);
-      b.setAttribute("aria-selected", on ? "true":"false");
-    });
-    $$(".cityPane").forEach(p=>{
-      const show = p.dataset.pane === city;
-      p.hidden = !show;
-    });
-    meta.textContent = cityMetaText[city] || "";
+  // ===== LocationCard правила =====
+  const kindIcon = {hotel:"🏨",address:"📮",airport:"✈️",rail:"🚄",metro:"🚇",sight:"📍",query:"🧾",food:"🍜"};
+  const kindLabel = {
+    hotel:{ru:"Отель",en:"Hotel"},
+    address:{ru:"Адрес",en:"Address"},
+    airport:{ru:"Аэропорт",en:"Airport"},
+    rail:{ru:"Вокзал",en:"Rail"},
+    metro:{ru:"Метро",en:"Metro"},
+    sight:{ru:"Локация",en:"Sight"},
+    query:{ru:"Поиск Trip/12306",en:"Trip/12306 Query"},
+    food:{ru:"Еда",en:"Food"},
+  };
+
+  // ===== CQ Food dataset (видно и в “Точки”) =====
+  const FOOD_CQ = [
+    // Hotpot
+    {kind:"food", city:"cq", cat:"hotpot", cn:"珮姐老火锅", ru:"Peijie Hotpot", en:"Peijie Old Hotpot"},
+    {kind:"food", city:"cq", cat:"hotpot", cn:"周师兄重庆火锅", ru:"Zhou Shixiong Hotpot", en:"Zhou Shixiong Chongqing Hotpot"},
+    {kind:"food", city:"cq", cat:"hotpot", cn:"洞子老火锅", ru:"Dongzi Old Hotpot", en:"Dongzi Old Hotpot"},
+    // Noodles
+    {kind:"food", city:"cq", cat:"noodles", cn:"花市豌杂面", ru:"Huashi Wanzamian", en:"Huashi Wanza Noodles"},
+    {kind:"food", city:"cq", cat:"noodles", cn:"板凳面庄", ru:"Bandeng Noodles", en:"Bandeng Noodle House"},
+    // Chuanchuan
+    {kind:"food", city:"cq", cat:"chuanchuan", cn:"马路边边串串香", ru:"Malubianbian Chuanchuan", en:"Malubianbian Chuanchuan"},
+    // Sichuan / Chongqing cuisine
+    {kind:"food", city:"cq", cat:"sichuan", cn:"陶然居", ru:"Taoranju", en:"Taoranju"},
+    {kind:"food", city:"cq", cat:"sichuan", cn:"老四川酒家", ru:"Old Sichuan Restaurant", en:"Old Sichuan Restaurant"},
+    // Desserts / drinks
+    {kind:"food", city:"cq", cat:"dessert", cn:"一只酸奶牛", ru:"Yizhi Suannai Niu (йогурт)", en:"Yizhi Suannai Niu"},
+    {kind:"food", city:"cq", cat:"dessert", cn:"书亦烧仙草", ru:"Shuyi (травяной десерт)", en:"Shuyi Shaoxiancao"},
+  ];
+
+  function fmtDateRu(iso){
+    const d=new Date(iso+"T00:00:00");
+    const dd=String(d.getDate()).padStart(2,"0");
+    const mm=String(d.getMonth()+1).padStart(2,"0");
+    return `${dd}.${mm}`;
   }
-  $$(".cityTab").forEach(b=>{
-    b.addEventListener("click", ()=> setCity(b.dataset.city), {passive:true});
+  function esc(s){
+    return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  }
+
+  function renderLocCard(item){
+    const icon=kindIcon[item.kind] || "📍";
+    const type=kindLabel[item.kind] || {ru:"Точка",en:"Point"};
+    const city = TRIP.cities.find(c=>c.id===item.city)?.name || {};
+    const tag = city.ru || type.ru;
+
+    const cn=item.cn||"—";
+    const ru=item.ru||"—";
+    const en=item.en||"—";
+
+    const cnAttr = item.cn ? `data-copy="${esc(item.cn)}"` : "";
+    const enAttr = item.en ? `data-copy="${esc(item.en)}"` : "";
+
+    return `
+      <div class="locCard">
+        <div class="locTop">
+          <span class="locIcon">${icon}</span>
+          <div class="locTitle">${esc(type.ru)} <span class="muted">· ${esc(type.en)}</span></div>
+          <span class="locTag">${esc(tag)}</span>
+        </div>
+        <div class="locMain">
+          <div class="locCN copyable" ${cnAttr}>${esc(cn)}</div>
+          <div class="locRU">${esc(ru)}</div>
+          <div class="locEN copyable" ${enAttr}>${esc(en)}</div>
+        </div>
+        <div class="locMeta">
+          <span class="metaChip">tap CN/EN to copy</span>
+        </div>
+      </div>
+    `;
+  }
+
+  // ===== Copy =====
+  function showToast(txt){
+    const t=document.getElementById("toast");
+    t.textContent=txt||"✅ Скопировано";
+    t.classList.add("show");
+    clearTimeout(window.__toastT);
+    window.__toastT=setTimeout(()=>t.classList.remove("show"),900);
+  }
+  async function copyText(text){
+    try{ await navigator.clipboard.writeText(text); showToast("✅ Скопировано"); }
+    catch(e){
+      const ta=document.createElement("textarea");
+      ta.value=text; document.body.appendChild(ta);
+      ta.select(); document.execCommand("copy"); ta.remove();
+      showToast("✅ Скопировано");
+    }
+  }
+  document.addEventListener("click",(e)=>{
+    const t=e.target.closest("[data-copy]");
+    if(!t) return;
+    const v=t.getAttribute("data-copy");
+    if(v) copyText(v);
   });
-  setCity("cq");
 
-  // Progress + today auto-open/scroll (range: 2026-04-08..2026-04-23)
-  const start = new Date("2026-04-08T00:00:00");
-  const end = new Date("2026-04-23T23:59:59");
-  const now = new Date();
-  const clamp = (x,a,b)=> Math.max(a, Math.min(b,x));
-  const total = end - start;
-  const done = clamp(now - start, 0, total);
-  const pct = total ? (done/total)*100 : 0;
-  $("#progBar").style.width = pct.toFixed(1) + "%";
-
-  const inTrip = now >= start && now <= end;
-  $("#todayLabel").textContent = inTrip ? now.toLocaleDateString("ru-RU",{day:"2-digit",month:"long"}) : "вне поездки";
-  $("#offlineLabel").textContent = navigator.onLine ? "онлайн" : "оффлайн";
-  $("#progNote").textContent = inTrip ? ("≈ " + Math.round(pct) + "% маршрута по времени") : "Прогресс считается по календарю поездки (апрель 2026).";
-
-  window.addEventListener("online", ()=> $("#offlineLabel").textContent="онлайн");
-  window.addEventListener("offline", ()=> $("#offlineLabel").textContent="оффлайн");
-
-  // Auto-open today (if within trip)
-  function openToday(){
-    if(!inTrip) return;
-    const y = now.toISOString().slice(0,10);
-    const target = document.querySelector('details.day[data-date="'+y+'"]');
-    if(!target) return;
-    // switch to the right city pane
-    const pane = target.closest(".cityPane");
-    if(pane){
-      const city = pane.dataset.pane;
-      setCity(city);
-    }
-    target.open = true;
-    setTimeout(()=> target.scrollIntoView({behavior:"smooth", block:"start"}), 250);
+  // ===== Maps helper =====
+  function openMaps(query){
+    const q = encodeURIComponent(query || "");
+    // iOS: открывается Apple Maps; на других платформах откроется в браузере.
+    const url = `https://maps.apple.com/?q=${q}`;
+    window.open(url, "_blank", "noopener");
   }
 
-  // Cache refresh button
-  async function refreshCache(){
-    try{
-      showToast("⏳ Обновляю кэш…");
-      // delete caches
-      if('caches' in window){
-        const keys = await caches.keys();
-        await Promise.all(keys.map(k=>caches.delete(k)));
-      }
-      // unregister SW
-      if('serviceWorker' in navigator){
-        const regs = await navigator.serviceWorker.getRegistrations();
-        await Promise.all(regs.map(r=>r.unregister()));
-      }
-      // hard reload
-      location.href = location.pathname + "?v=" + Date.now();
-    }catch(e){
-      showToast("Не удалось обновить");
-    }
-  }
-  $("#btnRefreshCache").addEventListener("click", refreshCache);
+  // ===== Tabs =====
+  const views={
+    today:document.getElementById("view-today"),
+    route:document.getElementById("view-route"),
+    points:document.getElementById("view-points"),
+    guide:document.getElementById("view-guide"),
+  };
+  document.getElementById("tabbar").addEventListener("click",(e)=>{
+    const tab=e.target.closest(".tab");
+    if(!tab) return;
+    const v=tab.getAttribute("data-view");
+    Object.values(views).forEach(x=>x.classList.remove("active"));
+    views[v].classList.add("active");
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+    tab.classList.add("active");
+  });
 
-  // Register SW
-  if('serviceWorker' in navigator){
-    window.addEventListener("load", ()=>{
-      navigator.serviceWorker.register("./sw.js").catch(()=>{});
+  // ===== Drawer =====
+  const drawer=document.getElementById("drawer");
+  document.getElementById("btnClose").onclick=()=>drawer.classList.remove("show");
+  drawer.addEventListener("click",(e)=>{ if(e.target===drawer) drawer.classList.remove("show"); });
+
+  function openDay(cityId, date){
+    const city=TRIP.cities.find(c=>c.id===cityId);
+    const day=city?.days.find(d=>d.date===date);
+    if(!city||!day) return;
+
+    document.getElementById("dayTitle").textContent=`${day.date} · ${city.name.ru}`;
+    document.getElementById("daySub").textContent=`${day.title_ru}${day.summary?(" — "+day.summary):""}`;
+
+    const stack=document.getElementById("dayStack");
+    stack.innerHTML="";
+    (day.blocks||[]).forEach(b=>{
+      (b.items||[]).forEach(it=>{
+        const w=document.createElement("div");
+        w.innerHTML=renderLocCard(it);
+        stack.appendChild(w.firstElementChild);
+      });
+    });
+
+    drawer.classList.add("show");
+  }
+
+  // ===== Route render =====
+  function renderRoute(){
+    const host=document.getElementById("routeStack");
+    host.innerHTML="";
+    TRIP.cities.forEach(city=>{
+      const details=document.createElement("details");
+      details.className="city";
+
+      const dates=city.days.map(d=>d.date).sort();
+      const range = dates.length ? `${dates[0]} → ${dates[dates.length-1]}` : "";
+
+      details.innerHTML=`
+        <summary>
+          <div class="cityLeft">
+            <span class="badge" style="background:${city.color}"></span>
+            <div style="min-width:0">
+              <div class="cityName">${esc(city.name.ru)} <span class="muted">· ${esc(city.name.en)}</span></div>
+              <div class="cityRange">${esc(range)}</div>
+            </div>
+          </div>
+          <div class="chev">▾</div>
+        </summary>
+        <div class="days"></div>
+      `;
+
+      const daysEl=details.querySelector(".days");
+      city.days.forEach(day=>{
+        const b=document.createElement("div");
+        b.className="dayBtn";
+        b.innerHTML=`
+          <div class="l">
+            <div class="t">${fmtDateRu(day.date)} · ${esc(day.title_ru)}</div>
+            <div class="s">${esc(day.summary||"")}</div>
+          </div>
+          <div class="chev">›</div>
+        `;
+        b.addEventListener("click",()=>openDay(city.id, day.date));
+        daysEl.appendChild(b);
+      });
+
+      host.appendChild(details);
     });
   }
 
-  // open today after a tiny delay (so layout ready)
-  setTimeout(openToday, 350);
-})();
+  // ===== Points build (unique-ish) =====
+  function buildPoints(){
+    const seen=new Set();
+    const out=[];
+    TRIP.cities.forEach(city=>{
+      city.days.forEach(day=>{
+        (day.blocks||[]).forEach(b=>{
+          (b.items||[]).forEach(it=>{
+            const key = `${it.kind}|${it.cn||""}|${it.en||""}`;
+            if(seen.has(key)) return;
+            seen.add(key);
+            out.push(it);
+          });
+        });
+      });
+    });
 
+    // add CQ food as points too
+    FOOD_CQ.forEach(it=>{
+      const key = `${it.kind}|${it.cn||""}|${it.en||""}`;
+      if(seen.has(key)) return;
+      seen.add(key);
+      out.push(it);
+    });
 
-// v0.16.2: open day details when using city navigator links
-document.addEventListener('click', (e)=>{
-  const a = e.target.closest('a.dayLink');
-  if(!a) return;
-  const href = a.getAttribute('href') || '';
-  if(!href.startsWith('#')) return;
-  const id = href.slice(1);
-  const el = document.getElementById(id);
-  if(el && el.tagName.toLowerCase()==='details'){
-    e.preventDefault();
-    const city = el.closest('details.cityBlock');
-    if(city) city.open = true;
-    el.open = true;
-    setTimeout(()=> el.scrollIntoView({behavior:'smooth', block:'start'}), 250);
+    return out;
   }
-});
+  const POINTS = buildPoints();
+
+  function renderFilters(){
+    const fCity=document.getElementById("fCity");
+    const fKind=document.getElementById("fKind");
+    fCity.innerHTML = `<option value="all">Все города</option>` + TRIP.cities.map(c=>`<option value="${c.id}">${esc(c.name.ru)}</option>`).join("");
+    const kinds=["all", ...Object.keys(kindLabel)];
+    fKind.innerHTML = kinds.map(k=>{
+      if(k==="all") return `<option value="all">Все типы</option>`;
+      return `<option value="${k}">${esc(kindLabel[k].ru)}</option>`;
+    }).join("");
+  }
+
+  function renderPoints(){
+    const q=(document.getElementById("q").value||"").trim().toLowerCase();
+    const city=document.getElementById("fCity").value;
+    const kind=document.getElementById("fKind").value;
+    const host=document.getElementById("pointsList");
+    host.innerHTML="";
+
+    const filtered = POINTS.filter(p=>{
+      if(city!=="all" && p.city!==city) return false;
+      if(kind!=="all" && p.kind!==kind) return false;
+      if(!q) return true;
+      const s = `${p.cn||""} ${p.ru||""} ${p.en||""}`.toLowerCase();
+      return s.includes(q);
+    });
+
+    if(!filtered.length){
+      const empty=document.createElement("div");
+      empty.className="card";
+      empty.innerHTML=`<div class="muted">Ничего не найдено. Попробуй CN (“西站”) или EN (“Canton”).</div>`;
+      host.appendChild(empty);
+      return;
+    }
+
+    filtered.forEach(p=>{
+      const w=document.createElement("div");
+      w.innerHTML=renderLocCard(p);
+      host.appendChild(w.firstElementChild);
+    });
+  }
+
+  // ===== Food drawer renderer =====
+  const FOOD_CATS = [
+    {id:"hotpot", ru:"🔥 Хот-пот", en:"Hotpot", maps:"重庆 火锅"},
+    {id:"noodles", ru:"🍜 Лапша", en:"Noodles", maps:"重庆 小面"},
+    {id:"chuanchuan", ru:"🍢 Chuanchuan", en:"Chuanchuan", maps:"重庆 串串香"},
+    {id:"sichuan", ru:"🌶 Сычуаньская кухня", en:"Sichuan cuisine", maps:"重庆 川菜"},
+    {id:"dessert", ru:"🍧 Десерты и напитки", en:"Desserts & drinks", maps:"重庆 甜品"},
+  ];
+
+  function renderFoodDrawerCQ(title, subtitle){
+    document.getElementById("dayTitle").textContent = title;
+    document.getElementById("daySub").textContent = subtitle;
+
+    const stack=document.getElementById("dayStack");
+    stack.innerHTML="";
+
+    FOOD_CATS.forEach(cat=>{
+      const items = FOOD_CQ.filter(x=>x.cat===cat.id);
+      if(!items.length) return;
+
+      const head = document.createElement("div");
+      head.className = "card";
+      head.innerHTML = `
+        <div class="h2" style="margin-top:0">${cat.ru} <span class="muted">· ${cat.en}</span></div>
+        <div class="row" style="margin-top:8px">
+          <button class="btn" type="button">🗺 Открыть поиск в картах</button>
+        </div>
+        <div class="muted" style="margin-top:8px">Тап по CN/EN копирует · RU — справочно</div>
+      `;
+      head.querySelector("button").addEventListener("click", ()=>openMaps(cat.maps));
+      stack.appendChild(head);
+
+      items.forEach(it=>{
+        const wrap = document.createElement("div");
+        wrap.innerHTML = renderLocCard(it);
+        const el = wrap.firstElementChild;
+
+        // add "open maps" chip
+        const meta = el.querySelector(".locMeta");
+        const chip = document.createElement("span");
+        chip.className = "metaChip";
+        chip.textContent = "🗺 открыть в картах";
+        chip.style.cursor = "pointer";
+        chip.addEventListener("click", ()=>openMaps(it.cn || it.en || ""));
+        meta.appendChild(chip);
+
+        stack.appendChild(el);
+      });
+    });
+
+    const tip = document.createElement("div");
+    tip.className="card";
+    tip.innerHTML = `
+      <div class="h2" style="margin-top:0">📝 Не слишком остро</div>
+      <div class="muted" style="line-height:1.6">
+        不要太辣 — не слишком остро<br>
+        微辣 — слегка остро<br>
+        少辣 — меньше остроты
+      </div>
+      <div class="row" style="margin-top:10px">
+        <button class="btn" data-copy="不要太辣">📋 Скопировать 不要太辣</button>
+      </div>
+    `;
+    stack.appendChild(tip);
+
+    drawer.classList.add("show");
+  }
+
+  // ===== Today logic =====
+  function isoToday(){
+    const d=new Date();
+    const y=d.getFullYear();
+    const m=String(d.getMonth()+1).padStart(2,"0");
+    const day=String(d.getDate()).padStart(2,"0");
+    return `${y}-${m}-${day}`;
+  }
+  function findClosestTripDay(iso){
+    if(iso < TRIP.dateRange.start) return TRIP.dateRange.start;
+    if(iso > TRIP.dateRange.end) return TRIP.dateRange.end;
+    return iso;
+  }
+  function dayCityForDate(iso){
+    for(const city of TRIP.cities){
+      for(const day of city.days){
+        if(day.date===iso) return {city, day};
+      }
+    }
+    return null;
+  }
+  function summarizeNow(){
+    const today=isoToday();
+    const target=findClosestTripDay(today);
+    const m=dayCityForDate(target);
+    const pillDot=document.getElementById("pillDot");
+    const pillText=document.getElementById("pillText");
+
+    if(!m){
+      pillDot.style.background="#111827";
+      pillText.textContent="Нет данных";
+      return;
+    }
+
+    pillDot.style.background = m.city.color;
+
+    if(today < TRIP.dateRange.start) pillText.textContent = `До поездки: ${fmtDateRu(target)} · ${m.city.name.ru}`;
+    else if(today > TRIP.dateRange.end) pillText.textContent = `После поездки: ${fmtDateRu(target)} · ${m.city.name.ru}`;
+    else pillText.textContent = `Сегодня: ${fmtDateRu(target)} · ${m.city.name.ru}`;
+  }
+
+  function blockItems(day, types){
+    const out=[];
+    (day.blocks||[]).forEach(b=>{
+      if(types.includes(b.type)) out.push(...(b.items||[]));
+    });
+    return out;
+  }
+
+  function renderToday(){
+    const today=isoToday();
+    const target=findClosestTripDay(today);
+    const m=dayCityForDate(target);
+    const sub=document.getElementById("todaySub");
+    const stack=document.getElementById("todayStack");
+    stack.innerHTML="";
+
+    if(!m){ sub.textContent="Нет данных"; return; }
+
+    const {city, day}=m;
+    sub.innerHTML = `<b>${esc(day.title_ru)}</b> <span class="muted">· ${esc(city.name.ru)}</span><br><span class="muted">${esc(day.summary||"")}</span>`;
+
+    const keyItems=[];
+    keyItems.push(...blockItems(day, ["hotel"]).slice(0,3));
+    keyItems.push(...blockItems(day, ["transport"]).slice(0,3));
+    keyItems.push(...blockItems(day, ["plan"]).slice(0,6));
+
+    keyItems.forEach(it=>{
+      const w=document.createElement("div");
+      w.innerHTML=renderLocCard(it);
+      stack.appendChild(w.firstElementChild);
+    });
+
+    const hotelItems=blockItems(day,["hotel"]);
+    const transportItems=blockItems(day,["transport"]);
+    const placeItems=blockItems(day,["plan"]);
+
+    document.getElementById("btnTodayHotel").onclick=()=> hotelItems.length ? openDay(city.id, day.date) : showToast("Нет отеля в этот день");
+    document.getElementById("btnTodayTransport").onclick=()=> transportItems.length ? openDay(city.id, day.date) : showToast("Нет транспорта в этот день");
+    document.getElementById("btnTodayPlaces").onclick=()=> placeItems.length ? openDay(city.id, day.date) : showToast("Нет локаций в этот день");
+    document.getElementById("btnTodayCopyAll").onclick=()=>{
+      const all=[];
+      (day.blocks||[]).forEach(b=>{
+        (b.items||[]).forEach(it=>{ if(it.cn) all.push(it.cn); });
+      });
+      if(!all.length) return showToast("Нечего копировать");
+      copyText(all.join("\n"));
+    };
+
+    // NEW: food nearby — активно только в Чунцине
+    document.getElementById("btnTodayFood").onclick=()=>{
+      if(city.id !== "cq") return showToast("Эта кнопка активна в Чунцине");
+      renderFoodDrawerCQ("🍜 Где поесть рядом (Чунцин)", "Хот-пот • лапша • chuanchuan • десерты");
+    };
+  }
+
+  // cache clear
+  document.getElementById("btnClear").onclick = async ()=>{
+    if(!("caches" in window)) return showToast("Cache API недоступен");
+    const keys=await caches.keys();
+    await Promise.all(keys.map(k=>caches.delete(k)));
+    showToast("Кэш очищен");
+  };
+
+  // points listeners
+  ["q","fCity","fKind"].forEach(id=>document.getElementById(id).addEventListener("input", renderPoints));
+
+  // Guide button: open CQ food
+  const btnCQFoodOpen = document.getElementById("btnCQFoodOpen");
+  if(btnCQFoodOpen){
+    btnCQFoodOpen.addEventListener("click", ()=>{
+      renderFoodDrawerCQ("🍜 Чунцин — Еда", "Подборка заведений + подсказки по остроте");
+    });
+  }
+
+  // init
+  renderRoute();
+  renderFilters();
+  renderPoints();
+  summarizeNow();
+  renderToday();
+
+  // SW
+  if("serviceWorker" in navigator){
+    window.addEventListener("load", ()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+  }
 </script>
 </body>
 </html>
