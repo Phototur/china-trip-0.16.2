@@ -123,6 +123,29 @@
     .metaChip{font-size:11px;color:var(--muted);background:#f9fafb;border:1px solid rgba(17,24,39,.08);padding:5px 8px;border-radius:999px}
     .locMeta{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
 
+    /* ── Detail sight card (расширенная карточка локации) ── */
+    .detailCard{border:1px solid var(--line);background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:14px;display:flex;flex-direction:column;gap:8px}
+    .detailHead{display:flex;align-items:flex-start;gap:10px}
+    .detailIcon{font-size:20px;line-height:1.2;flex-shrink:0}
+    .detailTitles{flex:1;min-width:0}
+    .detailCN{font-weight:900;font-size:17px;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:8px;padding:1px 4px;margin:-1px -4px;display:inline-block}
+    .detailCN:active{background:rgba(17,24,39,.07)}
+    .detailEN{font-size:13px;font-weight:700;color:#111827;margin-top:1px}
+    .detailRU{font-size:12px;color:var(--muted)}
+    .detailTag{flex-shrink:0;font-size:11px;font-weight:900;padding:5px 9px;border-radius:999px;background:#f3f4f6;color:#111827;border:1px solid rgba(17,24,39,.08);white-space:nowrap}
+    .detailDesc{font-size:13px;color:var(--text);line-height:1.5;padding:2px 0}
+    .detailMeta{display:flex;flex-direction:column;gap:4px}
+    .detailMetaRow{display:flex;gap:6px;align-items:baseline;flex-wrap:wrap;font-size:12px}
+    .detailMetaLabel{font-weight:800;color:var(--text);white-space:nowrap}
+    .detailMetaVal{color:var(--muted)}
+    .photoNote{background:rgba(155,81,224,.07);border:1px solid rgba(155,81,224,.18);border-radius:12px;padding:8px 10px;font-size:11px;color:#6B21A8;line-height:1.5}
+    .photoNoteIcon{font-size:13px;margin-right:4px}
+
+    .dayLogic{background:#f9fafb;border:1px solid rgba(17,24,39,.07);border-radius:14px;padding:10px 12px}
+    .dayLogicTitle{font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
+    .dayLogicRow{font-size:12px;color:var(--text);line-height:1.8}
+    .dayLogicTime{font-weight:900;color:#111827;display:inline-block;min-width:56px}
+
     /* ── Flight card ── */
     .flightCard{border:1px solid var(--line);background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:12px;overflow:hidden;}
     .flightHead{display:flex;align-items:center;gap:10px;margin-bottom:10px}
@@ -149,6 +172,29 @@
     .flightCheckin{font-size:12px;color:var(--muted);margin-bottom:8px;line-height:1.5}
     .flightNote{font-size:11px;color:var(--muted);font-style:italic;margin-bottom:6px}
     .flightMeta{display:flex;gap:6px;flex-wrap:wrap}
+
+    /* ── Train card (по паттерну flightCard, префикс train*) ── */
+    .trainCard{border:1px solid var(--line);background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:12px;overflow:hidden;}
+    .trainHead{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .trainNo{font-weight:900;font-size:15px;letter-spacing:.5px}
+    .trainSub{font-size:12px;color:var(--muted)}
+    .trainTag{margin-left:auto;font-size:12px;font-weight:900;padding:6px 10px;border-radius:999px;background:#E0F2FE;color:#075985;border:1px solid rgba(7,89,133,.15)}
+    .trainRoute{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:10px}
+    .trainSt{display:flex;flex-direction:column;gap:2px}
+    .trainSt.right{align-items:flex-end;text-align:right}
+    .trainTime{font-weight:900;font-size:22px;line-height:1}
+    .trainCode{font-size:13px;font-weight:900}
+    .trainCity{font-size:12px;color:var(--muted)}
+    .trainArrow{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted)}
+    .trainArrowLine{width:40px;height:1px;background:var(--muted);position:relative}
+    .trainArrowLine::after{content:"›";position:absolute;right:-6px;top:-9px;font-size:14px}
+    .trainDuration{font-size:10px;font-weight:800;color:var(--muted);white-space:nowrap}
+    .trainNames{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;padding:8px 10px;background:#f0f9ff;border-radius:12px}
+    .trainNameCN{font-weight:900;font-size:13px;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:8px;padding:2px 4px;margin:-2px -4px}
+    .trainNameCN:active{background:rgba(7,89,133,.08)}
+    .trainNameEN{font-size:12px;color:#111827;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:8px;padding:2px 4px;margin:-2px -4px}
+    .trainNameEN:active{background:rgba(7,89,133,.08)}
+    .trainMeta{display:flex;gap:6px;flex-wrap:wrap}
 
     .filters{display:grid;gap:10px;grid-template-columns:1fr}
     @media(min-width:860px){.filters{grid-template-columns:1.3fr .7fr .7fr}}
@@ -357,16 +403,13 @@
               ]}
             ]
           },
-          { date:"2026-04-11", title_ru:"Свободный день + подготовка к поезду 🚄", summary:"Shancheng Trail + вокзал + проверить поезд",
+          { date:"2026-04-11", title_ru:"Свободный день + дорога к вокзалу 🚄", summary:"Shancheng Trail · G2445 завтра 09:52 重庆东站",
             blocks:[
               {type:"plan", items:[
                 {kind:"sight", city:"cq", name:{cn:"山城步道", ru:"Shancheng Trail (атмосферная прогулка)", en:"Shancheng Trail"}}
               ]},
               {type:"transport", items:[
-                {kind:"rail", city:"cq", name:{cn:"重庆北站", ru:"Северный вокзал Чунцина", en:"Chongqing North Railway Station"}}
-              ]},
-              {type:"query", items:[
-                {kind:"query", city:"cq", name:{cn:"重庆北站 → 张家界西站 · 4月12日", ru:"Поиск билета на 12 апреля (Чунцин → Чжанцзяцзе)", en:"Chongqing North → Zhangjiajie West · Apr 12"}}
+                {kind:"rail", city:"cq", name:{cn:"重庆东站", ru:"Вокзал Чунцин Восточный (Chongqing East)", en:"Chongqing East Railway Station"}}
               ]}
             ]
           }
@@ -376,11 +419,18 @@
         id:"zjj", color:"var(--zjj)",
         cityName:{ru:"Чжанцзяцзе", en:"Zhangjiajie", cn:"张家界"},
         days:[
-          { date:"2026-04-12", title_ru:"🚄 Чунцин → Чжанцзяцзе + 🏨 заселение", summary:"重庆北站 → 张家界西站 · (опц.) Гранд Каньон",
+          { date:"2026-04-12", title_ru:"🚄 Чунцин → Чжанцзяцзе + 🏨 заселение", summary:"G2445 · 09:52 重庆东站 → 11:58 张家界西站 · 2ч6м",
             blocks:[
               {type:"transport", items:[
-                {kind:"rail", city:"cq",  name:{cn:"重庆北站", ru:"Северный вокзал Чунцина", en:"Chongqing North Railway Station"}},
-                {kind:"rail", city:"zjj", name:{cn:"张家界西站", ru:"Западный вокзал Чжанцзяцзе", en:"Zhangjiajie West Railway Station"}}
+                {kind:"train", trainNo:"G2445",
+                  route:{from:"CQE", to:"ZJJW"},
+                  scheduleLocal:{dep:{date:"2026-04-12",time:"09:52"},arr:{date:"2026-04-12",time:"11:58"}},
+                  duration:{cn:"2小时6分",en:"2h 6m",ru:"2 ч 6 мин"},
+                  seatClass:{cn:"二等座",en:"Second Class",ru:"2-й класс"},
+                  direct:true,
+                  booking:{orderNo:"1539363330958954",pax:2,total:"5 829,18 ₽"}},
+                {kind:"rail", city:"cq",  name:{cn:"重庆东站",  ru:"Чунцин Восточный",    en:"Chongqing East Railway Station"}},
+                {kind:"rail", city:"zjj", name:{cn:"张家界西站", ru:"Чжанцзяцзе Западный", en:"Zhangjiajie West Railway Station"}}
               ]},
               {type:"hotel", items:[
                 {kind:"hotel", city:"zjj", name:{cn:"曼缘度假酒店（张家界国家森林公园标志门店）", ru:"Manyuan Resort Hotel (у входа в нац.парк)", en:"Manyuan Resort Hotel (near Landmark Gate)"}}
@@ -410,11 +460,18 @@
               ]}
             ]
           },
-          { date:"2026-04-15", title_ru:"🚄 Чжанцзяцзе → Фэнхуан", summary:"张家界西站 → 凤凰古城站",
+          { date:"2026-04-15", title_ru:"🚄 Чжанцзяцзе → Фэнхуан", summary:"G6151 · 09:42 张家界西站 → 10:34 凤凰古城站 · 52м",
             blocks:[
               {type:"transport", items:[
-                {kind:"rail", city:"zjj", name:{cn:"张家界西站", ru:"Западный вокзал Чжанцзяцзе", en:"Zhangjiajie West Railway Station"}},
-                {kind:"rail", city:"fh",  name:{cn:"凤凰古城站", ru:"Станция Фэнхуан (Старый город)", en:"Fenghuang Ancient Town Railway Station"}}
+                {kind:"train", trainNo:"G6151",
+                  route:{from:"ZJJW", to:"FHGC"},
+                  scheduleLocal:{dep:{date:"2026-04-15",time:"09:42"},arr:{date:"2026-04-15",time:"10:34"}},
+                  duration:{cn:"52分",en:"52m",ru:"52 мин"},
+                  seatClass:{cn:"二等座",en:"Second Class",ru:"2-й класс"},
+                  direct:true,
+                  booking:{orderNo:"1539363330969714",pax:2,total:"2 396,54 ₽"}},
+                {kind:"rail", city:"zjj", name:{cn:"张家界西站", ru:"Чжанцзяцзе Западный", en:"Zhangjiajie West Railway Station"}},
+                {kind:"rail", city:"fh",  name:{cn:"凤凰古城站", ru:"Фэнхуан Гучэн",       en:"Fenghuanggucheng Railway Station"}}
               ]}
             ]
           }
@@ -435,14 +492,18 @@
               ]}
             ]
           },
-          { date:"2026-04-16", title_ru:"🚄 Фэнхуан → Гуйлинь → Яншо", summary:"凤凰古城站 → 桂林北站",
+          { date:"2026-04-16", title_ru:"🚄 Фэнхуан → Гуйлинь → Яншо", summary:"D3967 · 08:09 凤凰古城站 → 14:27 桂林站 · 6ч18м",
             blocks:[
               {type:"transport", items:[
-                {kind:"rail", city:"fh", name:{cn:"凤凰古城站", ru:"Станция Фэнхуан", en:"Fenghuang Ancient Town Railway Station"}},
-                {kind:"rail", city:"ys", name:{cn:"桂林北站", ru:"Северный вокзал Гуйлиня", en:"Guilin North Railway Station"}}
-              ]},
-              {type:"query", items:[
-                {kind:"query", city:"ys", name:{cn:"凤凰古城站 → 桂林北站 · 4月16日", ru:"Поиск билета на 16 апреля (Фэнхуан → Гуйлинь)", en:"Fenghuang Ancient Town → Guilin North · Apr 16"}}
+                {kind:"train", trainNo:"D3967",
+                  route:{from:"FHGC", to:"GL"},
+                  scheduleLocal:{dep:{date:"2026-04-16",time:"08:09"},arr:{date:"2026-04-16",time:"14:27"}},
+                  duration:{cn:"6小时18分",en:"6h 18m",ru:"6 ч 18 мин"},
+                  seatClass:{cn:"二等座",en:"Second Class",ru:"2-й класс"},
+                  direct:true,
+                  booking:{orderNo:"1539363330927756",pax:2,total:"6 759,44 ₽"}},
+                {kind:"rail", city:"fh", name:{cn:"凤凰古城站", ru:"Фэнхуан Гучэн",  en:"Fenghuanggucheng Railway Station"}},
+                {kind:"rail", city:"ys", name:{cn:"桂林站",    ru:"Гуйлинь",         en:"Guilin Railway Station"}}
               ]}
             ]
           }
@@ -459,38 +520,103 @@
               ]}
             ]
           },
-          { date:"2026-04-17", title_ru:"Yulong River + Shili Gallery 🚲", summary:"遇龙河 • 十里画廊",
+          { date:"2026-04-17", title_ru:"🚲 Локальный день: Yulong + Moon Hill + Shili", summary:"遇龙河 • 月亮山 • 十里画廊",
             blocks:[
               {type:"plan", items:[
-                {kind:"sight", city:"ys", name:{cn:"遇龙河", ru:"Река Юйлун", en:"Yulong River"}},
-                {kind:"sight", city:"ys", name:{cn:"十里画廊", ru:"Галерея десяти ли", en:"Shili Gallery"}}
+                {kind:"sight_detail", city:"ys",
+                  name:{cn:"遇龙河", ru:"Река Юйлун", en:"Yulong River"},
+                  desc:{ru:"Спокойная живописная река с карстовыми пиками, бамбуковые плоты, сельские пейзажи."},
+                  travel:{ru:"5–10 мин от отеля пешком/велосипед"},
+                  cost:{ru:"Плот: ~100–200¥ (по желанию)"},
+                  photo:{ru:"Лучшее время: 08:00–10:00 или 16:30–18:30. Мягкий боковой свет подчёркивает туман над водой."},
+                  icon:"🛶", tag:{ru:"Утро"}
+                },
+                {kind:"sight_detail", city:"ys",
+                  name:{cn:"十里画廊", ru:"Галерея десяти ли", en:"Shili Gallery"},
+                  desc:{ru:"Самая живописная дорога Яншо — пологая трасса между карстовыми пиками, идеальна для велосипеда."},
+                  travel:{ru:"Прямо у отеля — в шаговой доступности"},
+                  cost:{ru:"Велосипед: ~15–20¥/час в аренду"},
+                  photo:{ru:"Утренний туман возможен после дождя. Лучшее время: 08:00–11:00."},
+                  icon:"🚲", tag:{ru:"День"}
+                },
+                {kind:"sight_detail", city:"ys",
+                  name:{cn:"月亮山", ru:"Лунная гора", en:"Moon Hill"},
+                  desc:{ru:"Природная арка в известняковой скале — символ Яншо. Уникальный силуэт виден издалека."},
+                  travel:{ru:"5–15 мин на электробайке от отеля"},
+                  cost:{ru:"Вход: ~35–60¥ · Подъём: 30–50 мин"},
+                  photo:{ru:"Закатный свет (17:30–18:30) лучше всего подчёркивает рельеф арки. Идти против солнца утром."},
+                  icon:"🌕", tag:{ru:"Закат"}
+                }
               ]}
             ]
           },
-          { date:"2026-04-18", title_ru:"Xingping + река Ли 🚤", summary:"兴坪古镇 • 兴坪码头 • 漓江",
+          { date:"2026-04-18", title_ru:"🚤 Синпин + Лаочжай + Река Ли", summary:"兴坪古镇 • 漓江 • 老寨山",
             blocks:[
               {type:"plan", items:[
-                {kind:"sight", city:"ys", name:{cn:"兴坪古镇", ru:"Старый город Синпин", en:"Xingping Ancient Town"}},
-                {kind:"sight", city:"ys", name:{cn:"兴坪码头", ru:"Пирс Синпин", en:"Xingping Pier"}},
-                {kind:"sight", city:"ys", name:{cn:"漓江", ru:"Река Ли", en:"Li River"}}
+                {kind:"sight_detail", city:"ys",
+                  name:{cn:"兴坪古镇", ru:"Древний город Синпин", en:"Xingping Ancient Town"},
+                  desc:{ru:"Старинный городок на берегу Ли — оригинальный пейзаж с купюры 20 юаней. Минимум туристов утром."},
+                  travel:{ru:"45–60 мин на машине/DiDi от отеля"},
+                  cost:{ru:"DiDi: ~150–220¥ · Вход в город: бесплатно"},
+                  photo:{ru:"Приезжайте до 10:00 или после 16:00. Утренняя дымка создаёт живописный слоистый эффект."},
+                  icon:"🏘", tag:{ru:"Утро"}
+                },
+                {kind:"sight_detail", city:"ys",
+                  name:{cn:"漓江", ru:"Река Ли", en:"Li River"},
+                  desc:{ru:"Классические карстовые пейзажи Китая — один из самых фотогеничных речных маршрутов мира."},
+                  travel:{ru:"Набережная в Синпин — 2 мин пешком"},
+                  cost:{ru:"Прогулка вдоль берега — бесплатно · Лодка: договорная"},
+                  photo:{ru:"Лёгкая утренняя дымка создаёт атмосферный воздушный эффект. Золотой час в 17:00–18:00."},
+                  icon:"⛵", tag:{ru:"День"}
+                },
+                {kind:"sight_detail", city:"ys",
+                  name:{cn:"老寨山", ru:"Гора Лаочжай", en:"Laozhai Hill"},
+                  desc:{ru:"Короткий подъём над Синпин с лучшей панорамой изгиба Ли и карстовых пиков."},
+                  travel:{ru:"Подъём от деревни Синпин: 20–40 мин"},
+                  cost:{ru:"Бесплатно"},
+                  photo:{ru:"Лучший свет — закат 17:30–18:30. Ориентация: запад. Взять телеобъектив для сжатия перспективы."},
+                  icon:"⛰", tag:{ru:"Закат"}
+                }
               ]}
             ]
           },
-          { date:"2026-04-19", title_ru:"Свободный день + подготовка к поезду 🚄", summary:"проверить поезд на 20 апреля",
+          { date:"2026-04-19", title_ru:"🌅 Сянгун / Фули + подготовка к поезду", summary:"相公山 (рассвет) · 福利古镇 (альтернатива)",
             blocks:[
-              {type:"transport", items:[
-                {kind:"rail", city:"ys", name:{cn:"阳朔站", ru:"Вокзал Яншо", en:"Yangshuo Railway Station"}}
+              {type:"plan", items:[
+                {kind:"sight_detail", city:"ys",
+                  name:{cn:"相公山", ru:"Гора Сянгун", en:"Xianggong Hill"},
+                  desc:{ru:"Самая известная панорама изгиба реки Ли — культовый вид китайской фотографии. Рассветный туман обязателен."},
+                  travel:{ru:"45–60 мин от отеля · DiDi туда-обратно: 250–400¥"},
+                  cost:{ru:"Вход: ~60¥"},
+                  photo:{ru:"ОБЯЗАТЕЛЕН рассвет 06:00–07:30. Туман возможен весной — огромный плюс. Приезжайте за 30 мин до рассвета. Лучшая точка: смотровая площадка наверху."},
+                  icon:"🌄", tag:{ru:"Рассвет"}, optional:true
+                },
+                {kind:"sight_detail", city:"ys",
+                  name:{cn:"福利古镇", ru:"Древний город Фули", en:"Fuli Ancient Town"},
+                  desc:{ru:"Тихий аутентичный городок без туристических толп. Известен традиционными веерами и местным рынком."},
+                  travel:{ru:"30–40 мин от отеля · DiDi: ~80–120¥"},
+                  cost:{ru:"Вход: бесплатно"},
+                  photo:{ru:"Мягкий дневной свет, аутентичные бытовые сцены. Хорошо для стрит-фото."},
+                  icon:"🏡", tag:{ru:"Альтернатива"}, optional:true
+                }
               ]},
-              {type:"query", items:[
-                {kind:"query", city:"ys", name:{cn:"阳朔站 → 广州南站 · 4月20日", ru:"Поиск билета на 20 апреля (Яншо → Гуанчжоу)", en:"Yangshuo → Guangzhou South · Apr 20"}}
+              {type:"transport", items:[
+                {kind:"rail", city:"ys", name:{cn:"阳朔站", ru:"Яншо", en:"Yangshuo Railway Station"}}
               ]}
             ]
           },
-          { date:"2026-04-20", title_ru:"🚄 Яншо → Гуанчжоу", summary:"阳朔站 → 广州南站",
+          { date:"2026-04-20", title_ru:"🚄 Яншо → Гуанчжоу", summary:"G2929 · 11:25 阳朔站 → 13:19 广州南站 · 1ч54м",
             blocks:[
               {type:"transport", items:[
-                {kind:"rail", city:"ys", name:{cn:"阳朔站", ru:"Вокзал Яншо", en:"Yangshuo Railway Station"}},
-                {kind:"rail", city:"gz", name:{cn:"广州南站", ru:"Южный вокзал Гуанчжоу", en:"Guangzhou South Railway Station"}}
+                {kind:"train", trainNo:"G2929",
+                  route:{from:"YS", to:"GZS"},
+                  scheduleLocal:{dep:{date:"2026-04-20",time:"11:25"},arr:{date:"2026-04-20",time:"13:19"}},
+                  duration:{cn:"1小时54分",en:"1h 54m",ru:"1 ч 54 мин"},
+                  seatClass:{cn:"二等座",en:"Second Class",ru:"2-й класс"},
+                  direct:true,
+                  booking:{orderNo:"1539363330975552",pax:2,total:"4 304,60 ₽"}},
+                {kind:"rail", city:"ys", name:{cn:"阳朔站",  ru:"Яншо",           en:"Yangshuo Railway Station"}},
+                {kind:"rail", city:"gz", name:{cn:"广州南站", ru:"Гуанчжоу Южный", en:"Guangzhou South Railway Station"}}
               ]}
             ]
           }
@@ -605,6 +731,48 @@
     ]
   };
 
+  // ── Данные о поездах ────────────────────────────────────────────────────────
+  const TRAINS_DATA = {
+    stations:{
+      CQE: {code:"CQE",  name:{cn:"重庆东站",  ru:"Чунцин Восточный",    en:"Chongqing East Railway Station"}},
+      ZJJW:{code:"ZJJW", name:{cn:"张家界西站", ru:"Чжанцзяцзе Западный", en:"Zhangjiajie West Railway Station"}},
+      FHGC:{code:"FHGC", name:{cn:"凤凰古城站", ru:"Фэнхуан Гучэн",       en:"Fenghuanggucheng Railway Station"}},
+      GL:  {code:"GL",   name:{cn:"桂林站",    ru:"Гуйлинь",             en:"Guilin Railway Station"}},
+      YS:  {code:"YS",   name:{cn:"阳朔站",    ru:"Яншо",                en:"Yangshuo Railway Station"}},
+      GZS: {code:"GZS",  name:{cn:"广州南站",  ru:"Гуанчжоу Южный",      en:"Guangzhou South Railway Station"}}
+    },
+    trips:[
+      {kind:"train", trainNo:"G2445",
+        route:{from:"CQE",  to:"ZJJW"},
+        scheduleLocal:{dep:{date:"2026-04-12",time:"09:52"},arr:{date:"2026-04-12",time:"11:58"}},
+        duration:{cn:"2小时6分",en:"2h 6m",ru:"2 ч 6 мин"},
+        seatClass:{cn:"二等座",en:"Second Class",ru:"2-й класс"},
+        direct:true,
+        booking:{orderNo:"1539363330958954",pax:2,total:"5 829,18 ₽"}},
+      {kind:"train", trainNo:"G6151",
+        route:{from:"ZJJW", to:"FHGC"},
+        scheduleLocal:{dep:{date:"2026-04-15",time:"09:42"},arr:{date:"2026-04-15",time:"10:34"}},
+        duration:{cn:"52分",en:"52m",ru:"52 мин"},
+        seatClass:{cn:"二等座",en:"Second Class",ru:"2-й класс"},
+        direct:true,
+        booking:{orderNo:"1539363330969714",pax:2,total:"2 396,54 ₽"}},
+      {kind:"train", trainNo:"D3967",
+        route:{from:"FHGC", to:"GL"},
+        scheduleLocal:{dep:{date:"2026-04-16",time:"08:09"},arr:{date:"2026-04-16",time:"14:27"}},
+        duration:{cn:"6小时18分",en:"6h 18m",ru:"6 ч 18 мин"},
+        seatClass:{cn:"二等座",en:"Second Class",ru:"2-й класс"},
+        direct:true,
+        booking:{orderNo:"1539363330927756",pax:2,total:"6 759,44 ₽"}},
+      {kind:"train", trainNo:"G2929",
+        route:{from:"YS",   to:"GZS"},
+        scheduleLocal:{dep:{date:"2026-04-20",time:"11:25"},arr:{date:"2026-04-20",time:"13:19"}},
+        duration:{cn:"1小时54分",en:"1h 54m",ru:"1 ч 54 мин"},
+        seatClass:{cn:"二等座",en:"Second Class",ru:"2-й класс"},
+        direct:true,
+        booking:{orderNo:"1539363330975552",pax:2,total:"4 304,60 ₽"}}
+    ]
+  };
+
   // Добавляем "рейсы" как отдельный city в TRIP
   TRIP.cities.push({
     id:"fl", color:"var(--fl)",
@@ -650,13 +818,15 @@
     ]
   });
 
-  const kindIcon  = {hotel:"🏨",address:"📮",airport:"✈️",rail:"🚄",metro:"🚇",sight:"📍",query:"🧾",food:"🍜",flight:"🛫"};
+  const kindIcon  = {hotel:"🏨",address:"📮",airport:"✈️",rail:"🚄",metro:"🚇",sight:"📍",sight_detail:"📍",query:"🧾",food:"🍜",flight:"🛫",train:"🚄"};
   const kindLabel = {
     hotel:{ru:"Отель",en:"Hotel"}, address:{ru:"Адрес",en:"Address"},
     airport:{ru:"Аэропорт",en:"Airport"}, rail:{ru:"Вокзал",en:"Rail"},
     metro:{ru:"Метро",en:"Metro"}, sight:{ru:"Локация",en:"Sight"},
+    sight_detail:{ru:"Локация",en:"Sight"},
     query:{ru:"Поиск Trip/12306",en:"Trip/12306 Query"}, food:{ru:"Еда",en:"Food"},
     flight:{ru:"Рейс",en:"Flight"},
+    train:{ru:"Поезд",en:"Train"},
   };
 
   const FOOD_CQ = [
@@ -814,9 +984,123 @@
     </div>`;
   }
 
-  // ── renderCard — диспетчер: flight или обычная locCard ────────────────────
+  // ── DetailCard — расширенная карточка локации (sight_detail) ────────────
+  function renderDetailCard(item){
+    const cn  = item?.name?.cn ?? "—";
+    const en  = item?.name?.en ?? "—";
+    const ru  = item?.name?.ru ?? "—";
+    const tag = item?.tag?.ru  ?? "Локация";
+    const icon = item.icon ?? "📍";
+
+    const optBadge = item.optional
+      ? `<span class="metaChip" style="background:#FEF3C7;color:#92400E;border-color:#FDE68A">⚡ опционально</span>`
+      : "";
+
+    const cnSafe = esc(cn);
+    const enSafe = esc(en);
+
+    // Логика дня — вставим отдельно на уровне блока, здесь только карточка
+    return `<div class="detailCard">
+      <div class="detailHead">
+        <span class="detailIcon">${icon}</span>
+        <div class="detailTitles">
+          <div class="detailCN" translate="no" data-copy="${cnSafe}">${cnSafe}</div>
+          <div class="detailEN" data-copy="${enSafe}">${enSafe}</div>
+          <div class="detailRU">${esc(ru)}</div>
+        </div>
+        <span class="detailTag">${esc(tag)}</span>
+      </div>
+
+      ${item.desc?.ru ? `<div class="detailDesc">${esc(item.desc.ru)}</div>` : ""}
+
+      <div class="detailMeta">
+        ${item.travel?.ru ? `<div class="detailMetaRow"><span class="detailMetaLabel">🚗 Дорога:</span><span class="detailMetaVal">${esc(item.travel.ru)}</span></div>` : ""}
+        ${item.cost?.ru   ? `<div class="detailMetaRow"><span class="detailMetaLabel">💰 Стоимость:</span><span class="detailMetaVal">${esc(item.cost.ru)}</span></div>` : ""}
+      </div>
+
+      ${item.photo?.ru ? `<div class="photoNote"><span class="photoNoteIcon">📷</span>${esc(item.photo.ru)}</div>` : ""}
+
+      <div class="locMeta" style="margin-top:4px">
+        <span class="metaChip" data-maps="${cnSafe}" style="cursor:pointer">🗺 карты</span>
+        ${optBadge}
+      </div>
+    </div>`;
+  }
+
+  // ── TrainCard — карточка поезда (по паттерну renderFlightCard) ─────────────
+  function renderTrainCard(item){
+    const dep    = item.scheduleLocal?.dep;
+    const arr    = item.scheduleLocal?.arr;
+    const fromSt = TRAINS_DATA.stations[item.route?.from];
+    const toSt   = TRAINS_DATA.stations[item.route?.to];
+
+    const depTime = dep?.time || "—";
+    const arrTime = arr?.time || "—";
+
+    const durationEN = item.duration?.en || "";
+    const seatCN     = item.seatClass?.cn || "";
+    const seatEN     = item.seatClass?.en || "";
+    const directChip = item.direct ? `<span class="metaChip">直达 / Direct</span>` : "";
+
+    // CN и EN строки генерируем из данных — не храним отдельно в item
+    const nameCN = `${esc(item.trainNo)} · ${esc(fromSt?.name?.cn||"")} → ${esc(toSt?.name?.cn||"")}`;
+    const nameEN = `${esc(item.trainNo)} · ${esc(fromSt?.name?.en||"")} → ${esc(toSt?.name?.en||"")}`;
+
+    // booking info
+    const b = item.booking;
+    const bookingLine = b
+      ? `<div class="flightNote">📋 №${esc(b.orderNo)} · ${esc(String(b.pax))} чел. · ${esc(b.total)}</div>`
+      : "";
+
+    return `<div class="trainCard">
+      <div class="trainHead">
+        <span style="font-size:18px">🚄</span>
+        <div>
+          <div class="trainNo">${esc(item.trainNo)}</div>
+          <div class="trainSub">${esc(item.seatClass?.ru||"")} · ${esc(seatEN)}</div>
+        </div>
+        <span class="trainTag">Поезд</span>
+      </div>
+
+      <div class="trainRoute">
+        <div class="trainSt">
+          <div class="trainTime">${esc(depTime)}</div>
+          <div class="trainCode" translate="no">${esc(fromSt?.name?.cn||"")}</div>
+          <div class="trainCity">${esc(fromSt?.name?.ru||"")}</div>
+        </div>
+        <div class="trainArrow">
+          ${durationEN?`<div class="trainDuration">${esc(durationEN)}</div>`:""}
+          <div class="trainArrowLine"></div>
+        </div>
+        <div class="trainSt right">
+          <div class="trainTime">${esc(arrTime)}</div>
+          <div class="trainCode" translate="no">${esc(toSt?.name?.cn||"")}</div>
+          <div class="trainCity">${esc(toSt?.name?.ru||"")}</div>
+        </div>
+      </div>
+
+      ${bookingLine}
+
+      <div class="trainNames">
+        <div class="trainNameCN" translate="no" data-copy="${nameCN}">${nameCN}</div>
+        <div class="trainNameEN" data-copy="${nameEN}">${nameEN}</div>
+      </div>
+
+      <div class="trainMeta">
+        <span class="metaChip">🕐 Local time (CST)</span>
+        <span class="metaChip">🎟 ${esc(seatCN)} / ${esc(seatEN)}</span>
+        ${durationEN?`<span class="metaChip">⏱ ${esc(durationEN)}</span>`:""}
+        ${directChip}
+        <span class="metaChip" style="cursor:pointer" data-copy="${nameCN}">tap CN to copy</span>
+      </div>
+    </div>`;
+  }
+
+  // ── renderCard — диспетчер: flight / train / detail / locCard ─────────────
   function renderCard(item){
-    if(item.kind==="flight") return renderFlightCard(item);
+    if(item.kind==="flight")       return renderFlightCard(item);
+    if(item.kind==="train")        return renderTrainCard(item);
+    if(item.kind==="sight_detail") return renderDetailCard(item);
     return renderLocCard(item);
   }
 
@@ -872,10 +1156,28 @@
     const stack=document.getElementById("dayStack");
     stack.innerHTML="";
     const frag=document.createDocumentFragment();
+
+    // Проверим есть ли sight_detail — если да, добавим блок "Логика дня"
+    const allItems=[];
     (day.blocks||[]).forEach(b=>{
       if(types!==null&&!types.includes(b.type)) return;
-      (b.items||[]).forEach(it=>{ const w=document.createElement("div"); w.innerHTML=renderCard(it); frag.appendChild(w.firstElementChild); });
+      (b.items||[]).forEach(it=>allItems.push(it));
     });
+
+    const detailItems = allItems.filter(it=>it.kind==="sight_detail");
+    if(detailItems.length>=2 && (types===null||types.includes("plan"))){
+      const logicDiv = document.createElement("div");
+      logicDiv.className="dayLogic";
+      const rows = detailItems.map(it=>{
+        const tagRu = it?.tag?.ru||"";
+        const nameRu= it?.name?.ru||"";
+        return `<div class="dayLogicRow"><span class="dayLogicTime">${esc(tagRu)}</span>${esc(nameRu)}</div>`;
+      }).join("");
+      logicDiv.innerHTML=`<div class="dayLogicTitle">📅 Логика дня</div>${rows}`;
+      frag.appendChild(logicDiv);
+    }
+
+    allItems.forEach(it=>{ const w=document.createElement("div"); w.innerHTML=renderCard(it); frag.appendChild(w.firstElementChild); });
     stack.appendChild(frag);
     drawer.classList.add("show");
   }
@@ -924,6 +1226,13 @@
     Object.values(FLIGHTS_DATA.airports).forEach(apt=>{
       add({kind:"airport", city:"fl", name:apt.name});
     });
+    // Станции поездов — отдельно
+    add({kind:"rail", city:"cq",  name:TRAINS_DATA.stations.CQE.name});
+    add({kind:"rail", city:"zjj", name:TRAINS_DATA.stations.ZJJW.name});
+    add({kind:"rail", city:"fh",  name:TRAINS_DATA.stations.FHGC.name});
+    add({kind:"rail", city:"fh",  name:TRAINS_DATA.stations.GL.name});   // Guilin — конечная из Фэнхуан
+    add({kind:"rail", city:"ys",  name:TRAINS_DATA.stations.YS.name});
+    add({kind:"rail", city:"gz",  name:TRAINS_DATA.stations.GZS.name});
     return out;
   }
   const POINTS=buildPoints();
@@ -940,7 +1249,9 @@
     const host=document.getElementById("pointsList"); host.innerHTML="";
     const filtered=POINTS.filter(p=>{
       if(city!=="all"&&p.city!==city) return false;
-      if(kind!=="all"&&p.kind!==kind) return false;
+      // sight_detail считается как sight в фильтре типов
+      const effectiveKind = p.kind==="sight_detail" ? "sight" : p.kind;
+      if(kind!=="all"&&effectiveKind!==kind) return false;
       if(!q) return true;
       return `${p?.name?.cn||""} ${p?.name?.ru||""} ${p?.name?.en||""}`.toLowerCase().includes(q);
     });
