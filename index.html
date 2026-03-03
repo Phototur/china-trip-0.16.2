@@ -123,6 +123,33 @@
     .metaChip{font-size:11px;color:var(--muted);background:#f9fafb;border:1px solid rgba(17,24,39,.08);padding:5px 8px;border-radius:999px}
     .locMeta{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
 
+    /* ── Flight card ── */
+    .flightCard{border:1px solid var(--line);background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:12px;overflow:hidden;}
+    .flightHead{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .flightNo{font-weight:900;font-size:15px;letter-spacing:.5px}
+    .flightAirline{font-size:12px;color:var(--muted)}
+    .flightTag{margin-left:auto;font-size:12px;font-weight:900;padding:6px 10px;border-radius:999px;background:#f3f4f6;color:#111827;border:1px solid rgba(17,24,39,.08)}
+    .flightRoute{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center;margin-bottom:10px}
+    .flightApt{display:flex;flex-direction:column;gap:2px}
+    .flightApt.right{align-items:flex-end;text-align:right}
+    .flightTime{font-weight:900;font-size:22px;line-height:1}
+    .flightTz{font-size:11px;color:var(--muted);font-weight:700}
+    .flightIata{font-size:13px;font-weight:900}
+    .flightCity{font-size:12px;color:var(--muted)}
+    .flightPlusDay{display:inline-block;font-size:10px;font-weight:900;background:#FEF3C7;color:#92400E;border-radius:999px;padding:2px 6px;margin-left:4px;vertical-align:middle}
+    .flightArrow{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted)}
+    .flightArrowLine{width:40px;height:1px;background:var(--muted);position:relative}
+    .flightArrowLine::after{content:"›";position:absolute;right:-6px;top:-9px;font-size:14px}
+    .flightDuration{font-size:10px;font-weight:800;color:var(--muted);white-space:nowrap}
+    .flightNames{display:flex;flex-direction:column;gap:4px;margin-bottom:10px;padding:8px 10px;background:#f9fafb;border-radius:12px}
+    .flightNameCN{font-weight:900;font-size:13px;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:8px;padding:2px 4px;margin:-2px -4px}
+    .flightNameCN:active{background:rgba(17,24,39,.06)}
+    .flightNameEN{font-size:12px;color:#111827;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:8px;padding:2px 4px;margin:-2px -4px}
+    .flightNameEN:active{background:rgba(17,24,39,.06)}
+    .flightCheckin{font-size:12px;color:var(--muted);margin-bottom:8px;line-height:1.5}
+    .flightNote{font-size:11px;color:var(--muted);font-style:italic;margin-bottom:6px}
+    .flightMeta{display:flex;gap:6px;flex-wrap:wrap}
+
     .filters{display:grid;gap:10px;grid-template-columns:1fr}
     @media(min-width:860px){.filters{grid-template-columns:1.3fr .7fr .7fr}}
     .in{border:1px solid rgba(17,24,39,.12);background:#fff;border-radius:14px;padding:10px 12px;font-weight:800}
@@ -505,12 +532,131 @@
     ]
   };
 
-  const kindIcon  = {hotel:"🏨",address:"📮",airport:"✈️",rail:"🚄",metro:"🚇",sight:"📍",query:"🧾",food:"🍜"};
+  // ── Данные о рейсах ────────────────────────────────────────────────────────
+  const FLIGHTS_DATA = {
+    timezone:{
+      msk:{label:"MSK",utcOffset:"+03:00"},
+      cst:{label:"CST",utcOffset:"+08:00"},
+      diffHours:5,
+      note_ru:"Китай +5 часов к Москве. Время в карточках — местное для аэропорта."
+    },
+    airports:{
+      PKX:{iata:"PKX", name:{cn:"北京大兴国际机场",ru:"Пекин, аэропорт Дасин (PKX)",en:"Beijing Daxing International Airport (PKX)"}},
+      SVO_T_C:{iata:"SVO",terminal:"C", name:{cn:"莫斯科谢列梅捷沃国际机场（C航站楼）",ru:"Москва, Шереметьево, Терминал C (SVO)",en:"Moscow Sheremetyevo International Airport, Terminal C (SVO)"}},
+      CKG_T3:{iata:"CKG",terminal:"T3", name:{cn:"重庆江北国际机场 T3",ru:"Чунцин, аэропорт Цзянбэй, терминал T3 (CKG)",en:"Chongqing Jiangbei International Airport, Terminal 3 (CKG)"}},
+      CAN_T3:{iata:"CAN",terminal:"T3", name:{cn:"广州白云国际机场 T3",ru:"Гуанчжоу, аэропорт Байюнь, терминал T3 (CAN)",en:"Guangzhou Baiyun International Airport, Terminal 3 (CAN)"}}
+    },
+    flights:[
+      {
+        kind:"flight", city:"fl",
+        flightNo:"MU2076",
+        airline:{cn:"中国东方航空",ru:"China Eastern",en:"China Eastern Airlines"},
+        route:{from:"SVO_T_C",to:"PKX"},
+        scheduleLocal:{
+          dep:{date:"2026-04-08",time:"17:15",tz:"MSK"},
+          arr:{date:"2026-04-09",time:"05:30",tz:"CST",plusDay:true}
+        },
+        crossTimeNote:{ru:"Прилёт на следующий день по пекинскому времени (+5ч к Москве).",en:"Arrival next day Beijing local time (China +5h vs Moscow)."},
+        checkin:{ru:"Стойки 381–402, вход 1",en:"Counters 381–402, Entrance 1",cn:"值机柜台 381–402，入口 1"},
+        gate:{value:null,note_ru:"Выход появится 8 апр, ≈15:15 МСК.",note_en:"Gate update: Apr 8, ~15:15 MSK."},
+        baggage:{value:null,note_ru:"Лента появится 9 апр, ≈05:00 CST.",note_en:"Baggage belt update: Apr 9, ~05:00 CST."},
+        name:{cn:"MU2076 · 谢列梅捷沃→大兴",ru:"MU2076 · SVO → PKX",en:"MU2076 · Sheremetyevo → Daxing"}
+      },
+      {
+        kind:"flight", city:"fl",
+        flightNo:"MU6681",
+        airline:{cn:"中国东方航空",ru:"China Eastern",en:"China Eastern Airlines"},
+        route:{from:"PKX",to:"CKG_T3"},
+        scheduleLocal:{
+          dep:{date:"2026-04-09",time:"07:15",tz:"CST"},
+          arr:{date:"2026-04-09",time:"10:00",tz:"CST"}
+        },
+        checkin:{ru:"Выход W, уровень B1; Выход H. Регистрация до 06:40.",en:"Exit W, level B1; Exit H. Check-in until 06:40.",cn:"W口，B1层；H口。值机截止：06:40。"},
+        gate:{value:null}, baggage:{value:null},
+        name:{cn:"MU6681 · 大兴→重庆",ru:"MU6681 · PKX → CKG",en:"MU6681 · Daxing → Chongqing"}
+      },
+      {
+        kind:"flight", city:"fl",
+        flightNo:"MU6302",
+        airline:{cn:"中国东方航空",ru:"China Eastern",en:"China Eastern Airlines"},
+        route:{from:"CAN_T3",to:"PKX"},
+        scheduleLocal:{
+          dep:{date:"2026-04-23",time:"07:35",tz:"CST"},
+          arr:{date:"2026-04-23",time:"10:25",tz:"CST"}
+        },
+        checkin:{ru:"Зона регистрации: E. До 06:55.",en:"Check-in area E. Until 06:55.",cn:"值机：E区。值机截止：06:55。"},
+        gate:{value:null}, baggage:{value:null},
+        name:{cn:"MU6302 · 白云→大兴",ru:"MU6302 · CAN → PKX",en:"MU6302 · Baiyun → Daxing"}
+      },
+      {
+        kind:"flight", city:"fl",
+        flightNo:"MU2075",
+        airline:{cn:"中国东方航空",ru:"China Eastern",en:"China Eastern Airlines"},
+        route:{from:"PKX",to:"SVO_T_C"},
+        scheduleLocal:{
+          dep:{date:"2026-04-23",time:"11:55",tz:"CST"},
+          arr:{date:"2026-04-23",time:"15:25",tz:"MSK"}
+        },
+        crossTimeNote:{ru:"Прилёт в Москве в 15:25 МСК (в Пекине в этот момент 20:25).",en:"Arrival Moscow 15:25 MSK (Beijing time 20:25 at that moment)."},
+        checkin:{ru:"Выход G, уровень 4, вход 4.",en:"Exit G, level 4, Entrance 4.",cn:"G口，4层；入口 4。"},
+        gate:{value:null}, baggage:{value:null},
+        name:{cn:"MU2075 · 大兴→谢列梅捷沃",ru:"MU2075 · PKX → SVO",en:"MU2075 · Daxing → Sheremetyevo"}
+      }
+    ]
+  };
+
+  // Добавляем "рейсы" как отдельный city в TRIP
+  TRIP.cities.push({
+    id:"fl", color:"var(--fl)",
+    cityName:{ru:"Перелёты", en:"Flights", cn:"航班"},
+    days:[
+      {
+        date:"2026-04-08",
+        title_ru:"✈️ Вылет Москва → Пекин",
+        summary:"MU2076 · SVO T-C → PKX · деп. 17:15 МСК",
+        blocks:[
+          {type:"flight", items:[
+            FLIGHTS_DATA.flights[0],
+            {kind:"airport",city:"fl",name:FLIGHTS_DATA.airports.SVO_T_C.name},
+          ]}
+        ]
+      },
+      {
+        date:"2026-04-09",
+        title_ru:"✈️ Пекин → Чунцин (пересадка)",
+        summary:"MU6681 · PKX → CKG T3 · деп. 07:15 CST",
+        blocks:[
+          {type:"flight", items:[
+            FLIGHTS_DATA.flights[1],
+            {kind:"airport",city:"fl",name:FLIGHTS_DATA.airports.PKX.name},
+            {kind:"airport",city:"fl",name:FLIGHTS_DATA.airports.CKG_T3.name},
+          ]}
+        ]
+      },
+      {
+        date:"2026-04-23",
+        title_ru:"✈️ Гуанчжоу → Пекин → Москва",
+        summary:"MU6302 CAN→PKX · MU2075 PKX→SVO · деп. 07:35 CST",
+        blocks:[
+          {type:"flight", items:[
+            FLIGHTS_DATA.flights[2],
+            FLIGHTS_DATA.flights[3],
+            {kind:"airport",city:"fl",name:FLIGHTS_DATA.airports.CAN_T3.name},
+            {kind:"airport",city:"fl",name:FLIGHTS_DATA.airports.PKX.name},
+            {kind:"airport",city:"fl",name:FLIGHTS_DATA.airports.SVO_T_C.name},
+          ]}
+        ]
+      }
+    ]
+  });
+
+  const kindIcon  = {hotel:"🏨",address:"📮",airport:"✈️",rail:"🚄",metro:"🚇",sight:"📍",query:"🧾",food:"🍜",flight:"🛫"};
   const kindLabel = {
     hotel:{ru:"Отель",en:"Hotel"}, address:{ru:"Адрес",en:"Address"},
     airport:{ru:"Аэропорт",en:"Airport"}, rail:{ru:"Вокзал",en:"Rail"},
     metro:{ru:"Метро",en:"Metro"}, sight:{ru:"Локация",en:"Sight"},
     query:{ru:"Поиск Trip/12306",en:"Trip/12306 Query"}, food:{ru:"Еда",en:"Food"},
+    flight:{ru:"Рейс",en:"Flight"},
   };
 
   const FOOD_CQ = [
@@ -583,6 +729,97 @@
     </div>`;
   }
 
+  // ── FlightCard — специальная карточка для рейса ───────────────────────────
+  function renderFlightCard(item){
+    const dep = item.scheduleLocal?.dep;
+    const arr = item.scheduleLocal?.arr;
+    const fromApt = FLIGHTS_DATA.airports[item.route?.from];
+    const toApt   = FLIGHTS_DATA.airports[item.route?.to];
+
+    const depTz = dep?.tz?.toUpperCase()||"";
+    const arrTz = arr?.tz?.toUpperCase()||"";
+    const plusDay = arr?.plusDay ? `<span class="flightPlusDay">+1 day</span>` : "";
+
+    // Длительность (приблизительно — только если оба в одной TZ)
+    let duration = "";
+    if(dep && arr && dep.tz === arr.tz){
+      const [dh,dm] = dep.time.split(":").map(Number);
+      const [ah,am] = arr.time.split(":").map(Number);
+      let mins = (ah*60+am) - (dh*60+dm);
+      if(arr.plusDay) mins += 24*60;
+      if(mins>0) duration = `${Math.floor(mins/60)}h ${mins%60}m`;
+    }
+
+    // Чекин-строка: CN копируется, RU/EN — справочно
+    const checkinCN = item.checkin?.cn || "";
+    const checkinRU = item.checkin?.ru || "";
+    const checkinEN = item.checkin?.en || "";
+
+    // CN/EN копируются по тапу
+    const nameCN = item.name?.cn || item.flightNo;
+    const nameEN = item.name?.en || item.flightNo;
+
+    // gate / baggage update notes
+    const gateNote    = item.gate?.note_ru    ? `<span class="metaChip">🚪 ${esc(item.gate.note_ru)}</span>` : "";
+    const baggageNote = item.baggage?.note_ru ? `<span class="metaChip">🧳 ${esc(item.baggage.note_ru)}</span>` : "";
+    const crossNote   = item.crossTimeNote?.ru ? `<div class="flightNote">${esc(item.crossTimeNote.ru)}</div>` : "";
+
+    return `<div class="flightCard">
+      <div class="flightHead">
+        <span style="font-size:18px">🛫</span>
+        <div>
+          <div class="flightNo">${esc(item.flightNo)}</div>
+          <div class="flightAirline">${esc(item.airline?.ru||"")} · ${esc(item.airline?.en||"")}</div>
+        </div>
+        <span class="flightTag">Перелёт</span>
+      </div>
+
+      <div class="flightRoute">
+        <div class="flightApt">
+          <div class="flightTime">${esc(dep?.time||"—")}</div>
+          <div class="flightTz">${esc(depTz)}</div>
+          <div class="flightIata">${esc(fromApt?.iata||"—")}</div>
+          <div class="flightCity">${esc(fromApt?.name?.ru||"")}</div>
+        </div>
+        <div class="flightArrow">
+          ${duration?`<div class="flightDuration">${esc(duration)}</div>`:""}
+          <div class="flightArrowLine"></div>
+        </div>
+        <div class="flightApt right">
+          <div class="flightTime">${esc(arr?.time||"—")}${plusDay}</div>
+          <div class="flightTz">${esc(arrTz)}</div>
+          <div class="flightIata">${esc(toApt?.iata||"—")}</div>
+          <div class="flightCity">${esc(toApt?.name?.ru||"")}</div>
+        </div>
+      </div>
+
+      ${crossNote}
+
+      <div class="flightNames">
+        <div class="flightNameCN" translate="no" data-copy="${esc(nameCN)}">${esc(nameCN)}</div>
+        <div class="flightNameEN" data-copy="${esc(nameEN)}">${esc(nameEN)}</div>
+      </div>
+
+      ${checkinRU?`<div class="flightCheckin">🛂 ${esc(checkinRU)}</div>`:""}
+      ${checkinCN?`<div class="flightCheckin" style="margin-top:-4px"><span class="copyable" translate="no" data-copy="${esc(checkinCN)}">${esc(checkinCN)}</span></div>`:""}
+
+      <div class="flightMeta">
+        <span class="metaChip">🕐 Local time</span>
+        <span class="metaChip">TZ dep: ${esc(depTz)}</span>
+        <span class="metaChip">TZ arr: ${esc(arrTz)}</span>
+        ${gateNote}
+        ${baggageNote}
+        <span class="metaChip" style="cursor:pointer" data-copy="${esc(nameCN)}">tap CN to copy</span>
+      </div>
+    </div>`;
+  }
+
+  // ── renderCard — диспетчер: flight или обычная locCard ────────────────────
+  function renderCard(item){
+    if(item.kind==="flight") return renderFlightCard(item);
+    return renderLocCard(item);
+  }
+
   // ── Copy ──────────────────────────────────────────────────────────────────
   function showToast(txt){
     const t=document.getElementById("toast");
@@ -637,7 +874,7 @@
     const frag=document.createDocumentFragment();
     (day.blocks||[]).forEach(b=>{
       if(types!==null&&!types.includes(b.type)) return;
-      (b.items||[]).forEach(it=>{ const w=document.createElement("div"); w.innerHTML=renderLocCard(it); frag.appendChild(w.firstElementChild); });
+      (b.items||[]).forEach(it=>{ const w=document.createElement("div"); w.innerHTML=renderCard(it); frag.appendChild(w.firstElementChild); });
     });
     stack.appendChild(frag);
     drawer.classList.add("show");
@@ -677,11 +914,16 @@
   function buildPoints(){
     const seen=new Set(), out=[];
     function add(it){
-      const key=`${it.kind}|${it.city}|${it?.name?.cn||""}|${it?.name?.en||""}`;
+      if(!it||!it.kind) return;
+      const key=`${it.kind}|${it.city||""}|${it?.name?.cn||""}|${it?.name?.en||""}`;
       if(seen.has(key)) return; seen.add(key); out.push(it);
     }
     TRIP.cities.forEach(city=>city.days.forEach(day=>(day.blocks||[]).forEach(b=>(b.items||[]).forEach(add))));
     FOOD_CQ.forEach(add);
+    // Аэропорты — отдельно, чтобы искались в Points
+    Object.values(FLIGHTS_DATA.airports).forEach(apt=>{
+      add({kind:"airport", city:"fl", name:apt.name});
+    });
     return out;
   }
   const POINTS=buildPoints();
@@ -709,7 +951,7 @@
     }
     // FIX 2: DocumentFragment — один reflow вместо N
     const frag=document.createDocumentFragment();
-    filtered.forEach(p=>{ const w=document.createElement("div"); w.innerHTML=renderLocCard(p); frag.appendChild(w.firstElementChild); });
+    filtered.forEach(p=>{ const w=document.createElement("div"); w.innerHTML=renderCard(p); frag.appendChild(w.firstElementChild); });
     host.appendChild(frag);
   }
   // FIX 2: debounce только на текстовый ввод; select — мгновенно
@@ -732,7 +974,7 @@
       head.querySelector("button").addEventListener("click",()=>openMaps(cat.maps));
       stack.appendChild(head);
       const frag=document.createDocumentFragment();
-      items.forEach(it=>{ const w=document.createElement("div"); w.innerHTML=renderLocCard(it); frag.appendChild(w.firstElementChild); });
+      items.forEach(it=>{ const w=document.createElement("div"); w.innerHTML=renderCard(it); frag.appendChild(w.firstElementChild); });
       stack.appendChild(frag);
     });
     const tip=document.createElement("div"); tip.className="card";
@@ -779,16 +1021,17 @@
     const keyItems=[
       ...blockItems(day,["hotel"]).slice(0,3),
       ...blockItems(day,["transport"]).slice(0,3),
+      ...blockItems(day,["flight"]).slice(0,4),
       ...blockItems(day,["plan","optional"]).slice(0,6),
     ];
     const frag=document.createDocumentFragment();
-    keyItems.forEach(it=>{ const w=document.createElement("div"); w.innerHTML=renderLocCard(it); frag.appendChild(w.firstElementChild); });
+    keyItems.forEach(it=>{ const w=document.createElement("div"); w.innerHTML=renderCard(it); frag.appendChild(w.firstElementChild); });
     stack.appendChild(frag);
 
-    const hi=blockItems(day,["hotel"]), ti=blockItems(day,["transport"]), pi=blockItems(day,["plan","optional"]);
+    const hi=blockItems(day,["hotel"]), ti=blockItems(day,["transport","flight"]), pi=blockItems(day,["plan","optional"]);
     // FIX 1: используем единую openDrawer
     document.getElementById("btnTodayHotel").onclick    =()=> hi.length ? openDrawer(city.id,day.date,["hotel"],"Отель") : showToast("Нет отеля в этот день");
-    document.getElementById("btnTodayTransport").onclick=()=> ti.length ? openDrawer(city.id,day.date,["transport","query"],"Транспорт") : showToast("Нет транспорта в этот день");
+    document.getElementById("btnTodayTransport").onclick=()=> ti.length ? openDrawer(city.id,day.date,["transport","query","flight"],"Транспорт") : showToast("Нет транспорта в этот день");
     document.getElementById("btnTodayPlaces").onclick   =()=> pi.length ? openDrawer(city.id,day.date,["plan","optional"],"Локации") : showToast("Нет локаций в этот день");
     document.getElementById("btnTodayCopyAll").onclick=()=>{
       const all=[]; (day.blocks||[]).forEach(b=>(b.items||[]).forEach(it=>{ if(it?.name?.cn) all.push(it.name.cn); }));
