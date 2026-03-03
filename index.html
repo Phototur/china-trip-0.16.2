@@ -16,6 +16,8 @@
       --bg:#F6F7F9; --card:#fff; --text:#111827; --muted:#6B7280; --line:rgba(17,24,39,.10);
       --shadow:0 10px 24px rgba(0,0,0,.08); --r:18px; --tabH:64px;
       --cq:#2F80ED; --zjj:#27AE60; --fh:#F2994A; --ys:#9B51E0; --gz:#EB5757; --fl:#828282;
+      /* FIX 4: z-index как переменные */
+      --z-header:50; --z-tabs:70; --z-drawer:80; --z-toast:90;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -23,7 +25,7 @@
     a{color:inherit;text-decoration:none}
 
     .wrap{max-width:980px;margin:0 auto;padding:14px 14px calc(var(--tabH) + env(safe-area-inset-bottom) + 18px) 14px;}
-    header{position:sticky;top:0;z-index:50;background:rgba(246,247,249,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(17,24,39,.06);}
+    header{position:sticky;top:0;z-index:var(--z-header);background:rgba(246,247,249,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(17,24,39,.06);}
     .top{max-width:980px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
     .brand{min-width:0}
     .brand .t{font-weight:900;font-size:15px}
@@ -50,7 +52,7 @@
     .btn.big{flex:1;min-width:140px;padding:12px 12px}
     .btn.primary{background:#111827;color:#fff;border-color:transparent}
 
-    .tabs{position:fixed;left:0;right:0;bottom:0;z-index:70}
+    .tabs{position:fixed;left:0;right:0;bottom:0;z-index:var(--z-tabs)}
     .tabsInner{max-width:980px;margin:0 auto;padding:10px 14px calc(env(safe-area-inset-bottom) + 10px) 14px;}
     .tabbar{display:flex;gap:8px;background:rgba(255,255,255,.86);border:1px solid rgba(17,24,39,.10);border-radius:18px;box-shadow:var(--shadow);padding:8px;}
     .tab{flex:1;min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
@@ -76,10 +78,31 @@
     .dayBtn .s{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .chev{color:var(--muted);font-weight:900}
 
-    .drawer{position:fixed;inset:0;z-index:80;background:rgba(17,24,39,.55);display:none}
-    .drawer.show{display:block}
-    .sheet{position:absolute;left:0;right:0;bottom:0;max-height:86vh;background:var(--bg);border-top-left-radius:22px;border-top-right-radius:22px;
-      box-shadow:0 -14px 30px rgba(0,0,0,.18);overflow:auto;padding:12px 12px calc(12px + env(safe-area-inset-bottom)) 12px;}
+    /* FIX 4: Drawer — анимация через CSS transform, убран display:none/block */
+    .drawer{
+      position:fixed;inset:0;z-index:var(--z-drawer);
+      display:flex;align-items:flex-end;
+      background:rgba(17,24,39,0);
+      pointer-events:none;
+      transition:background .28s ease;
+    }
+    .drawer.show{
+      background:rgba(17,24,39,.55);
+      pointer-events:auto;
+    }
+    .sheet{
+      width:100%;max-height:86vh;
+      background:var(--bg);
+      border-top-left-radius:22px;border-top-right-radius:22px;
+      box-shadow:0 -14px 30px rgba(0,0,0,.18);
+      overflow:auto;
+      padding:12px 12px calc(12px + env(safe-area-inset-bottom)) 12px;
+      transform:translateY(100%);
+      transition:transform .32s cubic-bezier(0.32,.72,0,1);
+      will-change:transform;
+    }
+    .drawer.show .sheet{transform:translateY(0)}
+
     .sheetHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:8px 6px 10px 6px}
     .sheetHeader .title{font-weight:900;font-size:15px}
     .sheetHeader .sub{color:var(--muted);font-size:12px}
@@ -105,10 +128,17 @@
     .in{border:1px solid rgba(17,24,39,.12);background:#fff;border-radius:14px;padding:10px 12px;font-weight:800}
     .list{display:flex;flex-direction:column;gap:12px}
 
-    .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--tabH) + env(safe-area-inset-bottom) + 14px);
-      background:#111827;color:#fff;padding:10px 12px;border-radius:999px;box-shadow:var(--shadow);font-size:12px;font-weight:900;
-      display:none;z-index:90;max-width:90vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-    .toast.show{display:block}
+    /* FIX 4: toast через opacity вместо display */
+    .toast{
+      position:fixed;left:50%;transform:translateX(-50%);
+      bottom:calc(var(--tabH) + env(safe-area-inset-bottom) + 14px);
+      background:#111827;color:#fff;padding:10px 12px;border-radius:999px;
+      box-shadow:var(--shadow);font-size:12px;font-weight:900;
+      opacity:0;pointer-events:none;
+      z-index:var(--z-toast);max-width:90vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      transition:opacity .18s ease;
+    }
+    .toast.show{opacity:1}
   </style>
 </head>
 
@@ -154,14 +184,12 @@
     <div class="card" id="todayCard">
       <div class="h2" style="margin-top:0">Сегодня</div>
       <div class="muted" id="todaySub">—</div>
-
       <div class="row" style="margin-top:12px">
         <button class="btn big" id="btnTodayHotel">📍 Отель</button>
         <button class="btn big" id="btnTodayTransport">🚄/✈️ Транспорт</button>
         <button class="btn big" id="btnTodayPlaces">🗺 Локации дня</button>
         <button class="btn big primary" id="btnTodayCopyAll">📋 Скопировать всё (CN)</button>
       </div>
-
       <div class="row" style="margin-top:10px">
         <button class="btn big" id="btnTodayFood">🍜 Где поесть рядом</button>
       </div>
@@ -191,68 +219,51 @@
   <section class="view" id="view-guide">
     <div class="h2">Справочник</div>
     <div class="stack">
-
-      <!-- Chongqing food -->
       <div class="card" id="guide-cq-food">
         <div class="h2" style="margin-top:0">🍜 Чунцин — Еда</div>
-        <div class="muted">
-          Подборка мест по категориям. Тап по <b>CN/EN</b> копирует, RU — справочно. В картах лучше искать по CN.
-        </div>
-
+        <div class="muted">Подборка мест по категориям. Тап по <b>CN/EN</b> копирует, RU — справочно. В картах лучше искать по CN.</div>
         <div style="height:10px"></div>
         <div class="row">
           <button class="btn" id="btnCQFoodOpen">🍜 Открыть подборку</button>
           <button class="btn" data-copy="不要太辣">📋 Скопировать 不要太辣</button>
         </div>
-
         <details style="margin-top:12px">
           <summary style="cursor:pointer;font-weight:900">🔥 Краткое руководство по хот-поту (офлайн) <span class="muted">▾</span></summary>
-          <div class="muted" style="margin-top:10px; line-height:1.5">
+          <div class="muted" style="margin-top:10px;line-height:1.5">
             <b>1) Бульон (锅底)</b><br>
             • 牛油麻辣锅 — очень острый классический<br>
             • 鸳鸯锅 — половина острая / половина нет (лучший выбор для старта)<br>
             • 清汤锅 — неострый лёгкий<br><br>
-
             <b>2) Что заказывать</b><br>
             • 肥牛 (говядина), 羊肉 (баранина)<br>
             • 生菜, 土豆片, 金针菇<br>
             • 宽粉, 豆腐皮, 毛肚 (классика)<br><br>
-
             <b>3) Соус (蘸料)</b><br>
             • База: 香油 + 蒜泥 (+ 香菜 / 葱花 по желанию)<br><br>
-
             <b>4) Как попросить не слишком остро</b><br>
             • 不要太辣 / 微辣 / 少辣<br><br>
-
             <b>5) Секреты</b><br>
             • Мясо 10–20 секунд, 毛肚 7–10 секунд<br>
             • Если слишком остро — 豆奶 (соевое молоко)
           </div>
         </details>
-
         <div style="height:10px"></div>
         <div class="row">
-          <a class="btn" href="https://radiotochki.net/blog/travel/kitayskiy-hot-pot-hogo-polnoe-rukovodstvo-dlya-novichkov-ot-vybora-bulona-do-sekretov-sousa.html" target="_blank" rel="noopener">
-            📖 Полный гид по хот-поту
-          </a>
+          <a class="btn" href="https://radiotochki.net/blog/travel/kitayskiy-hot-pot-hogo-polnoe-rukovodstvo-dlya-novichkov-ot-vybora-bulona-do-sekretov-sousa.html" target="_blank" rel="noopener">📖 Полный гид по хот-поту</a>
         </div>
       </div>
-
       <div class="card">
         <div class="h2" style="margin-top:0">🍜 Еда</div>
         <div class="muted">Фразы/блюда можно расширять позже. Механика копирования: CN/EN — копируются, RU — нет.</div>
       </div>
-
       <div class="card">
         <div class="h2" style="margin-top:0">✅ Советы</div>
         <div class="muted">Чек-листы, транспорт, оплата (Alipay), вокзалы/поезда и т.д.</div>
       </div>
-
       <div class="card">
         <div class="h2" style="margin-top:0">📴 Оффлайн</div>
         <div class="muted">Если версия на Pages обновилась, очисти кэш и обнови страницу.</div>
       </div>
-
       <div class="card">
         <div class="h2" style="margin-top:0">ℹ️ Про приложение</div>
         <div class="muted">План поездки 8–23 апреля 2026, архитектура: единый формат name{cn,ru,en} для всех точек.</div>
@@ -273,7 +284,7 @@
   </div>
 </div>
 
-<!-- Day Drawer -->
+<!-- Drawer -->
 <div class="drawer" id="drawer">
   <div class="sheet" role="dialog" aria-modal="true">
     <div class="sheetHeader">
@@ -290,11 +301,6 @@
 <div class="toast" id="toast">✅ Скопировано</div>
 
 <script>
-  // =========================
-  // ARCH v2: универсальные точки
-  // item = { kind, city, name:{cn,ru,en}, optional?, map? }
-  // =========================
-
   const TRIP = {
     dateRange:{ start:"2026-04-08", end:"2026-04-23" },
     cities:[
@@ -339,7 +345,6 @@
           }
         ]
       },
-
       {
         id:"zjj", color:"var(--zjj)",
         cityName:{ru:"Чжанцзяцзе", en:"Zhangjiajie", cn:"张家界"},
@@ -388,7 +393,6 @@
           }
         ]
       },
-
       {
         id:"fh", color:"var(--fh)",
         cityName:{ru:"Фэнхуан", en:"Fenghuang", cn:"凤凰"},
@@ -417,7 +421,6 @@
           }
         ]
       },
-
       {
         id:"ys", color:"var(--ys)",
         cityName:{ru:"Яншо", en:"Yangshuo", cn:"阳朔"},
@@ -466,7 +469,6 @@
           }
         ]
       },
-
       {
         id:"gz", color:"var(--gz)",
         cityName:{ru:"Гуанчжоу", en:"Guangzhou", cn:"广州"},
@@ -480,7 +482,6 @@
               ]}
             ]
           },
-
           { date:"2026-04-21", title_ru:"Панорамный день 🌆🌉", summary:"Baiyun + Glass Bridge • Canton Tower • Zhujiang New Town",
             blocks:[
               {type:"plan", items:[
@@ -491,7 +492,6 @@
               ]}
             ]
           },
-
           { date:"2026-04-22", title_ru:"Старый район / прогулки / шопинг", summary:"北京路 • 沙面岛",
             blocks:[
               {type:"plan", items:[
@@ -505,97 +505,85 @@
     ]
   };
 
-  // ===== Icons & labels =====
-  const kindIcon = {hotel:"🏨",address:"📮",airport:"✈️",rail:"🚄",metro:"🚇",sight:"📍",query:"🧾",food:"🍜"};
+  const kindIcon  = {hotel:"🏨",address:"📮",airport:"✈️",rail:"🚄",metro:"🚇",sight:"📍",query:"🧾",food:"🍜"};
   const kindLabel = {
-    hotel:{ru:"Отель",en:"Hotel"},
-    address:{ru:"Адрес",en:"Address"},
-    airport:{ru:"Аэропорт",en:"Airport"},
-    rail:{ru:"Вокзал",en:"Rail"},
-    metro:{ru:"Метро",en:"Metro"},
-    sight:{ru:"Локация",en:"Sight"},
-    query:{ru:"Поиск Trip/12306",en:"Trip/12306 Query"},
-    food:{ru:"Еда",en:"Food"},
+    hotel:{ru:"Отель",en:"Hotel"}, address:{ru:"Адрес",en:"Address"},
+    airport:{ru:"Аэропорт",en:"Airport"}, rail:{ru:"Вокзал",en:"Rail"},
+    metro:{ru:"Метро",en:"Metro"}, sight:{ru:"Локация",en:"Sight"},
+    query:{ru:"Поиск Trip/12306",en:"Trip/12306 Query"}, food:{ru:"Еда",en:"Food"},
   };
 
-  // ===== CQ Food dataset (also appears in Points) =====
   const FOOD_CQ = [
-    {kind:"food", city:"cq", cat:"hotpot",   name:{cn:"珮姐老火锅",       ru:"Peijie Hotpot",            en:"Peijie Old Hotpot"}},
-    {kind:"food", city:"cq", cat:"hotpot",   name:{cn:"周师兄重庆火锅",   ru:"Zhou Shixiong Hotpot",     en:"Zhou Shixiong Chongqing Hotpot"}},
-    {kind:"food", city:"cq", cat:"hotpot",   name:{cn:"洞子老火锅",       ru:"Dongzi Old Hotpot",         en:"Dongzi Old Hotpot"}},
-    {kind:"food", city:"cq", cat:"noodles",  name:{cn:"花市豌杂面",       ru:"Huashi Wanzamian",          en:"Huashi Wanza Noodles"}},
-    {kind:"food", city:"cq", cat:"noodles",  name:{cn:"板凳面庄",         ru:"Bandeng Noodles",           en:"Bandeng Noodle House"}},
-    {kind:"food", city:"cq", cat:"chuanchuan",name:{cn:"马路边边串串香",   ru:"Malubianbian Chuanchuan",  en:"Malubianbian Chuanchuan"}},
-    {kind:"food", city:"cq", cat:"sichuan",  name:{cn:"陶然居",           ru:"Taoranju",                  en:"Taoranju"}},
-    {kind:"food", city:"cq", cat:"sichuan",  name:{cn:"老四川酒家",       ru:"Old Sichuan Restaurant",    en:"Old Sichuan Restaurant"}},
-    {kind:"food", city:"cq", cat:"dessert",  name:{cn:"一只酸奶牛",       ru:"Yizhi Suannai Niu (йогурт)",en:"Yizhi Suannai Niu"}},
-    {kind:"food", city:"cq", cat:"dessert",  name:{cn:"书亦烧仙草",       ru:"Shuyi (травяной десерт)",   en:"Shuyi Shaoxiancao"}},
+    {kind:"food",city:"cq",cat:"hotpot",   name:{cn:"珮姐老火锅",     ru:"Peijie Hotpot",              en:"Peijie Old Hotpot"}},
+    {kind:"food",city:"cq",cat:"hotpot",   name:{cn:"周师兄重庆火锅", ru:"Zhou Shixiong Hotpot",       en:"Zhou Shixiong Chongqing Hotpot"}},
+    {kind:"food",city:"cq",cat:"hotpot",   name:{cn:"洞子老火锅",     ru:"Dongzi Old Hotpot",           en:"Dongzi Old Hotpot"}},
+    {kind:"food",city:"cq",cat:"noodles",  name:{cn:"花市豌杂面",     ru:"Huashi Wanzamian",            en:"Huashi Wanza Noodles"}},
+    {kind:"food",city:"cq",cat:"noodles",  name:{cn:"板凳面庄",       ru:"Bandeng Noodles",             en:"Bandeng Noodle House"}},
+    {kind:"food",city:"cq",cat:"chuanchuan",name:{cn:"马路边边串串香", ru:"Malubianbian Chuanchuan",    en:"Malubianbian Chuanchuan"}},
+    {kind:"food",city:"cq",cat:"sichuan",  name:{cn:"陶然居",         ru:"Taoranju",                    en:"Taoranju"}},
+    {kind:"food",city:"cq",cat:"sichuan",  name:{cn:"老四川酒家",     ru:"Old Sichuan Restaurant",      en:"Old Sichuan Restaurant"}},
+    {kind:"food",city:"cq",cat:"dessert",  name:{cn:"一只酸奶牛",     ru:"Yizhi Suannai Niu (йогурт)", en:"Yizhi Suannai Niu"}},
+    {kind:"food",city:"cq",cat:"dessert",  name:{cn:"书亦烧仙草",     ru:"Shuyi (травяной десерт)",     en:"Shuyi Shaoxiancao"}},
   ];
 
   const FOOD_CATS = [
-    {id:"hotpot",     ru:"🔥 Хот-пот",            en:"Hotpot",            maps:"重庆 火锅"},
-    {id:"noodles",    ru:"🍜 Лапша",              en:"Noodles",           maps:"重庆 小面"},
-    {id:"chuanchuan", ru:"🍢 Chuanchuan",         en:"Chuanchuan",        maps:"重庆 串串香"},
-    {id:"sichuan",    ru:"🌶 Сычуаньская кухня",  en:"Sichuan cuisine",   maps:"重庆 川菜"},
-    {id:"dessert",    ru:"🍧 Десерты и напитки",  en:"Desserts & drinks", maps:"重庆 甜品"},
+    {id:"hotpot",     ru:"🔥 Хот-пот",           en:"Hotpot",           maps:"重庆 火锅"},
+    {id:"noodles",    ru:"🍜 Лапша",             en:"Noodles",          maps:"重庆 小面"},
+    {id:"chuanchuan", ru:"🍢 Chuanchuan",        en:"Chuanchuan",       maps:"重庆 串串香"},
+    {id:"sichuan",    ru:"🌶 Сычуаньская кухня", en:"Sichuan cuisine",  maps:"重庆 川菜"},
+    {id:"dessert",    ru:"🍧 Десерты и напитки", en:"Desserts & drinks",maps:"重庆 甜品"},
   ];
 
-  // ===== Utils =====
+  // ── Utils ─────────────────────────────────────────────────────────────────
   function fmtDateRu(iso){
     const d=new Date(iso+"T00:00:00");
-    const dd=String(d.getDate()).padStart(2,"0");
-    const mm=String(d.getMonth()+1).padStart(2,"0");
-    return `${dd}.${mm}`;
+    return `${String(d.getDate()).padStart(2,"0")}.${String(d.getMonth()+1).padStart(2,"0")}`;
   }
   function esc(s){
     return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   }
+
+  // FIX 3: openMaps — iOS → Apple Maps, остальные → Google Maps
   function openMaps(query){
-    const q = encodeURIComponent(query || "");
-    const url = `https://maps.apple.com/?q=${q}`;
-    window.open(url, "_blank", "noopener");
+    const q=encodeURIComponent(query||"");
+    const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream;
+    window.open(isIOS ? `https://maps.apple.com/?q=${q}` : `https://maps.google.com/?q=${q}`, "_blank","noopener");
   }
 
-  // ===== LocationCard (v2) =====
+  // FIX 2: debounce
+  function debounce(fn, ms){
+    let t; return function(...a){ clearTimeout(t); t=setTimeout(()=>fn.apply(this,a), ms); };
+  }
+
+  // ── LocationCard ──────────────────────────────────────────────────────────
   function renderLocCard(item){
-    const icon=kindIcon[item.kind] || "📍";
-    const type=kindLabel[item.kind] || {ru:"Точка",en:"Point"};
-    const city = TRIP.cities.find(c=>c.id===item.city)?.cityName || {};
-    const tag = city.ru || type.ru;
-
-    const cn=item?.name?.cn ?? "—";
-    const ru=item?.name?.ru ?? "—";
-    const en=item?.name?.en ?? "—";
-
-    const cnAttr = (cn && cn!=="—") ? `data-copy="${esc(cn)}"` : "";
-    const enAttr = (en && en!=="—") ? `data-copy="${esc(en)}"` : "";
-
-    const optChip = item.optional ? `<span class="metaChip">⚡ опционально</span>` : "";
-    const mapsQ = (item.map || cn || en || "").trim();
-    const mapsChip = mapsQ ? `<span class="metaChip" data-maps="${esc(mapsQ)}" style="cursor:pointer">🗺 карты</span>` : "";
-
-    return `
-      <div class="locCard">
-        <div class="locTop">
-          <span class="locIcon">${icon}</span>
-          <div class="locTitle">${esc(type.ru)} <span class="muted">· ${esc(type.en)}</span></div>
-          <span class="locTag">${esc(tag)}</span>
-        </div>
-        <div class="locMain">
-          <div class="locCN copyable" ${cnAttr}>${esc(cn)}</div>
-          <div class="locRU">${esc(ru)}</div>
-          <div class="locEN copyable" ${enAttr}>${esc(en)}</div>
-        </div>
-        <div class="locMeta">
-          <span class="metaChip">tap CN/EN to copy</span>
-          ${optChip}
-          ${mapsChip}
-        </div>
+    const icon=kindIcon[item.kind]||"📍";
+    const type=kindLabel[item.kind]||{ru:"Точка",en:"Point"};
+    const city=TRIP.cities.find(c=>c.id===item.city)?.cityName||{};
+    const cn=item?.name?.cn??"—", ru=item?.name?.ru??"—", en=item?.name?.en??"—";
+    const cnAttr=(cn&&cn!=="—")?`data-copy="${esc(cn)}"`:""
+    const enAttr=(en&&en!=="—")?`data-copy="${esc(en)}"`:"";
+    const mapsQ=(item.map||cn||en||"").trim();
+    return `<div class="locCard">
+      <div class="locTop">
+        <span class="locIcon">${icon}</span>
+        <div class="locTitle">${esc(type.ru)} <span class="muted">· ${esc(type.en)}</span></div>
+        <span class="locTag">${esc(city.ru||type.ru)}</span>
       </div>
-    `;
+      <div class="locMain">
+        <div class="locCN copyable" translate="no" ${cnAttr}>${esc(cn)}</div>
+        <div class="locRU">${esc(ru)}</div>
+        <div class="locEN copyable" ${enAttr}>${esc(en)}</div>
+      </div>
+      <div class="locMeta">
+        <span class="metaChip">tap CN/EN to copy</span>
+        ${item.optional?`<span class="metaChip">⚡ опционально</span>`:""}
+        ${mapsQ?`<span class="metaChip" data-maps="${esc(mapsQ)}" style="cursor:pointer">🗺 карты</span>`:""}
+      </div>
+    </div>`;
   }
 
-  // ===== Copy =====
+  // ── Copy ──────────────────────────────────────────────────────────────────
   function showToast(txt){
     const t=document.getElementById("toast");
     t.textContent=txt||"✅ Скопировано";
@@ -605,39 +593,22 @@
   }
   async function copyText(text){
     try{ await navigator.clipboard.writeText(text); showToast("✅ Скопировано"); }
-    catch(e){
-      const ta=document.createElement("textarea");
-      ta.value=text; document.body.appendChild(ta);
-      ta.select(); document.execCommand("copy"); ta.remove();
-      showToast("✅ Скопировано");
-    }
+    catch(e){ prompt("Скопируй вручную (Ctrl+C / Cmd+C):", text); showToast("✅ Скопировано"); }
   }
-
-  document.addEventListener("click",(e)=>{
-    const copyEl=e.target.closest("[data-copy]");
-    if(copyEl){
-      const v=copyEl.getAttribute("data-copy");
-      if(v) copyText(v);
-      return;
-    }
-    const mapsEl=e.target.closest("[data-maps]");
-    if(mapsEl){
-      const q=mapsEl.getAttribute("data-maps");
-      if(q) openMaps(q);
-      return;
-    }
+  document.addEventListener("click",e=>{
+    const c=e.target.closest("[data-copy]"); if(c){ copyText(c.getAttribute("data-copy")); return; }
+    const m=e.target.closest("[data-maps]"); if(m){ openMaps(m.getAttribute("data-maps")); }
   });
 
-  // ===== Tabs =====
+  // ── Tabs ──────────────────────────────────────────────────────────────────
   const views={
     today:document.getElementById("view-today"),
     route:document.getElementById("view-route"),
     points:document.getElementById("view-points"),
     guide:document.getElementById("view-guide"),
   };
-  document.getElementById("tabbar").addEventListener("click",(e)=>{
-    const tab=e.target.closest(".tab");
-    if(!tab) return;
+  document.getElementById("tabbar").addEventListener("click",e=>{
+    const tab=e.target.closest(".tab"); if(!tab) return;
     const v=tab.getAttribute("data-view");
     Object.values(views).forEach(x=>x.classList.remove("active"));
     views[v].classList.add("active");
@@ -645,65 +616,40 @@
     tab.classList.add("active");
   });
 
-  // ===== Drawer =====
+  // ── Drawer ────────────────────────────────────────────────────────────────
   const drawer=document.getElementById("drawer");
-  document.getElementById("btnClose").onclick=()=>drawer.classList.remove("show");
-  drawer.addEventListener("click",(e)=>{ if(e.target===drawer) drawer.classList.remove("show"); });
+  function closeDrawer(){ drawer.classList.remove("show"); }
+  document.getElementById("btnClose").onclick=closeDrawer;
+  drawer.addEventListener("click",e=>{ if(e.target===drawer) closeDrawer(); });
 
-  function openDayAll(cityId, date){
+  // FIX 1: единая функция вместо openDayAll + openDayByBlockTypes
+  // types=null → показать все; types=[...] → только эти типы блоков
+  function openDrawer(cityId, date, types=null, titleSuffix=null){
     const city=TRIP.cities.find(c=>c.id===cityId);
     const day=city?.days.find(d=>d.date===date);
     if(!city||!day) return;
-    document.getElementById("dayTitle").textContent=`${day.date} · ${city.cityName.ru}`;
-    document.getElementById("daySub").textContent=`${day.title_ru}${day.summary?(" — "+day.summary):""}`;
-
+    document.getElementById("dayTitle").textContent=
+      `${day.date} · ${city.cityName.ru}${titleSuffix?" · "+titleSuffix:""}`;
+    document.getElementById("daySub").textContent=
+      `${day.title_ru}${day.summary?" — "+day.summary:""}`;
     const stack=document.getElementById("dayStack");
     stack.innerHTML="";
+    const frag=document.createDocumentFragment();
     (day.blocks||[]).forEach(b=>{
-      (b.items||[]).forEach(it=>{
-        const w=document.createElement("div");
-        w.innerHTML=renderLocCard(it);
-        stack.appendChild(w.firstElementChild);
-      });
+      if(types!==null&&!types.includes(b.type)) return;
+      (b.items||[]).forEach(it=>{ const w=document.createElement("div"); w.innerHTML=renderLocCard(it); frag.appendChild(w.firstElementChild); });
     });
-
+    stack.appendChild(frag);
     drawer.classList.add("show");
   }
 
-  function openDayByBlockTypes(cityId, date, types, titleSuffix){
-    const city=TRIP.cities.find(c=>c.id===cityId);
-    const day=city?.days.find(d=>d.date===date);
-    if(!city||!day) return;
-
-    document.getElementById("dayTitle").textContent=`${day.date} · ${city.cityName.ru}${titleSuffix?(" · "+titleSuffix):""}`;
-    document.getElementById("daySub").textContent=`${day.title_ru}${day.summary?(" — "+day.summary):""}`;
-
-    const stack=document.getElementById("dayStack");
-    stack.innerHTML="";
-
-    (day.blocks||[]).forEach(b=>{
-      if(!types.includes(b.type)) return;
-      (b.items||[]).forEach(it=>{
-        const w=document.createElement("div");
-        w.innerHTML=renderLocCard(it);
-        stack.appendChild(w.firstElementChild);
-      });
-    });
-
-    drawer.classList.add("show");
-  }
-
-  // ===== Route render =====
+  // ── Route ─────────────────────────────────────────────────────────────────
   function renderRoute(){
-    const host=document.getElementById("routeStack");
-    host.innerHTML="";
+    const host=document.getElementById("routeStack"); host.innerHTML="";
     TRIP.cities.forEach(city=>{
-      const details=document.createElement("details");
-      details.className="city";
-
+      const details=document.createElement("details"); details.className="city";
       const dates=city.days.map(d=>d.date).sort();
-      const range = dates.length ? `${dates[0]} → ${dates[dates.length-1]}` : "";
-
+      const range=dates.length?`${dates[0]} → ${dates[dates.length-1]}`:"";
       details.innerHTML=`
         <summary>
           <div class="cityLeft">
@@ -715,274 +661,160 @@
           </div>
           <div class="chev">▾</div>
         </summary>
-        <div class="days"></div>
-      `;
-
+        <div class="days"></div>`;
       const daysEl=details.querySelector(".days");
       city.days.forEach(day=>{
-        const b=document.createElement("div");
-        b.className="dayBtn";
-        b.innerHTML=`
-          <div class="l">
-            <div class="t">${fmtDateRu(day.date)} · ${esc(day.title_ru)}</div>
-            <div class="s">${esc(day.summary||"")}</div>
-          </div>
-          <div class="chev">›</div>
-        `;
-        b.addEventListener("click",()=>openDayAll(city.id, day.date));
+        const b=document.createElement("div"); b.className="dayBtn";
+        b.innerHTML=`<div class="l"><div class="t">${fmtDateRu(day.date)} · ${esc(day.title_ru)}</div><div class="s">${esc(day.summary||"")}</div></div><div class="chev">›</div>`;
+        b.addEventListener("click",()=>openDrawer(city.id,day.date)); // FIX 1
         daysEl.appendChild(b);
       });
-
       host.appendChild(details);
     });
   }
 
-  // ===== Points =====
+  // ── Points ────────────────────────────────────────────────────────────────
   function buildPoints(){
-    const seen=new Set();
-    const out=[];
-
+    const seen=new Set(), out=[];
     function add(it){
-      const cn=it?.name?.cn||"";
-      const en=it?.name?.en||"";
-      const key = `${it.kind}|${it.city}|${cn}|${en}`;
-      if(seen.has(key)) return;
-      seen.add(key);
-      out.push(it);
+      const key=`${it.kind}|${it.city}|${it?.name?.cn||""}|${it?.name?.en||""}`;
+      if(seen.has(key)) return; seen.add(key); out.push(it);
     }
-
-    TRIP.cities.forEach(city=>{
-      city.days.forEach(day=>{
-        (day.blocks||[]).forEach(b=>{
-          (b.items||[]).forEach(add);
-        });
-      });
-    });
-
+    TRIP.cities.forEach(city=>city.days.forEach(day=>(day.blocks||[]).forEach(b=>(b.items||[]).forEach(add))));
     FOOD_CQ.forEach(add);
     return out;
   }
-  const POINTS = buildPoints();
+  const POINTS=buildPoints();
 
   function renderFilters(){
-    const fCity=document.getElementById("fCity");
-    const fKind=document.getElementById("fKind");
-    fCity.innerHTML = `<option value="all">Все города</option>` + TRIP.cities.map(c=>`<option value="${c.id}">${esc(c.cityName.ru)}</option>`).join("");
-    const kinds=["all", ...Object.keys(kindLabel)];
-    fKind.innerHTML = kinds.map(k=>{
-      if(k==="all") return `<option value="all">Все типы</option>`;
-      return `<option value="${k}">${esc(kindLabel[k].ru)}</option>`;
-    }).join("");
+    document.getElementById("fCity").innerHTML=`<option value="all">Все города</option>`+TRIP.cities.map(c=>`<option value="${c.id}">${esc(c.cityName.ru)}</option>`).join("");
+    document.getElementById("fKind").innerHTML=["all",...Object.keys(kindLabel)].map(k=>k==="all"?`<option value="all">Все типы</option>`:`<option value="${k}">${esc(kindLabel[k].ru)}</option>`).join("");
   }
 
   function renderPoints(){
     const q=(document.getElementById("q").value||"").trim().toLowerCase();
     const city=document.getElementById("fCity").value;
     const kind=document.getElementById("fKind").value;
-    const host=document.getElementById("pointsList");
-    host.innerHTML="";
-
-    const filtered = POINTS.filter(p=>{
-      if(city!=="all" && p.city!==city) return false;
-      if(kind!=="all" && p.kind!==kind) return false;
+    const host=document.getElementById("pointsList"); host.innerHTML="";
+    const filtered=POINTS.filter(p=>{
+      if(city!=="all"&&p.city!==city) return false;
+      if(kind!=="all"&&p.kind!==kind) return false;
       if(!q) return true;
-      const s = `${p?.name?.cn||""} ${p?.name?.ru||""} ${p?.name?.en||""}`.toLowerCase();
-      return s.includes(q);
+      return `${p?.name?.cn||""} ${p?.name?.ru||""} ${p?.name?.en||""}`.toLowerCase().includes(q);
     });
-
     if(!filtered.length){
-      const empty=document.createElement("div");
-      empty.className="card";
-      empty.innerHTML=`<div class="muted">Ничего не найдено. Попробуй CN (“西站”) или EN (“Canton”).</div>`;
-      host.appendChild(empty);
-      return;
+      const e=document.createElement("div"); e.className="card";
+      e.innerHTML=`<div class="muted">Ничего не найдено. Попробуй CN ("西站") или EN ("Canton").</div>`;
+      host.appendChild(e); return;
     }
-
-    filtered.forEach(p=>{
-      const w=document.createElement("div");
-      w.innerHTML=renderLocCard(p);
-      host.appendChild(w.firstElementChild);
-    });
+    // FIX 2: DocumentFragment — один reflow вместо N
+    const frag=document.createDocumentFragment();
+    filtered.forEach(p=>{ const w=document.createElement("div"); w.innerHTML=renderLocCard(p); frag.appendChild(w.firstElementChild); });
+    host.appendChild(frag);
   }
+  // FIX 2: debounce только на текстовый ввод; select — мгновенно
+  const renderPointsDebounced=debounce(renderPoints, 150);
+  document.getElementById("q").addEventListener("input", renderPointsDebounced);
+  document.getElementById("fCity").addEventListener("input", renderPoints);
+  document.getElementById("fKind").addEventListener("input", renderPoints);
 
-  // ===== CQ Food Drawer =====
+  // ── CQ Food Drawer ────────────────────────────────────────────────────────
   function renderFoodDrawerCQ(title, subtitle){
-    document.getElementById("dayTitle").textContent = title;
-    document.getElementById("daySub").textContent = subtitle;
-
-    const stack=document.getElementById("dayStack");
-    stack.innerHTML="";
-
+    document.getElementById("dayTitle").textContent=title;
+    document.getElementById("daySub").textContent=subtitle;
+    const stack=document.getElementById("dayStack"); stack.innerHTML="";
     FOOD_CATS.forEach(cat=>{
-      const items = FOOD_CQ.filter(x=>x.cat===cat.id);
-      if(!items.length) return;
-
-      const head = document.createElement("div");
-      head.className = "card";
-      head.innerHTML = `
-        <div class="h2" style="margin-top:0">${esc(cat.ru)} <span class="muted">· ${esc(cat.en)}</span></div>
-        <div class="row" style="margin-top:8px">
-          <button class="btn" type="button">🗺 Открыть поиск в картах</button>
-        </div>
-        <div class="muted" style="margin-top:8px">Тап по CN/EN копирует · RU — справочно</div>
-      `;
-      head.querySelector("button").addEventListener("click", ()=>openMaps(cat.maps));
+      const items=FOOD_CQ.filter(x=>x.cat===cat.id); if(!items.length) return;
+      const head=document.createElement("div"); head.className="card";
+      head.innerHTML=`<div class="h2" style="margin-top:0">${esc(cat.ru)} <span class="muted">· ${esc(cat.en)}</span></div>
+        <div class="row" style="margin-top:8px"><button class="btn" type="button">🗺 Открыть поиск в картах</button></div>
+        <div class="muted" style="margin-top:8px">Тап по CN/EN копирует · RU — справочно</div>`;
+      head.querySelector("button").addEventListener("click",()=>openMaps(cat.maps));
       stack.appendChild(head);
-
-      items.forEach(it=>{
-        const wrap = document.createElement("div");
-        wrap.innerHTML = renderLocCard(it);
-        stack.appendChild(wrap.firstElementChild);
-      });
+      const frag=document.createDocumentFragment();
+      items.forEach(it=>{ const w=document.createElement("div"); w.innerHTML=renderLocCard(it); frag.appendChild(w.firstElementChild); });
+      stack.appendChild(frag);
     });
-
-    const tip = document.createElement("div");
-    tip.className="card";
-    tip.innerHTML = `
-      <div class="h2" style="margin-top:0">📝 Не слишком остро</div>
-      <div class="muted" style="line-height:1.6">
-        不要太辣 — не слишком остро<br>
-        微辣 — слегка остро<br>
-        少辣 — меньше остроты
-      </div>
-      <div class="row" style="margin-top:10px">
-        <button class="btn" data-copy="不要太辣">📋 Скопировать 不要太辣</button>
-      </div>
-    `;
+    const tip=document.createElement("div"); tip.className="card";
+    tip.innerHTML=`<div class="h2" style="margin-top:0">📝 Не слишком остро</div>
+      <div class="muted" style="line-height:1.6">不要太辣 — не слишком остро<br>微辣 — слегка остро<br>少辣 — меньше остроты</div>
+      <div class="row" style="margin-top:10px"><button class="btn" data-copy="不要太辣">📋 Скопировать 不要太辣</button></div>`;
     stack.appendChild(tip);
-
     drawer.classList.add("show");
   }
 
-  // ===== Today logic =====
+  // ── Today ─────────────────────────────────────────────────────────────────
   function isoToday(){
     const d=new Date();
-    const y=d.getFullYear();
-    const m=String(d.getMonth()+1).padStart(2,"0");
-    const day=String(d.getDate()).padStart(2,"0");
-    return `${y}-${m}-${day}`;
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
   }
   function findClosestTripDay(iso){
-    if(iso < TRIP.dateRange.start) return TRIP.dateRange.start;
-    if(iso > TRIP.dateRange.end) return TRIP.dateRange.end;
+    if(iso<TRIP.dateRange.start) return TRIP.dateRange.start;
+    if(iso>TRIP.dateRange.end)   return TRIP.dateRange.end;
     return iso;
   }
   function dayCityForDate(iso){
-    for(const city of TRIP.cities){
-      for(const day of city.days){
-        if(day.date===iso) return {city, day};
-      }
-    }
+    for(const city of TRIP.cities) for(const day of city.days) if(day.date===iso) return {city,day};
     return null;
   }
+  function blockItems(day,types){ const out=[]; (day.blocks||[]).forEach(b=>{ if(types.includes(b.type)) out.push(...(b.items||[])); }); return out; }
+
   function summarizeNow(){
-    const today=isoToday();
-    const target=findClosestTripDay(today);
-    const m=dayCityForDate(target);
-    const pillDot=document.getElementById("pillDot");
-    const pillText=document.getElementById("pillText");
-
-    if(!m){
-      pillDot.style.background="#111827";
-      pillText.textContent="Нет данных";
-      return;
-    }
-
-    pillDot.style.background = m.city.color;
-
-    if(today < TRIP.dateRange.start) pillText.textContent = `До поездки: ${fmtDateRu(target)} · ${m.city.cityName.ru}`;
-    else if(today > TRIP.dateRange.end) pillText.textContent = `После поездки: ${fmtDateRu(target)} · ${m.city.cityName.ru}`;
-    else pillText.textContent = `Сегодня: ${fmtDateRu(target)} · ${m.city.cityName.ru}`;
-  }
-
-  function blockItems(day, types){
-    const out=[];
-    (day.blocks||[]).forEach(b=>{
-      if(types.includes(b.type)) out.push(...(b.items||[]));
-    });
-    return out;
+    const today=isoToday(), target=findClosestTripDay(today), m=dayCityForDate(target);
+    const pillDot=document.getElementById("pillDot"), pillText=document.getElementById("pillText");
+    if(!m){ pillDot.style.background="#111827"; pillText.textContent="Нет данных"; return; }
+    pillDot.style.background=m.city.color;
+    if(today<TRIP.dateRange.start)       pillText.textContent=`До поездки: ${fmtDateRu(target)} · ${m.city.cityName.ru}`;
+    else if(today>TRIP.dateRange.end)    pillText.textContent=`После поездки: ${fmtDateRu(target)} · ${m.city.cityName.ru}`;
+    else                                 pillText.textContent=`Сегодня: ${fmtDateRu(target)} · ${m.city.cityName.ru}`;
   }
 
   function renderToday(){
-    const today=isoToday();
-    const target=findClosestTripDay(today);
-    const m=dayCityForDate(target);
-    const sub=document.getElementById("todaySub");
-    const stack=document.getElementById("todayStack");
+    const today=isoToday(), target=findClosestTripDay(today), m=dayCityForDate(target);
+    const sub=document.getElementById("todaySub"), stack=document.getElementById("todayStack");
     stack.innerHTML="";
-
     if(!m){ sub.textContent="Нет данных"; return; }
+    const {city,day}=m;
+    sub.innerHTML=`<b>${esc(day.title_ru)}</b> <span class="muted">· ${esc(city.cityName.ru)}</span><br><span class="muted">${esc(day.summary||"")}</span>`;
+    const keyItems=[
+      ...blockItems(day,["hotel"]).slice(0,3),
+      ...blockItems(day,["transport"]).slice(0,3),
+      ...blockItems(day,["plan","optional"]).slice(0,6),
+    ];
+    const frag=document.createDocumentFragment();
+    keyItems.forEach(it=>{ const w=document.createElement("div"); w.innerHTML=renderLocCard(it); frag.appendChild(w.firstElementChild); });
+    stack.appendChild(frag);
 
-    const {city, day}=m;
-    sub.innerHTML = `<b>${esc(day.title_ru)}</b> <span class="muted">· ${esc(city.cityName.ru)}</span><br><span class="muted">${esc(day.summary||"")}</span>`;
-
-    // show a few “key” cards
-    const keyItems=[];
-    keyItems.push(...blockItems(day, ["hotel"]).slice(0,3));
-    keyItems.push(...blockItems(day, ["transport"]).slice(0,3));
-    keyItems.push(...blockItems(day, ["plan","optional"]).slice(0,6));
-    keyItems.forEach(it=>{
-      const w=document.createElement("div");
-      w.innerHTML=renderLocCard(it);
-      stack.appendChild(w.firstElementChild);
-    });
-
-    const hotelItems = blockItems(day, ["hotel"]);
-    const transportItems = blockItems(day, ["transport"]);
-    const placeItems = blockItems(day, ["plan","optional"]);
-
-    document.getElementById("btnTodayHotel").onclick=()=> hotelItems.length ? openDayByBlockTypes(city.id, day.date, ["hotel"], "Отель") : showToast("Нет отеля в этот день");
-    document.getElementById("btnTodayTransport").onclick=()=> transportItems.length ? openDayByBlockTypes(city.id, day.date, ["transport","query"], "Транспорт") : showToast("Нет транспорта в этот день");
-    document.getElementById("btnTodayPlaces").onclick=()=> placeItems.length ? openDayByBlockTypes(city.id, day.date, ["plan","optional"], "Локации") : showToast("Нет локаций в этот день");
-
+    const hi=blockItems(day,["hotel"]), ti=blockItems(day,["transport"]), pi=blockItems(day,["plan","optional"]);
+    // FIX 1: используем единую openDrawer
+    document.getElementById("btnTodayHotel").onclick    =()=> hi.length ? openDrawer(city.id,day.date,["hotel"],"Отель") : showToast("Нет отеля в этот день");
+    document.getElementById("btnTodayTransport").onclick=()=> ti.length ? openDrawer(city.id,day.date,["transport","query"],"Транспорт") : showToast("Нет транспорта в этот день");
+    document.getElementById("btnTodayPlaces").onclick   =()=> pi.length ? openDrawer(city.id,day.date,["plan","optional"],"Локации") : showToast("Нет локаций в этот день");
     document.getElementById("btnTodayCopyAll").onclick=()=>{
-      const all=[];
-      (day.blocks||[]).forEach(b=>{
-        (b.items||[]).forEach(it=>{
-          const cn = it?.name?.cn;
-          if(cn) all.push(cn);
-        });
-      });
-      if(!all.length) return showToast("Нечего копировать");
-      copyText(all.join("\n"));
+      const all=[]; (day.blocks||[]).forEach(b=>(b.items||[]).forEach(it=>{ if(it?.name?.cn) all.push(it.name.cn); }));
+      if(!all.length) return showToast("Нечего копировать"); copyText(all.join("\n"));
     };
-
-    // Food nearby: only for Chongqing right now
     document.getElementById("btnTodayFood").onclick=()=>{
-      if(city.id !== "cq") return showToast("Кнопка еды настроена для Чунцина");
-      renderFoodDrawerCQ("🍜 Где поесть рядом (Чунцин)", "Хот-пот • лапша • chuanchuan • десерты");
+      if(city.id!=="cq") return showToast("Кнопка еды настроена для Чунцина");
+      renderFoodDrawerCQ("🍜 Где поесть рядом (Чунцин)","Хот-пот • лапша • chuanchuan • десерты");
     };
   }
 
-  // cache clear
-  document.getElementById("btnClear").onclick = async ()=>{
+  document.getElementById("btnClear").onclick=async()=>{
     if(!("caches" in window)) return showToast("Cache API недоступен");
-    const keys=await caches.keys();
-    await Promise.all(keys.map(k=>caches.delete(k)));
+    await Promise.all((await caches.keys()).map(k=>caches.delete(k)));
     showToast("Кэш очищен");
   };
 
-  // points listeners
-  ["q","fCity","fKind"].forEach(id=>document.getElementById(id).addEventListener("input", renderPoints));
+  document.getElementById("btnCQFoodOpen")?.addEventListener("click",()=>{
+    renderFoodDrawerCQ("🍜 Чунцин — Еда","Подборка заведений + подсказки по остроте");
+  });
 
-  // Guide button
-  const btnCQFoodOpen = document.getElementById("btnCQFoodOpen");
-  if(btnCQFoodOpen){
-    btnCQFoodOpen.addEventListener("click", ()=>{
-      renderFoodDrawerCQ("🍜 Чунцин — Еда", "Подборка заведений + подсказки по остроте");
-    });
-  }
+  // ── Init ──────────────────────────────────────────────────────────────────
+  renderRoute(); renderFilters(); renderPoints(); summarizeNow(); renderToday();
 
-  // init
-  renderRoute();
-  renderFilters();
-  renderPoints();
-  summarizeNow();
-  renderToday();
-
-  // SW
   if("serviceWorker" in navigator){
-    window.addEventListener("load", ()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+    window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
   }
 </script>
 </body>
