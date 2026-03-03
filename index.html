@@ -117,7 +117,7 @@
   <div class="top">
     <div class="brand">
       <div class="t">🇨🇳 China Trip</div>
-      <div class="s">8–23 апреля 2026 · тап по CN/EN копирует, RU — справочно</div>
+      <div class="s">8–23 апреля 2026 · CN/EN копируются · RU — справочно</div>
     </div>
     <div class="pill"><span class="dot" id="pillDot"></span><span id="pillText">…</span></div>
   </div>
@@ -132,7 +132,7 @@
             1) В поездке открывай <b>Сегодня</b>.<br>
             2) Для планирования — <b>Маршрут</b>.<br>
             3) Любая точка — вкладка <b>Точки</b> (поиск CN/RU/EN).<br>
-            4) Для DiDi обычно вставляй <b>CN</b>, для поиска можно копировать <b>EN</b>.
+            4) Для DiDi/карт обычно вставляй <b>CN</b>, для поиска можно копировать <b>EN</b>.
           </div>
         </div>
         <div class="card">
@@ -157,7 +157,7 @@
 
       <div class="row" style="margin-top:12px">
         <button class="btn big" id="btnTodayHotel">📍 Отель</button>
-        <button class="btn big" id="btnTodayTransport">🚄/✈️ Вокзал/аэропорт</button>
+        <button class="btn big" id="btnTodayTransport">🚄/✈️ Транспорт</button>
         <button class="btn big" id="btnTodayPlaces">🗺 Локации дня</button>
         <button class="btn big primary" id="btnTodayCopyAll">📋 Скопировать всё (CN)</button>
       </div>
@@ -192,6 +192,7 @@
     <div class="h2">Справочник</div>
     <div class="stack">
 
+      <!-- Chongqing food -->
       <div class="card" id="guide-cq-food">
         <div class="h2" style="margin-top:0">🍜 Чунцин — Еда</div>
         <div class="muted">
@@ -239,7 +240,7 @@
 
       <div class="card">
         <div class="h2" style="margin-top:0">🍜 Еда</div>
-        <div class="muted">Добавим фразы/блюда позже. Механика копирования: CN/EN — копируются, RU — нет.</div>
+        <div class="muted">Фразы/блюда можно расширять позже. Механика копирования: CN/EN — копируются, RU — нет.</div>
       </div>
 
       <div class="card">
@@ -254,7 +255,7 @@
 
       <div class="card">
         <div class="h2" style="margin-top:0">ℹ️ Про приложение</div>
-        <div class="muted">План поездки 8–23 апреля 2026, структурирован по Плану B.</div>
+        <div class="muted">План поездки 8–23 апреля 2026, архитектура: единый формат name{cn,ru,en} для всех точек.</div>
       </div>
     </div>
   </section>
@@ -289,48 +290,50 @@
 <div class="toast" id="toast">✅ Скопировано</div>
 
 <script>
-  // ===== ДАННЫЕ МАРШРУТА (CN/RU/EN) =====
+  // =========================
+  // ARCH v2: универсальные точки
+  // item = { kind, city, name:{cn,ru,en}, optional?, map? }
+  // =========================
+
   const TRIP = {
     dateRange:{ start:"2026-04-08", end:"2026-04-23" },
     cities:[
       {
         id:"cq", color:"var(--cq)",
-        name:{ru:"Чунцин", en:"Chongqing", cn:"重庆"},
+        cityName:{ru:"Чунцин", en:"Chongqing", cn:"重庆"},
         days:[
           { date:"2026-04-09", title_ru:"Прилёт + заселение", summary:"вечером Hongyadong",
             blocks:[
               {type:"hotel", items:[
-                {kind:"hotel", city:"cq", cn:"重庆假日江畔酒店（解放碑洪崖洞店）", ru:"Holiday Riverside (район Хунъядун / Цзефанбэй)", en:"Holiday Riverside Hotel (Hongyadong/Jiefangbei)"},
-                {kind:"address", city:"cq", cn:"重庆市渝中区沧白路73号 永中国际大厦15楼", ru:"Чунцин, р-н Юйчжун, ул. Цанбай 73, 15 этаж", en:"15F, Yongzhong International Building, No.73 Cangbai Rd, Yuzhong, Chongqing"}
+                {kind:"hotel", city:"cq", name:{cn:"重庆假日江畔酒店（解放碑洪崖洞店）", ru:"Holiday Riverside (район Хунъядун / Цзефанбэй)", en:"Holiday Riverside Hotel (Hongyadong/Jiefangbei)"}},
+                {kind:"address", city:"cq", name:{cn:"重庆市渝中区沧白路73号 永中国际大厦15楼", ru:"Чунцин, р-н Юйчжун, ул. Цанбай 73, 15 этаж", en:"15F, Yongzhong International Building, No.73 Cangbai Rd, Yuzhong, Chongqing"}}
               ]},
               {type:"plan", items:[
-                {kind:"sight", city:"cq", cn:"洪崖洞", ru:"Хунъядун", en:"Hongyadong Scenic Area"}
+                {kind:"sight", city:"cq", name:{cn:"洪崖洞", ru:"Хунъядун", en:"Hongyadong Scenic Area"}}
               ]}
             ]
           },
-
           { date:"2026-04-10", title_ru:"Прогулки и виды 🌃", summary:"Liziba • Kuixinglou • Raffles City • Nanshan • (опц.) Cableway",
             blocks:[
               {type:"plan", items:[
-                {kind:"sight", city:"cq", cn:"李子坝", ru:"Лицзыба (метро в доме)", en:"Liziba (metro through building)"},
-                {kind:"sight", city:"cq", cn:"魁星楼", ru:"Куйсинлоу", en:"Kuixinglou"},
-                {kind:"sight", city:"cq", cn:"来福士广场 重庆", ru:"Раффлс Сити Чунцин", en:"Raffles City Chongqing"},
-                {kind:"sight", city:"cq", cn:"南山一棵树观景台", ru:"Панорама Наньшань «Одно дерево»", en:"Nanshan One Tree Pavilion"},
-                {kind:"sight", city:"cq", cn:"长江索道", ru:"Канатка через Янцзы", en:"Yangtze River Cableway"}
+                {kind:"sight", city:"cq", name:{cn:"李子坝", ru:"Лицзыба (метро в доме)", en:"Liziba (metro through building)"}},
+                {kind:"sight", city:"cq", name:{cn:"魁星楼", ru:"Куйсинлоу", en:"Kuixinglou"}},
+                {kind:"sight", city:"cq", name:{cn:"来福士广场 重庆", ru:"Раффлс Сити Чунцин", en:"Raffles City Chongqing"}},
+                {kind:"sight", city:"cq", name:{cn:"南山一棵树观景台", ru:"Панорама Наньшань «Одно дерево»", en:"Nanshan One Tree Pavilion"}},
+                {kind:"sight", city:"cq", name:{cn:"长江索道", ru:"Канатка через Янцзы", en:"Yangtze River Cableway"}, optional:true}
               ]}
             ]
           },
-
           { date:"2026-04-11", title_ru:"Свободный день + подготовка к поезду 🚄", summary:"Shancheng Trail + вокзал + проверить поезд",
             blocks:[
               {type:"plan", items:[
-                {kind:"sight", city:"cq", cn:"山城步道", ru:"Shancheng Trail (атмосферная прогулка)", en:"Shancheng Trail"}
+                {kind:"sight", city:"cq", name:{cn:"山城步道", ru:"Shancheng Trail (атмосферная прогулка)", en:"Shancheng Trail"}}
               ]},
               {type:"transport", items:[
-                {kind:"rail", city:"cq", cn:"重庆北站", ru:"Северный вокзал Чунцина", en:"Chongqing North Railway Station"}
+                {kind:"rail", city:"cq", name:{cn:"重庆北站", ru:"Северный вокзал Чунцина", en:"Chongqing North Railway Station"}}
               ]},
               {type:"query", items:[
-                {kind:"query", city:"cq", cn:"重庆北站 → 张家界西站 · 4月12日", ru:"Поиск билета на 12 апреля (Чунцин → Чжанцзяцзе)", en:"Chongqing North → Zhangjiajie West · Apr 12"}
+                {kind:"query", city:"cq", name:{cn:"重庆北站 → 张家界西站 · 4月12日", ru:"Поиск билета на 12 апреля (Чунцин → Чжанцзяцзе)", en:"Chongqing North → Zhangjiajie West · Apr 12"}}
               ]}
             ]
           }
@@ -339,42 +342,47 @@
 
       {
         id:"zjj", color:"var(--zjj)",
-        name:{ru:"Чжанцзяцзе", en:"Zhangjiajie", cn:"张家界"},
+        cityName:{ru:"Чжанцзяцзе", en:"Zhangjiajie", cn:"张家界"},
         days:[
-          { date:"2026-04-12", title_ru:"🚄 Чунцин → Чжанцзяцзе + 🏨 заселение", summary:"重庆北站 → 张家界西站",
+          { date:"2026-04-12", title_ru:"🚄 Чунцин → Чжанцзяцзе + 🏨 заселение", summary:"重庆北站 → 张家界西站 · (опц.) Гранд Каньон",
             blocks:[
               {type:"transport", items:[
-                {kind:"rail", city:"cq", cn:"重庆北站", ru:"Северный вокзал Чунцина", en:"Chongqing North Railway Station"},
-                {kind:"rail", city:"zjj", cn:"张家界西站", ru:"Западный вокзал Чжанцзяцзе", en:"Zhangjiajie West Railway Station"}
+                {kind:"rail", city:"cq",  name:{cn:"重庆北站", ru:"Северный вокзал Чунцина", en:"Chongqing North Railway Station"}},
+                {kind:"rail", city:"zjj", name:{cn:"张家界西站", ru:"Западный вокзал Чжанцзяцзе", en:"Zhangjiajie West Railway Station"}}
               ]},
               {type:"hotel", items:[
-                {kind:"hotel", city:"zjj", cn:"曼缘度假酒店（张家界国家森林公园标志门店）", ru:"Manyuan Resort Hotel (у входа в нац.парк)", en:"Manyuan Resort Hotel (near Landmark Gate)"}
+                {kind:"hotel", city:"zjj", name:{cn:"曼缘度假酒店（张家界国家森林公园标志门店）", ru:"Manyuan Resort Hotel (у входа в нац.парк)", en:"Manyuan Resort Hotel (near Landmark Gate)"}}
+              ]},
+              {type:"optional", items:[
+                {kind:"sight", city:"zjj", name:{cn:"张家界大峡谷", ru:"Гранд Каньон Чжанцзяцзе", en:"Zhangjiajie Grand Canyon"}, optional:true},
+                {kind:"sight", city:"zjj", name:{cn:"张家界大峡谷玻璃桥", ru:"Стеклянный мост (Гранд Каньон)", en:"Zhangjiajie Grand Canyon Glass Bridge"}, optional:true},
+                {kind:"sight", city:"zjj", name:{cn:"张家界大峡谷景区步道", ru:"Эко-тропа в Гранд Каньоне", en:"Zhangjiajie Grand Canyon Scenic Trail"}, optional:true}
               ]}
             ]
           },
           { date:"2026-04-13", title_ru:"🏔 Парк Аватара: классический маршрут", summary:"Wulingyuan Gate • Bailong • Yuanjiajie • Tianzi",
             blocks:[
               {type:"plan", items:[
-                {kind:"sight", city:"zjj", cn:"武陵源标志门", ru:"Главный вход Улинъюань", en:"Wulingyuan Landmark Gate"},
-                {kind:"sight", city:"zjj", cn:"百龙天梯", ru:"Лифт Байлун", en:"Bailong Elevator"},
-                {kind:"sight", city:"zjj", cn:"袁家界", ru:"Юаньцзяцзе", en:"Yuanjiajie"},
-                {kind:"sight", city:"zjj", cn:"天子山", ru:"Гора Тяньцзы", en:"Tianzi Mountain"}
+                {kind:"sight", city:"zjj", name:{cn:"武陵源标志门", ru:"Главный вход Улинъюань", en:"Wulingyuan Landmark Gate"}},
+                {kind:"sight", city:"zjj", name:{cn:"百龙天梯", ru:"Лифт Байлун", en:"Bailong Elevator"}},
+                {kind:"sight", city:"zjj", name:{cn:"袁家界", ru:"Юаньцзяцзе", en:"Yuanjiajie"}},
+                {kind:"sight", city:"zjj", name:{cn:"天子山", ru:"Гора Тяньцзы", en:"Tianzi Mountain"}}
               ]}
             ]
           },
           { date:"2026-04-14", title_ru:"🏞 Второй день (спокойнее)", summary:"Golden Whip Stream • Ten-mile Gallery",
             blocks:[
               {type:"plan", items:[
-                {kind:"sight", city:"zjj", cn:"金鞭溪", ru:"Ручей Золотой Кнут", en:"Golden Whip Stream"},
-                {kind:"sight", city:"zjj", cn:"十里画廊", ru:"Галерея десяти ли", en:"Ten-mile Gallery"}
+                {kind:"sight", city:"zjj", name:{cn:"金鞭溪", ru:"Ручей Золотой Кнут", en:"Golden Whip Stream"}},
+                {kind:"sight", city:"zjj", name:{cn:"十里画廊", ru:"Галерея десяти ли", en:"Ten-mile Gallery"}}
               ]}
             ]
           },
           { date:"2026-04-15", title_ru:"🚄 Чжанцзяцзе → Фэнхуан", summary:"张家界西站 → 凤凰古城站",
             blocks:[
               {type:"transport", items:[
-                {kind:"rail", city:"zjj", cn:"张家界西站", ru:"Западный вокзал Чжанцзяцзе", en:"Zhangjiajie West Railway Station"},
-                {kind:"rail", city:"fh", cn:"凤凰古城站", ru:"Станция Фэнхуан (Старый город)", en:"Fenghuang Ancient Town Railway Station"}
+                {kind:"rail", city:"zjj", name:{cn:"张家界西站", ru:"Западный вокзал Чжанцзяцзе", en:"Zhangjiajie West Railway Station"}},
+                {kind:"rail", city:"fh",  name:{cn:"凤凰古城站", ru:"Станция Фэнхуан (Старый город)", en:"Fenghuang Ancient Town Railway Station"}}
               ]}
             ]
           }
@@ -383,27 +391,27 @@
 
       {
         id:"fh", color:"var(--fh)",
-        name:{ru:"Фэнхуан", en:"Fenghuang", cn:"凤凰"},
+        cityName:{ru:"Фэнхуан", en:"Fenghuang", cn:"凤凰"},
         days:[
           { date:"2026-04-15", title_ru:"Заселение + вечер в старом городе", summary:"Fenghuang Ancient Town",
             blocks:[
               {type:"hotel", items:[
-                {kind:"hotel", city:"fh", cn:"凤凰舒依民宿（凤凰古城店）", ru:"Гостевой дом Shuyi (Фэнхуан)", en:"Shuyi Homestay (Fenghuang Ancient Town)"},
-                {kind:"address", city:"fh", cn:"湖南省湘西州凤凰县沱江镇习鹊坡74号", ru:"Хунань, округ Сянси, Фэнхуан, пос. Туоцзян, 74", en:"No.74, Xiquepo, Tuojiang Town, Fenghuang County, Xiangxi, Hunan"}
+                {kind:"hotel", city:"fh", name:{cn:"凤凰舒依民宿（凤凰古城店）", ru:"Гостевой дом Shuyi (Фэнхуан)", en:"Shuyi Homestay (Fenghuang Ancient Town)"}},
+                {kind:"address", city:"fh", name:{cn:"湖南省湘西州凤凰县沱江镇习鹊坡74号", ru:"Хунань, округ Сянси, Фэнхуан, пос. Туоцзян, 74", en:"No.74, Xiquepo, Tuojiang Town, Fenghuang County, Xiangxi, Hunan"}}
               ]},
               {type:"plan", items:[
-                {kind:"sight", city:"fh", cn:"凤凰古城", ru:"Старый город Фэнхуан", en:"Fenghuang Ancient Town"}
+                {kind:"sight", city:"fh", name:{cn:"凤凰古城", ru:"Старый город Фэнхуан", en:"Fenghuang Ancient Town"}}
               ]}
             ]
           },
           { date:"2026-04-16", title_ru:"🚄 Фэнхуан → Гуйлинь → Яншо", summary:"凤凰古城站 → 桂林北站",
             blocks:[
               {type:"transport", items:[
-                {kind:"rail", city:"fh", cn:"凤凰古城站", ru:"Станция Фэнхуан", en:"Fenghuang Ancient Town Railway Station"},
-                {kind:"rail", city:"ys", cn:"桂林北站", ru:"Северный вокзал Гуйлиня", en:"Guilin North Railway Station"}
+                {kind:"rail", city:"fh", name:{cn:"凤凰古城站", ru:"Станция Фэнхуан", en:"Fenghuang Ancient Town Railway Station"}},
+                {kind:"rail", city:"ys", name:{cn:"桂林北站", ru:"Северный вокзал Гуйлиня", en:"Guilin North Railway Station"}}
               ]},
               {type:"query", items:[
-                {kind:"query", city:"ys", cn:"凤凰古城站 → 桂林北站 · 4月16日", ru:"Поиск билета на 16 апреля (Фэнхуан → Гуйлинь)", en:"Fenghuang Ancient Town → Guilin North · Apr 16"}
+                {kind:"query", city:"ys", name:{cn:"凤凰古城站 → 桂林北站 · 4月16日", ru:"Поиск билета на 16 апреля (Фэнхуан → Гуйлинь)", en:"Fenghuang Ancient Town → Guilin North · Apr 16"}}
               ]}
             ]
           }
@@ -412,47 +420,47 @@
 
       {
         id:"ys", color:"var(--ys)",
-        name:{ru:"Яншо", en:"Yangshuo", cn:"阳朔"},
+        cityName:{ru:"Яншо", en:"Yangshuo", cn:"阳朔"},
         days:[
           { date:"2026-04-16", title_ru:"Заселение в Яншо", summary:"Yangshuo Yuyuan Resort",
             blocks:[
               {type:"hotel", items:[
-                {kind:"hotel", city:"ys", cn:"阳朔遇源景舍（十里画廊遇龙河店）", ru:"Yuyuan Resort (район Шили Хуалан / река Юйлун)", en:"Yangshuo Yuyuan Resort (Shili Gallery & Yulong River)"}
+                {kind:"hotel", city:"ys", name:{cn:"阳朔遇源景舍（十里画廊遇龙河店）", ru:"Yuyuan Resort (Шили Хуалан / река Юйлун)", en:"Yangshuo Yuyuan Resort (Shili Gallery & Yulong River)"}}
               ]}
             ]
           },
           { date:"2026-04-17", title_ru:"Yulong River + Shili Gallery 🚲", summary:"遇龙河 • 十里画廊",
             blocks:[
               {type:"plan", items:[
-                {kind:"sight", city:"ys", cn:"遇龙河", ru:"Река Юйлун", en:"Yulong River"},
-                {kind:"sight", city:"ys", cn:"十里画廊", ru:"Галерея десяти ли", en:"Shili Gallery"}
+                {kind:"sight", city:"ys", name:{cn:"遇龙河", ru:"Река Юйлун", en:"Yulong River"}},
+                {kind:"sight", city:"ys", name:{cn:"十里画廊", ru:"Галерея десяти ли", en:"Shili Gallery"}}
               ]}
             ]
           },
           { date:"2026-04-18", title_ru:"Xingping + река Ли 🚤", summary:"兴坪古镇 • 兴坪码头 • 漓江",
             blocks:[
               {type:"plan", items:[
-                {kind:"sight", city:"ys", cn:"兴坪古镇", ru:"Старый город Синпин", en:"Xingping Ancient Town"},
-                {kind:"sight", city:"ys", cn:"兴坪码头", ru:"Пирс Синпин", en:"Xingping Pier"},
-                {kind:"sight", city:"ys", cn:"漓江", ru:"Река Ли", en:"Li River"}
+                {kind:"sight", city:"ys", name:{cn:"兴坪古镇", ru:"Старый город Синпин", en:"Xingping Ancient Town"}},
+                {kind:"sight", city:"ys", name:{cn:"兴坪码头", ru:"Пирс Синпин", en:"Xingping Pier"}},
+                {kind:"sight", city:"ys", name:{cn:"漓江", ru:"Река Ли", en:"Li River"}}
               ]}
             ]
           },
           { date:"2026-04-19", title_ru:"Свободный день + подготовка к поезду 🚄", summary:"проверить поезд на 20 апреля",
             blocks:[
               {type:"transport", items:[
-                {kind:"rail", city:"ys", cn:"阳朔站", ru:"Вокзал Яншо", en:"Yangshuo Railway Station"}
+                {kind:"rail", city:"ys", name:{cn:"阳朔站", ru:"Вокзал Яншо", en:"Yangshuo Railway Station"}}
               ]},
               {type:"query", items:[
-                {kind:"query", city:"ys", cn:"阳朔站 → 广州南站 · 4月20日", ru:"Поиск билета на 20 апреля (Яншо → Гуанчжоу)", en:"Yangshuo → Guangzhou South · Apr 20"}
+                {kind:"query", city:"ys", name:{cn:"阳朔站 → 广州南站 · 4月20日", ru:"Поиск билета на 20 апреля (Яншо → Гуанчжоу)", en:"Yangshuo → Guangzhou South · Apr 20"}}
               ]}
             ]
           },
           { date:"2026-04-20", title_ru:"🚄 Яншо → Гуанчжоу", summary:"阳朔站 → 广州南站",
             blocks:[
               {type:"transport", items:[
-                {kind:"rail", city:"ys", cn:"阳朔站", ru:"Вокзал Яншо", en:"Yangshuo Railway Station"},
-                {kind:"rail", city:"gz", cn:"广州南站", ru:"Южный вокзал Гуанчжоу", en:"Guangzhou South Railway Station"}
+                {kind:"rail", city:"ys", name:{cn:"阳朔站", ru:"Вокзал Яншо", en:"Yangshuo Railway Station"}},
+                {kind:"rail", city:"gz", name:{cn:"广州南站", ru:"Южный вокзал Гуанчжоу", en:"Guangzhou South Railway Station"}}
               ]}
             ]
           }
@@ -461,30 +469,34 @@
 
       {
         id:"gz", color:"var(--gz)",
-        name:{ru:"Гуанчжоу", en:"Guangzhou", cn:"广州"},
+        cityName:{ru:"Гуанчжоу", en:"Guangzhou", cn:"广州"},
         days:[
           { date:"2026-04-20", title_ru:"Заселение в Гуанчжоу", summary:"Echarm PLUS • Wuyangcun",
             blocks:[
               {type:"hotel", items:[
-                {kind:"hotel", city:"gz", cn:"宜尚PLUS酒店（广州珠江新城五羊邨地铁站店）", ru:"Echarm PLUS (Чжуцзян Нью Таун, Уянцунь)", en:"Echarm PLUS Hotel (Zhujiang New Town, Wuyangcun)"},
-                {kind:"address", city:"gz", cn:"广州市天河区珠江新城五羊邨", ru:"Гуанчжоу, р-н Тяньхэ, Чжуцзян Нью Таун, Уянцунь", en:"Wuyangcun, Zhujiang New Town, Tianhe District, Guangzhou"},
-                {kind:"metro", city:"gz", cn:"五羊邨站", ru:"Станция метро Уянцунь", en:"Wuyangcun Metro Station"}
+                {kind:"hotel", city:"gz", name:{cn:"宜尚PLUS酒店（广州珠江新城五羊邨地铁站店）", ru:"Echarm PLUS (Чжуцзян Нью Таун, Уянцунь)", en:"Echarm PLUS Hotel (Zhujiang New Town, Wuyangcun)"}},
+                {kind:"address", city:"gz", name:{cn:"广州市天河区珠江新城五羊邨", ru:"Гуанчжоу, р-н Тяньхэ, Чжуцзян Нью Таун, Уянцунь", en:"Wuyangcun, Zhujiang New Town, Tianhe District, Guangzhou"}},
+                {kind:"metro", city:"gz", name:{cn:"五羊邨站", ru:"Станция метро Уянцунь", en:"Wuyangcun Metro Station"}}
               ]}
             ]
           },
-          { date:"2026-04-21", title_ru:"Canton Tower + вечерние виды 🌆", summary:"广州塔 • 珠江新城",
+
+          { date:"2026-04-21", title_ru:"Панорамный день 🌆🌉", summary:"Baiyun + Glass Bridge • Canton Tower • Zhujiang New Town",
             blocks:[
               {type:"plan", items:[
-                {kind:"sight", city:"gz", cn:"广州塔", ru:"Кантонская телебашня", en:"Canton Tower"},
-                {kind:"sight", city:"gz", cn:"珠江新城", ru:"Чжуцзян Нью Таун", en:"Zhujiang New Town"}
+                {kind:"sight", city:"gz", name:{cn:"白云山风景区", ru:"Парк/гора Байюнь", en:"Baiyun Mountain Scenic Area"}},
+                {kind:"sight", city:"gz", name:{cn:"白云山玻璃桥", ru:"Стеклянный мост на Байюнь", en:"Baiyun Mountain Glass Bridge"}},
+                {kind:"sight", city:"gz", name:{cn:"广州塔", ru:"Кантонская телебашня", en:"Canton Tower"}},
+                {kind:"sight", city:"gz", name:{cn:"珠江新城", ru:"Чжуцзян Нью Таун", en:"Zhujiang New Town"}}
               ]}
             ]
           },
+
           { date:"2026-04-22", title_ru:"Старый район / прогулки / шопинг", summary:"北京路 • 沙面岛",
             blocks:[
               {type:"plan", items:[
-                {kind:"sight", city:"gz", cn:"北京路步行街", ru:"Пешеходная улица Бэйцзин Лу", en:"Beijing Road Pedestrian Street"},
-                {kind:"sight", city:"gz", cn:"沙面岛", ru:"Остров Шамянь", en:"Shamian Island"}
+                {kind:"sight", city:"gz", name:{cn:"北京路步行街", ru:"Пешеходная улица Бэйцзин Лу", en:"Beijing Road Pedestrian Street"}},
+                {kind:"sight", city:"gz", name:{cn:"沙面岛", ru:"Остров Шамянь", en:"Shamian Island"}}
               ]}
             ]
           }
@@ -493,7 +505,7 @@
     ]
   };
 
-  // ===== LocationCard правила =====
+  // ===== Icons & labels =====
   const kindIcon = {hotel:"🏨",address:"📮",airport:"✈️",rail:"🚄",metro:"🚇",sight:"📍",query:"🧾",food:"🍜"};
   const kindLabel = {
     hotel:{ru:"Отель",en:"Hotel"},
@@ -506,28 +518,29 @@
     food:{ru:"Еда",en:"Food"},
   };
 
-  // ===== CQ Food dataset (видно и в “Точки”) =====
+  // ===== CQ Food dataset (also appears in Points) =====
   const FOOD_CQ = [
-    {kind:"food", city:"cq", cat:"hotpot", cn:"珮姐老火锅", ru:"Peijie Hotpot", en:"Peijie Old Hotpot"},
-    {kind:"food", city:"cq", cat:"hotpot", cn:"周师兄重庆火锅", ru:"Zhou Shixiong Hotpot", en:"Zhou Shixiong Chongqing Hotpot"},
-    {kind:"food", city:"cq", cat:"hotpot", cn:"洞子老火锅", ru:"Dongzi Old Hotpot", en:"Dongzi Old Hotpot"},
-    {kind:"food", city:"cq", cat:"noodles", cn:"花市豌杂面", ru:"Huashi Wanzamian", en:"Huashi Wanza Noodles"},
-    {kind:"food", city:"cq", cat:"noodles", cn:"板凳面庄", ru:"Bandeng Noodles", en:"Bandeng Noodle House"},
-    {kind:"food", city:"cq", cat:"chuanchuan", cn:"马路边边串串香", ru:"Malubianbian Chuanchuan", en:"Malubianbian Chuanchuan"},
-    {kind:"food", city:"cq", cat:"sichuan", cn:"陶然居", ru:"Taoranju", en:"Taoranju"},
-    {kind:"food", city:"cq", cat:"sichuan", cn:"老四川酒家", ru:"Old Sichuan Restaurant", en:"Old Sichuan Restaurant"},
-    {kind:"food", city:"cq", cat:"dessert", cn:"一只酸奶牛", ru:"Yizhi Suannai Niu (йогурт)", en:"Yizhi Suannai Niu"},
-    {kind:"food", city:"cq", cat:"dessert", cn:"书亦烧仙草", ru:"Shuyi (травяной десерт)", en:"Shuyi Shaoxiancao"},
+    {kind:"food", city:"cq", cat:"hotpot",   name:{cn:"珮姐老火锅",       ru:"Peijie Hotpot",            en:"Peijie Old Hotpot"}},
+    {kind:"food", city:"cq", cat:"hotpot",   name:{cn:"周师兄重庆火锅",   ru:"Zhou Shixiong Hotpot",     en:"Zhou Shixiong Chongqing Hotpot"}},
+    {kind:"food", city:"cq", cat:"hotpot",   name:{cn:"洞子老火锅",       ru:"Dongzi Old Hotpot",         en:"Dongzi Old Hotpot"}},
+    {kind:"food", city:"cq", cat:"noodles",  name:{cn:"花市豌杂面",       ru:"Huashi Wanzamian",          en:"Huashi Wanza Noodles"}},
+    {kind:"food", city:"cq", cat:"noodles",  name:{cn:"板凳面庄",         ru:"Bandeng Noodles",           en:"Bandeng Noodle House"}},
+    {kind:"food", city:"cq", cat:"chuanchuan",name:{cn:"马路边边串串香",   ru:"Malubianbian Chuanchuan",  en:"Malubianbian Chuanchuan"}},
+    {kind:"food", city:"cq", cat:"sichuan",  name:{cn:"陶然居",           ru:"Taoranju",                  en:"Taoranju"}},
+    {kind:"food", city:"cq", cat:"sichuan",  name:{cn:"老四川酒家",       ru:"Old Sichuan Restaurant",    en:"Old Sichuan Restaurant"}},
+    {kind:"food", city:"cq", cat:"dessert",  name:{cn:"一只酸奶牛",       ru:"Yizhi Suannai Niu (йогурт)",en:"Yizhi Suannai Niu"}},
+    {kind:"food", city:"cq", cat:"dessert",  name:{cn:"书亦烧仙草",       ru:"Shuyi (травяной десерт)",   en:"Shuyi Shaoxiancao"}},
   ];
 
   const FOOD_CATS = [
-    {id:"hotpot",    ru:"🔥 Хот-пот",            en:"Hotpot",            maps:"重庆 火锅"},
-    {id:"noodles",   ru:"🍜 Лапша",              en:"Noodles",           maps:"重庆 小面"},
-    {id:"chuanchuan",ru:"🍢 Chuanchuan",         en:"Chuanchuan",        maps:"重庆 串串香"},
-    {id:"sichuan",   ru:"🌶 Сычуаньская кухня",  en:"Sichuan cuisine",   maps:"重庆 川菜"},
-    {id:"dessert",   ru:"🍧 Десерты и напитки",  en:"Desserts & drinks", maps:"重庆 甜品"},
+    {id:"hotpot",     ru:"🔥 Хот-пот",            en:"Hotpot",            maps:"重庆 火锅"},
+    {id:"noodles",    ru:"🍜 Лапша",              en:"Noodles",           maps:"重庆 小面"},
+    {id:"chuanchuan", ru:"🍢 Chuanchuan",         en:"Chuanchuan",        maps:"重庆 串串香"},
+    {id:"sichuan",    ru:"🌶 Сычуаньская кухня",  en:"Sichuan cuisine",   maps:"重庆 川菜"},
+    {id:"dessert",    ru:"🍧 Десерты и напитки",  en:"Desserts & drinks", maps:"重庆 甜品"},
   ];
 
+  // ===== Utils =====
   function fmtDateRu(iso){
     const d=new Date(iso+"T00:00:00");
     const dd=String(d.getDate()).padStart(2,"0");
@@ -537,19 +550,29 @@
   function esc(s){
     return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   }
+  function openMaps(query){
+    const q = encodeURIComponent(query || "");
+    const url = `https://maps.apple.com/?q=${q}`;
+    window.open(url, "_blank", "noopener");
+  }
 
+  // ===== LocationCard (v2) =====
   function renderLocCard(item){
     const icon=kindIcon[item.kind] || "📍";
     const type=kindLabel[item.kind] || {ru:"Точка",en:"Point"};
-    const city = TRIP.cities.find(c=>c.id===item.city)?.name || {};
+    const city = TRIP.cities.find(c=>c.id===item.city)?.cityName || {};
     const tag = city.ru || type.ru;
 
-    const cn=item.cn||"—";
-    const ru=item.ru||"—";
-    const en=item.en||"—";
+    const cn=item?.name?.cn ?? "—";
+    const ru=item?.name?.ru ?? "—";
+    const en=item?.name?.en ?? "—";
 
-    const cnAttr = item.cn ? `data-copy="${esc(item.cn)}"` : "";
-    const enAttr = item.en ? `data-copy="${esc(item.en)}"` : "";
+    const cnAttr = (cn && cn!=="—") ? `data-copy="${esc(cn)}"` : "";
+    const enAttr = (en && en!=="—") ? `data-copy="${esc(en)}"` : "";
+
+    const optChip = item.optional ? `<span class="metaChip">⚡ опционально</span>` : "";
+    const mapsQ = (item.map || cn || en || "").trim();
+    const mapsChip = mapsQ ? `<span class="metaChip" data-maps="${esc(mapsQ)}" style="cursor:pointer">🗺 карты</span>` : "";
 
     return `
       <div class="locCard">
@@ -565,6 +588,8 @@
         </div>
         <div class="locMeta">
           <span class="metaChip">tap CN/EN to copy</span>
+          ${optChip}
+          ${mapsChip}
         </div>
       </div>
     `;
@@ -587,19 +612,21 @@
       showToast("✅ Скопировано");
     }
   }
-  document.addEventListener("click",(e)=>{
-    const t=e.target.closest("[data-copy]");
-    if(!t) return;
-    const v=t.getAttribute("data-copy");
-    if(v) copyText(v);
-  });
 
-  // ===== Maps helper =====
-  function openMaps(query){
-    const q = encodeURIComponent(query || "");
-    const url = `https://maps.apple.com/?q=${q}`;
-    window.open(url, "_blank", "noopener");
-  }
+  document.addEventListener("click",(e)=>{
+    const copyEl=e.target.closest("[data-copy]");
+    if(copyEl){
+      const v=copyEl.getAttribute("data-copy");
+      if(v) copyText(v);
+      return;
+    }
+    const mapsEl=e.target.closest("[data-maps]");
+    if(mapsEl){
+      const q=mapsEl.getAttribute("data-maps");
+      if(q) openMaps(q);
+      return;
+    }
+  });
 
   // ===== Tabs =====
   const views={
@@ -623,17 +650,39 @@
   document.getElementById("btnClose").onclick=()=>drawer.classList.remove("show");
   drawer.addEventListener("click",(e)=>{ if(e.target===drawer) drawer.classList.remove("show"); });
 
-  function openDay(cityId, date){
+  function openDayAll(cityId, date){
     const city=TRIP.cities.find(c=>c.id===cityId);
     const day=city?.days.find(d=>d.date===date);
     if(!city||!day) return;
-
-    document.getElementById("dayTitle").textContent=`${day.date} · ${city.name.ru}`;
+    document.getElementById("dayTitle").textContent=`${day.date} · ${city.cityName.ru}`;
     document.getElementById("daySub").textContent=`${day.title_ru}${day.summary?(" — "+day.summary):""}`;
 
     const stack=document.getElementById("dayStack");
     stack.innerHTML="";
     (day.blocks||[]).forEach(b=>{
+      (b.items||[]).forEach(it=>{
+        const w=document.createElement("div");
+        w.innerHTML=renderLocCard(it);
+        stack.appendChild(w.firstElementChild);
+      });
+    });
+
+    drawer.classList.add("show");
+  }
+
+  function openDayByBlockTypes(cityId, date, types, titleSuffix){
+    const city=TRIP.cities.find(c=>c.id===cityId);
+    const day=city?.days.find(d=>d.date===date);
+    if(!city||!day) return;
+
+    document.getElementById("dayTitle").textContent=`${day.date} · ${city.cityName.ru}${titleSuffix?(" · "+titleSuffix):""}`;
+    document.getElementById("daySub").textContent=`${day.title_ru}${day.summary?(" — "+day.summary):""}`;
+
+    const stack=document.getElementById("dayStack");
+    stack.innerHTML="";
+
+    (day.blocks||[]).forEach(b=>{
+      if(!types.includes(b.type)) return;
       (b.items||[]).forEach(it=>{
         const w=document.createElement("div");
         w.innerHTML=renderLocCard(it);
@@ -660,7 +709,7 @@
           <div class="cityLeft">
             <span class="badge" style="background:${city.color}"></span>
             <div style="min-width:0">
-              <div class="cityName">${esc(city.name.ru)} <span class="muted">· ${esc(city.name.en)}</span></div>
+              <div class="cityName">${esc(city.cityName.ru)} <span class="muted">· ${esc(city.cityName.en)}</span></div>
               <div class="cityRange">${esc(range)}</div>
             </div>
           </div>
@@ -680,7 +729,7 @@
           </div>
           <div class="chev">›</div>
         `;
-        b.addEventListener("click",()=>openDay(city.id, day.date));
+        b.addEventListener("click",()=>openDayAll(city.id, day.date));
         daysEl.appendChild(b);
       });
 
@@ -688,30 +737,29 @@
     });
   }
 
-  // ===== Points build (unique-ish) =====
+  // ===== Points =====
   function buildPoints(){
     const seen=new Set();
     const out=[];
+
+    function add(it){
+      const cn=it?.name?.cn||"";
+      const en=it?.name?.en||"";
+      const key = `${it.kind}|${it.city}|${cn}|${en}`;
+      if(seen.has(key)) return;
+      seen.add(key);
+      out.push(it);
+    }
+
     TRIP.cities.forEach(city=>{
       city.days.forEach(day=>{
         (day.blocks||[]).forEach(b=>{
-          (b.items||[]).forEach(it=>{
-            const key = `${it.kind}|${it.cn||""}|${it.en||""}`;
-            if(seen.has(key)) return;
-            seen.add(key);
-            out.push(it);
-          });
+          (b.items||[]).forEach(add);
         });
       });
     });
 
-    FOOD_CQ.forEach(it=>{
-      const key = `${it.kind}|${it.cn||""}|${it.en||""}`;
-      if(seen.has(key)) return;
-      seen.add(key);
-      out.push(it);
-    });
-
+    FOOD_CQ.forEach(add);
     return out;
   }
   const POINTS = buildPoints();
@@ -719,7 +767,7 @@
   function renderFilters(){
     const fCity=document.getElementById("fCity");
     const fKind=document.getElementById("fKind");
-    fCity.innerHTML = `<option value="all">Все города</option>` + TRIP.cities.map(c=>`<option value="${c.id}">${esc(c.name.ru)}</option>`).join("");
+    fCity.innerHTML = `<option value="all">Все города</option>` + TRIP.cities.map(c=>`<option value="${c.id}">${esc(c.cityName.ru)}</option>`).join("");
     const kinds=["all", ...Object.keys(kindLabel)];
     fKind.innerHTML = kinds.map(k=>{
       if(k==="all") return `<option value="all">Все типы</option>`;
@@ -738,7 +786,7 @@
       if(city!=="all" && p.city!==city) return false;
       if(kind!=="all" && p.kind!==kind) return false;
       if(!q) return true;
-      const s = `${p.cn||""} ${p.ru||""} ${p.en||""}`.toLowerCase();
+      const s = `${p?.name?.cn||""} ${p?.name?.ru||""} ${p?.name?.en||""}`.toLowerCase();
       return s.includes(q);
     });
 
@@ -757,7 +805,7 @@
     });
   }
 
-  // ===== Food drawer renderer =====
+  // ===== CQ Food Drawer =====
   function renderFoodDrawerCQ(title, subtitle){
     document.getElementById("dayTitle").textContent = title;
     document.getElementById("daySub").textContent = subtitle;
@@ -772,7 +820,7 @@
       const head = document.createElement("div");
       head.className = "card";
       head.innerHTML = `
-        <div class="h2" style="margin-top:0">${cat.ru} <span class="muted">· ${cat.en}</span></div>
+        <div class="h2" style="margin-top:0">${esc(cat.ru)} <span class="muted">· ${esc(cat.en)}</span></div>
         <div class="row" style="margin-top:8px">
           <button class="btn" type="button">🗺 Открыть поиск в картах</button>
         </div>
@@ -784,17 +832,7 @@
       items.forEach(it=>{
         const wrap = document.createElement("div");
         wrap.innerHTML = renderLocCard(it);
-        const el = wrap.firstElementChild;
-
-        const meta = el.querySelector(".locMeta");
-        const chip = document.createElement("span");
-        chip.className = "metaChip";
-        chip.textContent = "🗺 открыть в картах";
-        chip.style.cursor = "pointer";
-        chip.addEventListener("click", ()=>openMaps(it.cn || it.en || ""));
-        meta.appendChild(chip);
-
-        stack.appendChild(el);
+        stack.appendChild(wrap.firstElementChild);
       });
     });
 
@@ -852,9 +890,9 @@
 
     pillDot.style.background = m.city.color;
 
-    if(today < TRIP.dateRange.start) pillText.textContent = `До поездки: ${fmtDateRu(target)} · ${m.city.name.ru}`;
-    else if(today > TRIP.dateRange.end) pillText.textContent = `После поездки: ${fmtDateRu(target)} · ${m.city.name.ru}`;
-    else pillText.textContent = `Сегодня: ${fmtDateRu(target)} · ${m.city.name.ru}`;
+    if(today < TRIP.dateRange.start) pillText.textContent = `До поездки: ${fmtDateRu(target)} · ${m.city.cityName.ru}`;
+    else if(today > TRIP.dateRange.end) pillText.textContent = `После поездки: ${fmtDateRu(target)} · ${m.city.cityName.ru}`;
+    else pillText.textContent = `Сегодня: ${fmtDateRu(target)} · ${m.city.cityName.ru}`;
   }
 
   function blockItems(day, types){
@@ -876,37 +914,42 @@
     if(!m){ sub.textContent="Нет данных"; return; }
 
     const {city, day}=m;
-    sub.innerHTML = `<b>${esc(day.title_ru)}</b> <span class="muted">· ${esc(city.name.ru)}</span><br><span class="muted">${esc(day.summary||"")}</span>`;
+    sub.innerHTML = `<b>${esc(day.title_ru)}</b> <span class="muted">· ${esc(city.cityName.ru)}</span><br><span class="muted">${esc(day.summary||"")}</span>`;
 
+    // show a few “key” cards
     const keyItems=[];
     keyItems.push(...blockItems(day, ["hotel"]).slice(0,3));
     keyItems.push(...blockItems(day, ["transport"]).slice(0,3));
-    keyItems.push(...blockItems(day, ["plan"]).slice(0,6));
-
+    keyItems.push(...blockItems(day, ["plan","optional"]).slice(0,6));
     keyItems.forEach(it=>{
       const w=document.createElement("div");
       w.innerHTML=renderLocCard(it);
       stack.appendChild(w.firstElementChild);
     });
 
-    const hotelItems=blockItems(day,["hotel"]);
-    const transportItems=blockItems(day,["transport"]);
-    const placeItems=blockItems(day,["plan"]);
+    const hotelItems = blockItems(day, ["hotel"]);
+    const transportItems = blockItems(day, ["transport"]);
+    const placeItems = blockItems(day, ["plan","optional"]);
 
-    document.getElementById("btnTodayHotel").onclick=()=> hotelItems.length ? openDay(city.id, day.date) : showToast("Нет отеля в этот день");
-    document.getElementById("btnTodayTransport").onclick=()=> transportItems.length ? openDay(city.id, day.date) : showToast("Нет транспорта в этот день");
-    document.getElementById("btnTodayPlaces").onclick=()=> placeItems.length ? openDay(city.id, day.date) : showToast("Нет локаций в этот день");
+    document.getElementById("btnTodayHotel").onclick=()=> hotelItems.length ? openDayByBlockTypes(city.id, day.date, ["hotel"], "Отель") : showToast("Нет отеля в этот день");
+    document.getElementById("btnTodayTransport").onclick=()=> transportItems.length ? openDayByBlockTypes(city.id, day.date, ["transport","query"], "Транспорт") : showToast("Нет транспорта в этот день");
+    document.getElementById("btnTodayPlaces").onclick=()=> placeItems.length ? openDayByBlockTypes(city.id, day.date, ["plan","optional"], "Локации") : showToast("Нет локаций в этот день");
+
     document.getElementById("btnTodayCopyAll").onclick=()=>{
       const all=[];
       (day.blocks||[]).forEach(b=>{
-        (b.items||[]).forEach(it=>{ if(it.cn) all.push(it.cn); });
+        (b.items||[]).forEach(it=>{
+          const cn = it?.name?.cn;
+          if(cn) all.push(cn);
+        });
       });
       if(!all.length) return showToast("Нечего копировать");
       copyText(all.join("\n"));
     };
 
+    // Food nearby: only for Chongqing right now
     document.getElementById("btnTodayFood").onclick=()=>{
-      if(city.id !== "cq") return showToast("Эта кнопка активна в Чунцине");
+      if(city.id !== "cq") return showToast("Кнопка еды настроена для Чунцина");
       renderFoodDrawerCQ("🍜 Где поесть рядом (Чунцин)", "Хот-пот • лапша • chuanchuan • десерты");
     };
   }
@@ -922,7 +965,7 @@
   // points listeners
   ["q","fCity","fKind"].forEach(id=>document.getElementById(id).addEventListener("input", renderPoints));
 
-  // Guide button: open CQ food
+  // Guide button
   const btnCQFoodOpen = document.getElementById("btnCQFoodOpen");
   if(btnCQFoodOpen){
     btnCQFoodOpen.addEventListener("click", ()=>{
