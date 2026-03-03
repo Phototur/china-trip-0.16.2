@@ -212,6 +212,23 @@
       transition:opacity .18s ease;
     }
     .toast.show{opacity:1}
+    /* ── Checklist ── */
+    .clCard{border:1px solid var(--line);background:#fff;border-radius:var(--r);box-shadow:var(--shadow);padding:16px}
+    .clTitle{font-weight:900;font-size:16px;margin-bottom:2px}
+    .clSub{font-size:12px;color:var(--muted);margin-bottom:12px}
+    .clList{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+    .clRow{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-radius:14px;border:1px solid rgba(17,24,39,.08);background:#f9fafb;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .12s}
+    .clRow:active{background:#f3f4f6}
+    .clRow.done{background:#F0FDF4;border-color:rgba(22,163,74,.2)}
+    .clCheck{width:22px;height:22px;border-radius:7px;border:2px solid rgba(17,24,39,.18);flex-shrink:0;display:flex;align-items:center;justify-content:center;margin-top:1px;transition:background .12s,border-color .12s}
+    .clRow.done .clCheck{background:#16A34A;border-color:#16A34A}
+    .clCheckMark{display:none;width:12px;height:12px}
+    .clRow.done .clCheckMark{display:block}
+    .clText{font-size:13px;line-height:1.5;font-weight:700;color:var(--text)}
+    .clRow.done .clText{color:#15803D;text-decoration:line-through;text-decoration-color:rgba(21,128,61,.4)}
+    .clReset{border:1px solid rgba(17,24,39,.12);background:#fff;border-radius:12px;padding:9px 16px;font-size:12px;font-weight:900;cursor:pointer;color:var(--muted)}
+    .clReset:active{background:#f3f4f6}
+
   </style>
 </head>
 
@@ -329,9 +346,17 @@
         <div class="h2" style="margin-top:0">🍜 Еда</div>
         <div class="muted">Фразы/блюда можно расширять позже. Механика копирования: CN/EN — копируются, RU — нет.</div>
       </div>
-      <div class="card">
+      <div class="card" id="guide-checklist">
         <div class="h2" style="margin-top:0">✅ Советы</div>
         <div class="muted">Чек-листы, транспорт, оплата (Alipay), вокзалы/поезда и т.д.</div>
+      </div>
+
+      <!-- CHECKLIST -->
+      <div class="clCard" id="cl-block">
+        <div class="clTitle">📋 Чек-лист перед поездкой</div>
+        <div class="clSub">Отмечай по мере выполнения — сохраняется офлайн</div>
+        <div class="clList" id="clList"></div>
+        <button class="clReset" id="clReset">↺ Сбросить чек-лист</button>
       </div>
       <div class="card">
         <div class="h2" style="margin-top:0">📴 Оффлайн</div>
@@ -1370,6 +1395,33 @@
   if("serviceWorker" in navigator){
     window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
   }
+
+  // ── Checklist ──────────────────────────────────────────────────────────────
+  (function(){
+    const CL_KEY = 'chinaTrip_checklist_v1';
+    const items = [
+      {id:'cn_arrival_card', text:'Заполнить миграционную карту для въезда в Китай', sub:'arrival card'},
+      {id:'translator_app',  text:'Скачать хороший переводчик', sub:'офлайн режим + камера'},
+      {id:'topup_alipay',    text:'Перевести деньги / пополнить Alipay', sub:'проверить, что оплата проходит'}
+    ];
+    function loadState(){try{return JSON.parse(localStorage.getItem(CL_KEY)||'{}')}catch(e){return {}}}
+    function saveState(s){try{localStorage.setItem(CL_KEY,JSON.stringify(s))}catch(e){}}
+    function render(){
+      const state=loadState(), list=document.getElementById('clList');
+      if(!list) return;
+      list.innerHTML='';
+      items.forEach(item=>{
+        const done=!!state[item.id];
+        const row=document.createElement('div');
+        row.className='clRow'+(done?' done':'');
+        row.innerHTML='<div class="clCheck"><svg class="clCheckMark" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div class="clText">'+item.text+'<br><span style="font-weight:400;color:var(--muted);font-size:11px">'+item.sub+'</span></div>';
+        row.addEventListener('click',()=>{const s=loadState();s[item.id]=!s[item.id];saveState(s);render();});
+        list.appendChild(row);
+      });
+    }
+    document.getElementById('clReset')?.addEventListener('click',()=>{saveState({});render();});
+    render();
+  })();
 </script>
 </body>
 </html>
